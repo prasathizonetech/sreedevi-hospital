@@ -1,0 +1,166 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Poppins", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 16px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-rose: var(--rose);
+  --color-gold: var(--gold);
+  --color-glow: var(--glow);
+
+  --shadow-soft: 0 10px 40px -12px rgba(255, 135, 179, 0.35);
+  --shadow-card: 0 4px 24px -8px rgba(255, 135, 179, 0.25);
+  --shadow-glow: 0 20px 60px -20px rgba(255, 135, 179, 0.5);
+
+  --gradient-primary: linear-gradient(135deg, #ff87b3 0%, #f06a99 50%, #d94d78 100%);
+  --gradient-hero: #ff87b3;
+  --gradient-soft: linear-gradient(180deg, #fff5f8 0%, #ffffff 100%);
+}
+
+:root {
+  --radius: 0.875rem;
+
+  /* SreeDevi #FF87B3 Brand Color System */
+  --background: #ffffff;
+  --foreground: #14213d;
+
+  --card: #ffffff;
+  --card-foreground: #14213d;
+  --popover: #ffffff;
+  --popover-foreground: #14213d;
+
+  --primary: #ff87b3;
+  --primary-foreground: #14213d;
+  --primary-soft: #fff5f8;
+
+  --secondary: #f06a99;
+  --secondary-foreground: #14213d;
+
+  --muted: #fff5f8;
+  --muted-foreground: #667085;
+
+  --accent: #ff87b3;
+  --accent-foreground: #d94d78;
+
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+
+  --border: #ffd6e3;
+  --input: #ffd6e3;
+  --ring: #ff87b3;
+
+  --rose: #d94d78;
+  --gold: #ffe0eb;
+  --glow: rgba(255, 135, 179, 0.45);
+
+  --sidebar: #ffffff;
+  --sidebar-foreground: #14213d;
+  --sidebar-primary: #ff87b3;
+  --sidebar-primary-foreground: #14213d;
+  --sidebar-accent: #fff5f8;
+  --sidebar-accent-foreground: #d94d78;
+  --sidebar-border: #ffd6e3;
+  --sidebar-ring: #ff87b3;
+
+  --chart-1: #ff87b3;
+  --chart-2: #f06a99;
+  --chart-3: #d94d78;
+  --chart-4: #c7335d;
+  --chart-5: #14213d;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+}
+
+@utility container-page {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  max-width: 88rem;
+
+  @media (min-width: 768px) {
+    padding-inline: 1.5rem;
+  }
+}
+
+@utility gradient-text {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility hero-gradient {
+  background: var(--gradient-hero);
+}
+
+@utility hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ─── Accessibility: respect prefers-reduced-motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
