@@ -1,11 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
-  Calendar,
   Sparkles,
   ArrowRight,
   Calculator,
   HeartHandshake,
-  Award,
   Users,
   Baby,
   Heart,
@@ -13,12 +11,10 @@ import {
   Stethoscope,
   Activity,
   Check,
-  ChevronRight,
 } from "lucide-react";
-import { HeroBackground } from "@/components/site/hero/HeroBackground";
 import fertilityImg from "@/assets/fertility-lab.jpg";
-import welcomeFamilyCare from "@/assets/family-care.jpg";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { FertilityHero } from "@/components/site/hero/FertilityHero";
 import { FertilityWhyChooseUs } from "@/components/site/FertilityWhyChooseUs";
 
 export const Route = createFileRoute("/fertility-centre")({
@@ -111,141 +107,8 @@ function FertilityCentre() {
 
   return (
     <>
-      {/* ── 1. Fertility Page Hero on Solid #FF87B3 ── */}
-      <section className="relative bg-[#FF87B3] text-[#14213D] overflow-hidden pt-12 pb-12 lg:pt-16 lg:pb-16 border-b border-[#FF87B3]">
-        {/* Shared Hero Background with animated curves & decor */}
-        <HeroBackground />
-
-        <div className="container-page relative z-10 pt-4 md:pt-6 pb-2">
-          <div className="grid md:grid-cols-2 gap-10 lg:gap-14 items-center">
-            {/* ── Left Column: Title & Subtitle ── */}
-            <motion.div variants={staggerContainer} initial="hidden" animate="show">
-              <motion.div
-                variants={fadeUpVariant}
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.05, y: -2 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="inline-flex items-center gap-2 rounded-full bg-white/80 backdrop-blur-md border border-[#f06a99] px-4 py-1.5 text-xs font-extrabold tracking-widest text-[#D94D78] uppercase mb-6 shadow-sm cursor-default"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-[#D94D78]" />
-                Fertility &amp; IVF Centre
-              </motion.div>
-
-              <motion.h1
-                variants={fadeUpVariant}
-                className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.12] mb-4 tracking-tight text-[#14213D]"
-              >
-                Where hope becomes{" "}
-                <span className="text-[#D94D78] underline decoration-[#FF87B3] decoration-wavy decoration-1 underline-offset-8">
-                  family.
-                </span>
-              </motion.h1>
-
-              <motion.div
-                variants={fadeUpVariant}
-                className="w-14 h-1.5 bg-gradient-to-r from-[#FF87B3] to-[#D94D78] rounded-full mb-6"
-              />
-
-              <motion.p
-                variants={fadeUpVariant}
-                className="text-slate-700 text-sm md:text-base leading-relaxed mb-8 max-w-md font-medium"
-              >
-                A fertility unit combining international expertise with genuinely compassionate
-                counselling. We walk with you at every step of your parenthood journey.
-              </motion.p>
-
-              {/* Action button & Breadcrumbs */}
-              <motion.div
-                variants={fadeUpVariant}
-                className="flex flex-wrap items-center gap-4 mb-6"
-              >
-                <motion.div
-                  whileHover={shouldReduceMotion ? undefined : { scale: 1.04, y: -2 }}
-                  whileTap={{ scale: 0.97 }}
-                >
-                  <Link
-                    to="/contact"
-                    className="inline-flex items-center gap-2 rounded-full bg-[#14213D] hover:bg-[#1a2b49] text-white border border-[#14213D] px-6 py-3 text-sm font-extrabold shadow-md hover:shadow-lg transition-all cursor-pointer"
-                  >
-                    <Calendar className="w-4 h-4 text-[#FF87B3]" />
-                    Book Consultation
-                  </Link>
-                </motion.div>
-              </motion.div>
-
-              <motion.nav
-                variants={fadeUpVariant}
-                className="flex items-center gap-2 text-xs text-slate-600 font-medium"
-              >
-                <Link to="/" className="hover:text-[#D94D78] transition-colors">
-                  Home
-                </Link>
-                <ChevronRight className="w-3.5 h-3.5 opacity-60 text-slate-400" />
-                <span className="font-bold text-[#D94D78] bg-white border border-[#FF87B3] px-2.5 py-0.5 rounded-md shadow-2xs">
-                  Fertility Centre
-                </span>
-              </motion.nav>
-            </motion.div>
-
-            {/* ── Right Column: Family Image ── */}
-            <div className="relative flex items-center justify-center lg:justify-end">
-              <div
-                className="absolute right-[3%] bottom-[3%] w-[480px] h-[360px] rounded-[160px_60px_160px_160px] border border-dashed border-[#f06a99]/60 scale-105 pointer-events-none"
-                aria-hidden="true"
-              />
-
-              <motion.div
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.03 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                className="relative z-10 w-full max-w-[460px] h-auto overflow-hidden rounded-[160px_60px_160px_160px] border-8 border-white shadow-2xl shadow-pink-900/10 group"
-              >
-                <motion.img
-                  src={welcomeFamilyCare}
-                  alt="Happy family holding a baby at SreeDevi Hospital"
-                  whileHover={shouldReduceMotion ? undefined : { scale: 1.07 }}
-                  transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
-                  className="w-full h-auto object-cover transform-gpu"
-                />
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Bottom Stats Bar ── */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        className="container-page max-w-5xl mx-auto -translate-y-8 relative z-25"
-      >
-        <div className="bg-white rounded-3xl border border-[#FF87B3] p-6 md:p-8 shadow-[0_12px_40px_rgba(255,135,179,0.30)] flex flex-wrap md:flex-nowrap justify-between gap-6 items-center">
-          {[
-            { icon: <HeartHandshake className="w-5 h-5" />, t: "Advanced IVF Technology" },
-            { icon: <Users className="w-5 h-5" />, t: "Experienced Specialists" },
-            { icon: <Award className="w-5 h-5" />, t: "Personalized Care" },
-            { icon: <Heart className="w-5 h-5" />, t: "Compassionate Support" },
-            { icon: <Baby className="w-5 h-5" />, t: "Complete Fertility Solutions" },
-          ].map((item, idx) => (
-            <div
-              key={idx}
-              className="flex items-center gap-3 w-full md:w-auto group cursor-default"
-            >
-              <motion.div
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.15, rotate: 6 }}
-                transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                className="w-10 h-10 rounded-xl bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] shrink-0 group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300 shadow-2xs"
-              >
-                {item.icon}
-              </motion.div>
-              <div className="text-xs md:text-sm font-extrabold text-[#14213D] leading-tight group-hover:text-[#D94D78] transition-colors">
-                {item.t}
-              </div>
-              {idx < 4 && <div className="hidden md:block w-px h-8 bg-pink-100 self-center ml-4" />}
-            </div>
-          ))}
-        </div>
-      </motion.div>
+      {/* ── 1. Production-Ready 3D Carousel Fertility Hero ── */}
+      <FertilityHero />
 
       {/* ── 2. Overview Section ── */}
       <section className="bg-white py-12 md:py-20 border-b border-slate-100 overflow-hidden relative">

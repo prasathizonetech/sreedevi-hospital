@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Sparkles,
@@ -18,6 +19,7 @@ import {
   HeartHandshake,
   FlaskConical,
   ChevronRight,
+  ChevronLeft,
 } from "lucide-react";
 import exterior from "@/assets/hospital-exterior.jpg";
 import reception from "@/assets/reception.jpg";
@@ -28,11 +30,53 @@ import family from "@/assets/family-care.jpg";
 import hero from "@/assets/hero-maternity.jpg";
 import ultrasound from "@/assets/hero-doctor-mother.jpg";
 import general from "@/assets/departments/general-medicine.jpg";
-import { useState } from "react";
+import heroCoupleDoctor from "@/assets/hero-couple-doctor.jpg";
+import aboutHero1 from "@/assets/about/about-hero-1.jpg";
+import fertilityLab from "@/assets/fertility-lab.jpg";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { GalleryLightbox, type LightboxImage } from "@/components/site/GalleryLightbox";
 import { MagneticButton } from "@/components/site/MagneticButton";
 import { HeroBackground } from "@/components/site/hero/HeroBackground";
+
+interface CarouselCardItem {
+  id: string;
+  title: string;
+  subtitle: string;
+  image: string;
+  alt: string;
+  badge: string;
+  badgeColor: string;
+}
+
+const HERO_CAROUSEL_ITEMS: CarouselCardItem[] = [
+  {
+    id: "consultation",
+    title: "Expert Clinical Consultation",
+    subtitle: "Unhurried, compassionate guidance by senior fertility specialists",
+    image: heroCoupleDoctor,
+    alt: "Doctor consulting warmly with couple at SreeDevi Fertility Centre",
+    badge: "Specialist Care",
+    badgeColor: "#FB5783",
+  },
+  {
+    id: "maternity",
+    title: "Cherished Family Moments",
+    subtitle: "Walking with you until you hold your healthy newborn",
+    image: aboutHero1,
+    alt: "Happy Indian parents with newborn baby receiving expert maternity care",
+    badge: "98% Positive Experience",
+    badgeColor: "#E6396B",
+  },
+  {
+    id: "lab",
+    title: "Advanced IVF & Embryology Lab",
+    subtitle: "Class 10,000 cleanroom with world-class micromanipulation systems",
+    image: fertilityLab,
+    alt: "Senior embryologist operating high-power microscope in IVF cleanroom",
+    badge: "Advanced Tech",
+    badgeColor: "#0284C7",
+  },
+];
 
 export const Route = createFileRoute("/gallery")({
   head: () => ({
@@ -135,7 +179,36 @@ const galleryItems = [
 
 function Gallery() {
   const [selectedImage, setSelectedImage] = useState<LightboxImage | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+
+  const total = HERO_CAROUSEL_ITEMS.length;
+
+  const nextSlide = useCallback(() => {
+    setActiveIndex((prev) => (prev + 1) % total);
+  }, [total]);
+
+  const prevSlide = useCallback(() => {
+    setActiveIndex((prev) => (prev - 1 + total) % total);
+  }, [total]);
+
+  // Autoplay every 4.5 seconds when not paused and not reduced-motion
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(() => {
+      nextSlide();
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [isPaused, nextSlide]);
+
+  // Helper to determine relative position offset (-1, 0, 1)
+  const getCardOffset = (index: number) => {
+    const diff = (index - activeIndex + total) % total;
+    if (diff === 0) return 0; // Active (center)
+    if (diff === 1) return 1; // Next (right)
+    return -1; // Previous (left)
+  };
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
@@ -148,15 +221,20 @@ function Gallery() {
     <>
       <GalleryLightbox image={selectedImage} onClose={() => setSelectedImage(null)} />
 
-      {/* ── 1. Gallery Page Hero on Solid #FF87B3 ── */}
-      <section className="relative bg-[#FF87B3] text-[#14213D] overflow-hidden pt-12 pb-12 lg:pt-16 lg:pb-16 border-b border-[#FF87B3]">
-        {/* Shared Hero Background with animated curves & decor */}
+      {/* ── 1. Gallery Page Hero ── */}
+      <section className="relative bg-gradient-to-br from-[#FFF5F8] via-[#FF87B3] to-[#f06a99] text-[#14213D] overflow-hidden pt-12 pb-12 lg:pt-16 lg:pb-16 border-b border-[#FF87B3]">
+        {/* Shared Hero Background with animated glow orbs, organic curves & decor */}
         <HeroBackground />
 
         <div className="container-page relative z-10 pt-4 md:pt-6 pb-2">
-          <div className="grid md:grid-cols-2 gap-10 items-center">
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left Column: Title, Subtitle, Buttons */}
-            <motion.div variants={staggerContainer} initial="hidden" animate="show">
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              animate="show"
+              className="lg:col-span-5 xl:col-span-5 max-w-xl"
+            >
               <motion.div
                 variants={fadeUpVariant}
                 whileHover={shouldReduceMotion ? undefined : { scale: 1.05, y: -2 }}
@@ -279,120 +357,137 @@ function Gallery() {
               </motion.nav>
             </motion.div>
 
-            {/* Right Column: Hospital Exterior in curved frame */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.15 }}
-              className="relative w-full h-[420px] max-w-[480px] overflow-visible hidden md:block mx-auto"
+            {/* ── Right Column: 3D Layered Glass Carousel System (Transferred from Fertility Centre) ── */}
+            <div
+              className="lg:col-span-7 xl:col-span-7 relative flex flex-col items-center justify-center min-h-[380px] sm:min-h-[440px] lg:min-h-[480px] select-none"
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
             >
+              {/* Cards Perspective Stage */}
               <div
-                onClick={() =>
-                  setSelectedImage({
-                    src: exterior,
-                    title: "SreeDevi Hospital Exterior Dusk Facade",
-                    tag: "Hospital",
-                  })
-                }
-                className="relative z-10 w-full h-[320px] overflow-hidden rounded-[200px_80px_200px_200px] border-8 border-white shadow-2xl group cursor-pointer"
+                className="relative w-full max-w-[620px] h-[320px] sm:h-[370px] lg:h-[400px] flex items-center justify-center"
+                style={{ perspective: "1200px" }}
               >
-                <motion.img
-                  src={exterior}
-                  alt="SreeDevi Hospital Building facade"
-                  whileHover={shouldReduceMotion ? undefined : { scale: 1.07 }}
-                  transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
-                  className="w-full h-full object-cover object-center transform-gpu"
-                />
-                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <div className="p-3 rounded-full bg-white/90 text-[#14213D] shadow-lg">
-                    <Maximize2 className="w-5 h-5" />
-                  </div>
-                </div>
+                {HERO_CAROUSEL_ITEMS.map((item, idx) => {
+                  const offset = getCardOffset(idx);
+                  const isActive = offset === 0;
+                  const isRight = offset === 1;
+                  const isLeft = offset === -1;
+
+                  return (
+                    <motion.div
+                      key={item.id}
+                      animate={
+                        shouldReduceMotion
+                          ? { opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.95 }
+                          : {
+                              x: isActive ? "0%" : isRight ? "38%" : "-38%",
+                              scale: isActive ? 1 : 0.84,
+                              rotateY: isActive ? 0 : isRight ? 16 : -16,
+                              rotateX: isActive ? 1 : 0,
+                              opacity: isActive ? 1 : 0.65,
+                              zIndex: isActive ? 30 : 10,
+                            }
+                      }
+                      transition={{
+                        duration: 0.75,
+                        ease: [0.16, 1, 0.3, 1],
+                      }}
+                      onClick={() => {
+                        if (!isActive) setActiveIndex(idx);
+                      }}
+                      className={`absolute top-0 w-[270px] sm:w-[330px] lg:w-[360px] h-[310px] sm:h-[360px] lg:h-[390px] rounded-[32px] sm:rounded-[36px] p-2.5 sm:p-3 transition-shadow duration-500 cursor-pointer ${
+                        isActive
+                          ? "border-2 border-white/95 bg-gradient-to-tr from-white/80 via-white/40 to-[#FF87B3]/30 backdrop-blur-md shadow-[0_25px_60px_rgba(251,87,131,0.30)] ring-1 ring-[#FB5783]/30"
+                          : isRight
+                          ? "border-2 border-white/80 bg-gradient-to-tr from-white/60 to-[#38BDF8]/20 backdrop-blur-md shadow-[0_15px_35px_rgba(56,189,248,0.2)] hover:opacity-90"
+                          : "border-2 border-white/80 bg-gradient-to-tr from-white/60 to-[#FFAEC6]/20 backdrop-blur-md shadow-[0_15px_35px_rgba(255,135,179,0.2)] hover:opacity-90"
+                      }`}
+                    >
+                      {/* Image Container with Inner Curved Mask */}
+                      <div className="relative w-full h-full rounded-[24px] sm:rounded-[28px] overflow-hidden group">
+                        <motion.img
+                          src={item.image}
+                          alt={item.alt}
+                          whileHover={shouldReduceMotion ? undefined : { scale: 1.05 }}
+                          transition={{ duration: 0.6, ease: "easeOut" }}
+                          className="w-full h-full object-cover select-none"
+                        />
+
+                        {/* Top Subtle Pill Badge on Active Card */}
+                        {isActive && (
+                          <div
+                            className="absolute top-3 left-3 z-30 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-white text-xs font-extrabold shadow-sm flex items-center gap-1.5"
+                            style={{ color: item.badgeColor }}
+                          >
+                            <Sparkles className="w-3.5 h-3.5" />
+                            <span>{item.badge}</span>
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  );
+                })}
+
+                {/* ── Floating Heart Badge near Center Card ── */}
+                <motion.div
+                  animate={
+                    shouldReduceMotion
+                      ? undefined
+                      : {
+                          y: [0, -7, 0],
+                          rotate: [0, 4, 0, -4, 0],
+                        }
+                  }
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute -top-3 right-[18%] sm:right-[22%] z-40 w-11 h-11 rounded-full bg-white/95 backdrop-blur-md border-2 border-white text-[#FB5783] shadow-lg shadow-pink-500/20 flex items-center justify-center pointer-events-none"
+                >
+                  <Heart className="w-5 h-5 text-[#FB5783] fill-[#FB5783]" />
+                </motion.div>
+
+                {/* ── Navigation Arrows (Left / Right) ── */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    prevSlide();
+                  }}
+                  aria-label="Previous slide"
+                  className="absolute left-1 sm:-left-3 top-1/2 -translate-y-1/2 z-40 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 backdrop-blur-md border border-[#FF87B3] text-[#FB5783] shadow-lg flex items-center justify-center cursor-pointer hover:bg-[#FB5783] hover:text-white hover:scale-110 active:scale-95 transition-all duration-300"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    nextSlide();
+                  }}
+                  aria-label="Next slide"
+                  className="absolute right-1 sm:-right-3 top-1/2 -translate-y-1/2 z-40 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 backdrop-blur-md border border-[#FF87B3] text-[#FB5783] shadow-lg flex items-center justify-center cursor-pointer hover:bg-[#FB5783] hover:text-white hover:scale-110 active:scale-95 transition-all duration-300"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
               </div>
 
-              {/* Overlay cards row */}
-              <div className="grid grid-cols-3 gap-3 absolute bottom-2 left-[3%] right-[3%] z-20">
-                <motion.div
-                  onClick={() =>
-                    setSelectedImage({
-                      src: reception,
-                      title: "Comfortable Waiting Lounge",
-                      tag: "Reception",
-                    })
-                  }
-                  whileHover={shouldReduceMotion ? undefined : { y: -3, scale: 1.03 }}
-                  className="bg-white border border-[#FF87B3] rounded-2xl p-2.5 shadow-lg flex flex-col transition-all cursor-pointer group"
-                >
-                  <div className="w-full aspect-[4/3] rounded-lg overflow-hidden bg-slate-100 relative">
-                    <img
-                      src={reception}
-                      className="w-full h-full object-cover group-hover:scale-108 transition-transform"
-                      alt="Waiting lounge"
-                    />
-                  </div>
-                  <div className="flex gap-1.5 items-start mt-2">
-                    <div className="w-5 h-5 rounded-full bg-[#FFF5F8] flex items-center justify-center shrink-0 text-[#D94D78]">
-                      <Users className="w-2.5 h-2.5" />
-                    </div>
-                    <div className="text-[8px] font-extrabold text-[#14213D] leading-tight">
-                      Comfortable Waiting Lounge
-                    </div>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  onClick={() =>
-                    setSelectedImage({ src: lab, title: "Advanced Laboratory", tag: "Diagnostics" })
-                  }
-                  whileHover={shouldReduceMotion ? undefined : { y: -3, scale: 1.03 }}
-                  className="bg-white border border-[#FF87B3] rounded-2xl p-2.5 shadow-lg flex flex-col transition-all cursor-pointer group"
-                >
-                  <div className="w-full aspect-[4/3] rounded-lg overflow-hidden bg-slate-100 relative">
-                    <img
-                      src={lab}
-                      className="w-full h-full object-cover group-hover:scale-108 transition-transform"
-                      alt="Lab workspace"
-                    />
-                  </div>
-                  <div className="flex gap-1.5 items-start mt-2">
-                    <div className="w-5 h-5 rounded-full bg-[#FFF5F8] flex items-center justify-center shrink-0 text-[#D94D78]">
-                      <FlaskConical className="w-2.5 h-2.5" />
-                    </div>
-                    <div className="text-[8px] font-extrabold text-[#14213D] leading-tight">
-                      Advanced Laboratory
-                    </div>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  onClick={() =>
-                    setSelectedImage({
-                      src: family,
-                      title: "Compassionate Care Moments",
-                      tag: "Care",
-                    })
-                  }
-                  whileHover={shouldReduceMotion ? undefined : { y: -3, scale: 1.03 }}
-                  className="bg-white border border-[#FF87B3] rounded-2xl p-2.5 shadow-lg flex flex-col transition-all cursor-pointer group"
-                >
-                  <div className="w-full aspect-[4/3] rounded-lg overflow-hidden bg-slate-100 relative">
-                    <img
-                      src={family}
-                      className="w-full h-full object-cover group-hover:scale-108 transition-transform"
-                      alt="Compassionate Care"
-                    />
-                  </div>
-                  <div className="flex gap-1.5 items-start mt-2">
-                    <div className="w-5 h-5 rounded-full bg-[#FFF5F8] flex items-center justify-center shrink-0 text-[#D94D78]">
-                      <Heart className="w-2.5 h-2.5" />
-                    </div>
-                    <div className="text-[8px] font-extrabold text-[#14213D] leading-tight">
-                      Compassionate Care
-                    </div>
-                  </div>
-                </motion.div>
+              {/* ── Carousel Progress Dots Below ── */}
+              <div className="flex items-center gap-2 mt-4 z-30">
+                {HERO_CAROUSEL_ITEMS.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setActiveIndex(i)}
+                    aria-label={`Go to slide ${i + 1}`}
+                    className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                      activeIndex === i
+                        ? "w-7 bg-[#FB5783] shadow-xs"
+                        : "w-2.5 bg-slate-300 hover:bg-[#FF87B3]"
+                    }`}
+                  />
+                ))}
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>

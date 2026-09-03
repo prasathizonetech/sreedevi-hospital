@@ -63,9 +63,9 @@ function Contact() {
 
   return (
     <>
-      {/* ── 1. Contact Hero Section on Solid #FF87B3 ── */}
-      <section className="relative bg-[#FF87B3] text-[#14213D] overflow-hidden pt-12 pb-12 lg:pt-16 lg:pb-16 border-b border-[#FF87B3]">
-        {/* Shared Hero Background with animated curves & decor */}
+      {/* ── 1. Contact Hero Section ── */}
+      <section className="relative bg-gradient-to-br from-[#FFF5F8] via-[#FF87B3] to-[#f06a99] text-[#14213D] overflow-hidden pt-12 pb-12 lg:pt-16 lg:pb-16 border-b border-[#FF87B3]">
+        {/* Shared Hero Background with animated glow orbs, organic curves & decor */}
         <HeroBackground />
 
         <div className="container-page relative z-10 pt-4 md:pt-6 pb-2">

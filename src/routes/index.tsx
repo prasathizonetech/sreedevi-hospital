@@ -91,7 +91,7 @@ function Welcome() {
   ];
 
   return (
-    <section className="relative py-24 bg-gradient-to-br from-[#FFF5F8] to-white overflow-hidden">
+    <section className="relative pt-10 pb-12 lg:pt-14 lg:pb-14 bg-gradient-to-br from-[#FFF5F8] to-white overflow-hidden">
       <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-[#FF87B3]/20 blur-[100px] -translate-y-1/2 translate-x-1/3 pointer-events-none" />
       <div className="container-page relative z-10 grid gap-12 lg:grid-cols-2 lg:items-center">
         {/* Left: Card with attached background image & cutout image */}
@@ -242,7 +242,7 @@ function SpecialitiesPreview() {
   };
 
   return (
-    <section className="container-page py-24 bg-white">
+    <section className="container-page pt-8 pb-14 lg:pt-10 lg:pb-16 bg-white">
       {/* Header */}
       <motion.div
         variants={staggerContainer(0.12)}
@@ -337,7 +337,7 @@ function SpecialitiesPreview() {
 // ─── Fertility highlight ──────────────────────────────────────────────────────
 function FertilityHighlight() {
   return (
-    <section className="py-24 bg-[#FFF5F8]">
+    <section className="py-12 lg:py-16 bg-[#FFF5F8]">
       <div className="container-page max-w-7xl mx-auto">
         <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] shadow-[0_8px_30px_rgba(255,135,179,0.30)] overflow-hidden flex flex-col md:flex-row border border-[#FF87B3]">
           {/* Left: Image */}
@@ -416,7 +416,7 @@ function FertilityHighlight() {
 // ─── Doctors preview ──────────────────────────────────────────────────────────
 function DoctorsPreview() {
   return (
-    <section className="py-24 bg-white">
+    <section className="py-12 lg:py-16 bg-white">
       <div className="container-page">
         {/* Header */}
         <motion.div
@@ -533,7 +533,7 @@ function TestimonialsPreview() {
   };
 
   return (
-    <section className="relative py-24 overflow-hidden">
+    <section className="relative py-12 lg:py-16 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-[#FFF5F8] via-[#fffcfd] to-[#f5f3ff]" />
       <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-[#FF87B3]/25 blur-3xl pointer-events-none" />
       <div className="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-purple-200/30 blur-3xl pointer-events-none" />

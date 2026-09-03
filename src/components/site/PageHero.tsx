@@ -15,7 +15,7 @@ export function PageHero({
   crumbs?: { label: string; to?: string }[];
 }) {
   return (
-    <section className="relative overflow-hidden bg-[#FF87B3] text-[#14213D] pt-12 pb-12 lg:pt-16 lg:pb-16 border-b border-[#FF87B3]">
+    <section className="relative overflow-hidden bg-gradient-to-br from-[#FFF5F8] via-[#FF87B3] to-[#f06a99] text-[#14213D] pt-12 pb-12 lg:pt-16 lg:pb-16 border-b border-[#FF87B3]">
       <HeroBackground />
       <div className="container-page relative z-10">
         {eyebrow && (

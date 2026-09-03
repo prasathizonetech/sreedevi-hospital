@@ -18,7 +18,7 @@ import {
   Plus,
 } from "lucide-react";
 import { hospital } from "@/data/hospital";
-import heroImg from "@/assets/about-hero.png";
+import { AboutHero } from "@/components/site/hero/AboutHero";
 import ourStoryDoctors from "@/assets/our-story-doctors.png";
 import {
   motion,
@@ -100,7 +100,7 @@ const imageVariant: Variants = {
 // Hand holding heart illustration for Mission Background
 const MissionIllustration = () => (
   <svg
-    className="absolute right-0 bottom-0 w-32 h-32 text-[#ffc8d6] opacity-[0.2] pointer-events-none select-none transition-transform duration-700 ease-out group-hover:scale-110 group-hover:opacity-[0.35]"
+    className="absolute right-0 bottom-0 w-32 h-32 text-[#FF87B3] opacity-[0.25] pointer-events-none select-none transition-transform duration-700 ease-out group-hover:scale-110 group-hover:opacity-[0.4]"
     viewBox="0 0 100 100"
     fill="none"
     stroke="currentColor"
@@ -118,7 +118,7 @@ const MissionIllustration = () => (
 // Mountains and Flag illustration for Vision Background
 const VisionIllustration = () => (
   <svg
-    className="absolute right-0 bottom-0 w-32 h-32 text-[#ffc8d6] opacity-[0.2] pointer-events-none select-none transition-transform duration-700 ease-out group-hover:scale-110 group-hover:opacity-[0.35]"
+    className="absolute right-0 bottom-0 w-32 h-32 text-[#FF87B3] opacity-[0.25] pointer-events-none select-none transition-transform duration-700 ease-out group-hover:scale-110 group-hover:opacity-[0.4]"
     viewBox="0 0 100 100"
     fill="none"
     stroke="currentColor"
@@ -140,254 +140,8 @@ function About() {
 
   return (
     <>
-      {/* 1. About SreeDevi Hospital (Hero Section) on Solid #FF87B3 */}
-      <section className="relative bg-[#FF87B3] overflow-hidden pt-12 pb-12 lg:pt-16 lg:pb-16 border-b border-[#FF87B3]">
-        {/* Smooth curved decorative shapes in background */}
-        <div
-          className="absolute inset-0 pointer-events-none overflow-hidden select-none"
-          aria-hidden="true"
-        >
-          <svg
-            className="absolute w-full h-full text-white/10"
-            viewBox="0 0 1440 600"
-            fill="none"
-            preserveAspectRatio="none"
-          >
-            <path
-              d="M0,140 C320,280 420,30 720,160 C1020,290 1140,70 1440,180 L1440,600 L0,600 Z"
-              fill="currentColor"
-            />
-            <path
-              d="M0,240 C280,120 480,320 800,200 C1120,80 1280,260 1440,220 L1440,600 L0,600 Z"
-              fill="currentColor"
-            />
-          </svg>
-        </div>
-
-        {/* Floating subtle medical cross / sparkle icons in background */}
-        <motion.div
-          animate={shouldReduceMotion ? undefined : { y: [0, -12, 0], rotate: [0, 8, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-16 left-[10%] text-[#D94D78]/40 pointer-events-none hidden md:block"
-          aria-hidden="true"
-        >
-          <Sparkles className="w-6 h-6" />
-        </motion.div>
-
-        <motion.div
-          animate={shouldReduceMotion ? undefined : { y: [0, 10, 0], rotate: [0, -6, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute bottom-20 right-[12%] text-[#D94D78]/40 pointer-events-none hidden md:block"
-          aria-hidden="true"
-        >
-          <Heart className="w-5 h-5 fill-[#FF87B3]" />
-        </motion.div>
-
-        <motion.div
-          animate={shouldReduceMotion ? undefined : { y: [0, -8, 0], scale: [1, 1.1, 1] }}
-          transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-          className="absolute top-28 right-[38%] text-[#D94D78]/30 pointer-events-none hidden lg:block"
-          aria-hidden="true"
-        >
-          <Plus className="w-5 h-5" strokeWidth={2.5} />
-        </motion.div>
-
-        <div className="container-page relative z-10">
-          <div className="grid md:grid-cols-2 gap-10 lg:gap-16 items-center min-h-[420px]">
-            {/* ── LEFT: Text content ── */}
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              animate="show"
-              className="py-4"
-            >
-              {/* Eyebrow badge */}
-              <motion.div
-                variants={fadeUpVariant}
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.05, y: -2 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="inline-flex items-center gap-2 rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-4 py-1.5 text-[10px] font-extrabold tracking-widest text-[#D94D78] uppercase mb-6 shadow-sm cursor-default"
-              >
-                <Sparkles className="w-3 h-3 text-[#D94D78]" />
-                About SreeDevi Hospital
-              </motion.div>
-
-              {/* Heading */}
-              <motion.h1
-                variants={fadeUpVariant}
-                className="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold leading-[1.15] tracking-tight text-[#14213D] mb-4"
-              >
-                Compassionate care <br className="hidden sm:block" />
-                for every stage of <br className="hidden sm:block" />
-                <span className="text-[#D94D78] inline-block hover:scale-[1.02] transition-transform origin-left">
-                  family life.
-                </span>
-              </motion.h1>
-
-              {/* Pink accent line */}
-              <motion.div
-                variants={fadeUpVariant}
-                className="w-12 h-1 bg-gradient-to-r from-[#FF87B3] to-[#D94D78] rounded-full mb-6"
-              />
-
-              {/* Description */}
-              <motion.p
-                variants={fadeUpVariant}
-                className="text-slate-600 text-sm md:text-base leading-relaxed mb-8 max-w-md font-medium"
-              >
-                At SreeDevi Hospital &amp; Fertility Centre, Srirangam, we are dedicated to
-                delivering trusted, personalized healthcare for women and families. From fertility
-                care to maternity and beyond, we are here to support you at every step of your
-                journey.
-              </motion.p>
-
-              {/* CTA buttons */}
-              <motion.div
-                variants={fadeUpVariant}
-                className="flex flex-wrap items-center gap-3.5 mb-5"
-              >
-                <motion.div
-                  whileHover={shouldReduceMotion ? undefined : { scale: 1.04, y: -2 }}
-                  whileTap={{ scale: 0.97 }}
-                >
-                  <Link
-                    to="/contact"
-                    className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#FF87B3] via-[#ff9ec2] to-[#D94D78] border border-[#e86595] px-6 py-3 text-sm font-extrabold text-[#14213D] shadow-md shadow-pink-400/30 hover:shadow-lg transition-all duration-300 cursor-pointer"
-                  >
-                    Contact Us
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </motion.div>
-
-                <motion.div
-                  whileHover={shouldReduceMotion ? undefined : { scale: 1.04, y: -2 }}
-                  whileTap={{ scale: 0.97 }}
-                >
-                  <Link
-                    to="/departments"
-                    className="inline-flex items-center gap-2 rounded-full bg-white border border-[#FF87B3] px-6 py-3 text-sm font-extrabold text-[#14213D] shadow-xs hover:bg-[#FFF5F8] transition-all duration-300 cursor-pointer"
-                  >
-                    <Users className="w-4 h-4" />
-                    Our Services
-                  </Link>
-                </motion.div>
-              </motion.div>
-
-              {/* Breadcrumb */}
-              <motion.nav
-                variants={fadeUpVariant}
-                className="flex items-center gap-2 text-xs text-slate-400 mt-2"
-              >
-                <Link to="/" className="hover:text-[#D94D78] transition-colors">
-                  Home
-                </Link>
-                <ChevronRight className="w-3 h-3 text-slate-300" />
-                <span className="font-semibold text-[#D94D78]">About Us</span>
-              </motion.nav>
-            </motion.div>
-
-            {/* ── RIGHT: Hero Image with Soft Zoom Effect ── */}
-            <div className="relative flex items-center justify-center py-6 lg:py-0">
-              <motion.div
-                variants={imageVariant}
-                initial="hidden"
-                animate="show"
-                className="relative group"
-              >
-                {/* Square frame — white border, rounded, shadow */}
-                <div
-                  className="relative w-[300px] h-[300px] sm:w-[380px] sm:h-[380px] lg:w-[460px] lg:h-[460px] overflow-hidden shadow-2xl shadow-pink-200/50 transition-all duration-500 group-hover:shadow-[0_25px_50px_rgba(255,135,179,0.4)]"
-                  style={{
-                    borderRadius: "2rem",
-                    border: "6px solid white",
-                    backgroundColor: "#FFF5F8",
-                  }}
-                >
-                  <motion.img
-                    src={heroImg}
-                    alt="Doctor caring for mother and newborn at SreeDevi Hospital"
-                    whileHover={shouldReduceMotion ? undefined : { scale: 1.06 }}
-                    transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
-                    className="w-full h-full object-contain transform-gpu"
-                    style={{ display: "block" }}
-                  />
-                </div>
-
-                {/* Floating badge — top left */}
-                <motion.div
-                  animate={
-                    shouldReduceMotion ? undefined : { y: [0, -8, 0], rotate: [0, 2, -2, 0] }
-                  }
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  whileHover={shouldReduceMotion ? undefined : { scale: 1.1, y: -4 }}
-                  className="absolute -left-5 top-6 z-20 bg-white rounded-2xl p-3 shadow-xl border border-[#FF87B3] cursor-default"
-                >
-                  <div className="w-9 h-9 rounded-full bg-[#FFF5F8] flex items-center justify-center shadow-xs">
-                    <Baby className="w-5 h-5 text-[#D94D78]" />
-                  </div>
-                </motion.div>
-
-                {/* Floating badge — bottom right */}
-                <motion.div
-                  animate={shouldReduceMotion ? undefined : { y: [0, 8, 0], rotate: [0, -2, 2, 0] }}
-                  transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                  whileHover={shouldReduceMotion ? undefined : { scale: 1.1, y: -4 }}
-                  className="absolute -right-5 bottom-6 z-20 bg-white rounded-2xl p-3 shadow-xl border border-[#FF87B3] cursor-default"
-                >
-                  <div className="w-9 h-9 rounded-full bg-[#FFF5F8] flex items-center justify-center shadow-xs">
-                    <Heart className="w-5 h-5 text-[#D94D78] fill-[#FF87B3]" />
-                  </div>
-                </motion.div>
-              </motion.div>
-            </div>
-          </div>
-
-          {/* Stats Bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35, duration: 0.6, type: "spring", stiffness: 60 }}
-            whileHover={
-              shouldReduceMotion
-                ? undefined
-                : { y: -4, boxShadow: "0 20px 40px rgba(255,135,179,0.30)" }
-            }
-            className="mt-8 bg-white border border-[#FF87B3] rounded-2xl shadow-lg shadow-pink-100/40 px-6 py-4 w-fit transition-all duration-300"
-          >
-            <div className="flex flex-wrap sm:flex-nowrap items-center divide-y sm:divide-y-0 sm:divide-x divide-pink-100 gap-y-3 sm:gap-y-0">
-              {(
-                [
-                  { Icon: Award, value: "28+", label: "Years of Experience" },
-                  { Icon: Users, value: "5000+", label: "Happy Families" },
-                  { Icon: Heart, value: "95%", label: "Success Rate" },
-                  { Icon: Clock, value: "24×7", label: "Emergency Care" },
-                ] as const
-              ).map(({ Icon, value, label }) => (
-                <div
-                  key={label}
-                  className="flex items-center gap-3.5 px-5 first:pl-0 last:pr-0 group cursor-default"
-                >
-                  <motion.div
-                    whileHover={shouldReduceMotion ? undefined : { scale: 1.15, rotate: 6 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                    className="shrink-0 w-11 h-11 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center group-hover:bg-[#FF87B3] transition-colors duration-300 shadow-xs"
-                  >
-                    <Icon className="w-5 h-5 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300" />
-                  </motion.div>
-                  <div className="text-left">
-                    <div className="font-extrabold text-[#14213D] text-base leading-tight whitespace-nowrap group-hover:text-[#D94D78] transition-colors">
-                      {value}
-                    </div>
-                    <div className="text-xs md:text-sm text-slate-500 whitespace-nowrap">
-                      {label}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      {/* 1. Hero Section */}
+      <AboutHero />
 
       {/* 2. About Us & Mission/Vision Section */}
       <section className="relative bg-gradient-to-b from-white via-[#FFF5F8]/40 to-white py-14 md:py-20 border-b border-slate-100 overflow-hidden">
@@ -416,9 +170,9 @@ function About() {
                 variants={fadeLeftVariant}
                 className="text-3xl md:text-4xl font-extrabold text-[#14213D] font-display tracking-tight mb-2 leading-tight"
               >
-                Compassionate Care.
+                Compassionate Care
                 <br />
-                Healthier <span className="text-[#D94D78]">Tomorrow.</span>
+                Healthier <span className="text-[#D94D78]">Tomorrow</span>
               </motion.h2>
 
               <motion.div

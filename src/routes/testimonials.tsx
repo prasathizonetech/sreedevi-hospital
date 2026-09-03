@@ -60,9 +60,9 @@ function Testimonials() {
 
   return (
     <>
-      {/* ── 1. Custom Hero Section on Solid #FF87B3 ── */}
-      <section className="relative bg-[#FF87B3] text-[#14213D] overflow-hidden pt-12 pb-12 lg:pt-16 lg:pb-16 border-b border-[#FF87B3]">
-        {/* Shared Hero Background with animated curves & decor */}
+      {/* ── 1. Custom Hero Section ── */}
+      <section className="relative bg-gradient-to-br from-[#FFF5F8] via-[#FF87B3] to-[#f06a99] text-[#14213D] overflow-hidden pt-12 pb-12 lg:pt-16 lg:pb-16 border-b border-[#FF87B3]">
+        {/* Shared Hero Background with animated glow orbs, organic curves & decor */}
         <HeroBackground />
 
         <div className="container-page relative z-10 pt-4 md:pt-6 pb-2">
@@ -264,7 +264,7 @@ function Testimonials() {
               transition={{ duration: 0.6, type: "spring", stiffness: 60 }}
               className="flex flex-col gap-4"
             >
-              <div className="rounded-[32px] bg-[#FF87B3] border border-[#FF87B3] p-7 md:p-8 text-[#14213D] shadow-sm flex flex-col justify-between min-h-[380px]">
+              <div className="rounded-[32px] bg-gradient-to-br from-[#FFF5F8] via-[#FF87B3] to-[#f06a99] border border-[#FF87B3] p-7 md:p-8 text-[#14213D] shadow-xl flex flex-col justify-between min-h-[380px]">
                 <div>
                   <div className="font-display text-6xl font-extrabold tracking-tight mb-2 text-[#14213D]">
                     4.6

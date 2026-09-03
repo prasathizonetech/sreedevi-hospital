@@ -76,8 +76,8 @@ const socialItems: SocialItem[] = [
     name: "Call Us",
     icon: Phone,
     href: `tel:${hospital.mobile}`,
-    bg: "bg-gradient-to-br from-[#c7335d] to-[#7a1231] hover:brightness-110",
-    shadow: "shadow-[0_6px_20px_rgba(199,51,93,0.5)]",
+    bg: "bg-gradient-to-br from-[#FF87B3] to-[#D94D78] hover:brightness-110",
+    shadow: "shadow-[0_6px_20px_rgba(255,135,179,0.5)]",
   },
 ];
 
@@ -163,7 +163,7 @@ export function FloatingSocialMenu() {
                     <Icon className="w-5 h-5 drop-shadow-sm" />
 
                     {/* Tooltip on hover */}
-                    <span className="absolute right-full mr-2.5 px-2.5 py-1 rounded-lg bg-[#102A54]/95 text-white text-[11px] font-bold tracking-wide whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none shadow-md backdrop-blur-sm border border-[#ffc8d6]/30">
+                    <span className="absolute right-full mr-2.5 px-2.5 py-1 rounded-lg bg-[#102A54]/95 text-white text-[11px] font-bold tracking-wide whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none shadow-md backdrop-blur-sm border border-[#FF87B3]/30">
                       {item.name}
                     </span>
                   </a>

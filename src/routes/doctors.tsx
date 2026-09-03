@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CTASection } from "@/components/site/CTASection";
 import { DoctorCard } from "@/components/site/DoctorCard";
-import { HeroBackground } from "@/components/site/hero/HeroBackground";
 import { doctors } from "@/data/doctors";
 import { departments } from "@/data/departments";
-import ourStoryDoctors from "@/assets/our-story-doctors.png";
+import doctorsTeamArch from "@/assets/doctors-team-arch.png";
+import { HeroBackground } from "@/components/site/hero/HeroBackground";
 import { motion, AnimatePresence, useReducedMotion, type Variants } from "framer-motion";
 import { useState } from "react";
 import {
@@ -12,10 +12,12 @@ import {
   Baby,
   HeartPulse,
   Wind,
-  Sparkles,
-  Plus,
-  ChevronRight,
   Users,
+  Heart,
+  FlaskConical,
+  ShieldCheck,
+  ArrowRight,
+  ChevronRight,
   Filter,
 } from "lucide-react";
 
@@ -85,100 +87,177 @@ function DoctorsPage() {
 
   return (
     <>
-      {/* ── 1. Doctors Page Hero on Solid #FF87B3 ── */}
-      <section className="relative bg-[#FF87B3] text-[#14213D] overflow-hidden pt-12 pb-12 lg:pt-16 lg:pb-16 border-b border-[#FF87B3]">
-        {/* Shared Hero Background with animated curves & decor */}
+      {/* ── 1. Doctors Page Hero: Organic Arch Image + Soft Pink Medical Elements ── */}
+      <section className="relative bg-gradient-to-br from-[#FFF5F8] via-[#FFEBF2] to-[#FFF0F6] text-[#14213D] overflow-hidden pt-6 pb-14 sm:pt-8 sm:pb-16 lg:pt-10 lg:pb-18 border-b border-[#FF87B3]">
+        {/* Soft Background Curves and Glow Orbs */}
         <HeroBackground />
 
-        <div className="container-page relative z-10 pt-4 md:pt-6 pb-2">
-          <div className="grid md:grid-cols-2 gap-10 lg:gap-14 items-center">
-            {/* ── Left Column: Title, Subtitle & Breadcrumbs ── */}
-            <motion.div variants={staggerContainer} initial="hidden" animate="show">
-              <motion.div
-                variants={fadeUpVariant}
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.05, y: -2 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="inline-flex items-center gap-2 rounded-full bg-white/80 backdrop-blur-md border border-[#f06a99] px-4 py-1.5 text-xs font-extrabold tracking-widest text-[#D94D78] uppercase mb-6 shadow-sm cursor-default"
-              >
-                <Stethoscope className="w-3.5 h-3.5 text-[#D94D78]" />
-                Our Doctors
+        <div className="container-page relative z-10 pt-2 pb-2">
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+            {/* ── Left Column: Clean Title, Description, Button, Badge & Bottom Feature Strip (6 cols) ── */}
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              animate="show"
+              className="lg:col-span-6 max-w-xl"
+            >
+              {/* Eyebrow Tag with Pink Underline */}
+              <motion.div variants={fadeUpVariant} className="flex flex-col items-start mb-4">
+                <span className="text-xs sm:text-sm font-extrabold tracking-widest text-[#FB5783] uppercase">
+                  OUR DOCTORS
+                </span>
+                <div className="w-9 h-1 bg-[#FB5783] rounded-full mt-1.5" />
               </motion.div>
 
+              {/* ── Clear, Simple English Heading ── */}
               <motion.h1
                 variants={fadeUpVariant}
-                className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.12] mb-4 tracking-tight text-[#14213D]"
+                className="font-serif font-bold text-[38px] sm:text-[46px] md:text-[52px] lg:text-[56px] leading-[1.12] tracking-tight text-[#14213D] mb-4"
+                style={{ fontFamily: "'Playfair Display', 'Lora', Georgia, serif", fontWeight: 700 }}
               >
-                A close-knit team, deeply trusted by{" "}
-                <span className="text-[#D94D78] underline decoration-[#FF87B3] decoration-wavy decoration-1 underline-offset-8">
-                  Srirangam.
-                </span>
+                Expert Doctors. <br />
+                Exceptional <span className="text-[#FB5783]">Care.</span>
               </motion.h1>
 
-              <motion.div
-                variants={fadeUpVariant}
-                className="w-14 h-1.5 bg-gradient-to-r from-[#FF87B3] to-[#D94D78] rounded-full mb-6"
-              />
-
+              {/* ── Simple, Clear English Description ── */}
               <motion.p
                 variants={fadeUpVariant}
-                className="text-slate-700 text-sm md:text-base leading-relaxed mb-8 max-w-md font-medium"
+                className="text-slate-700 text-sm sm:text-base md:text-lg leading-relaxed mb-6 max-w-lg font-medium"
               >
-                Consultants who take the time to listen, explain and reassure. Dedicated to
-                compassionate and ethical care for every family.
+                Our team of highly qualified and experienced doctors is committed to your health and
+                well-being.
               </motion.p>
 
-              {/* Breadcrumbs */}
-              <motion.nav
-                variants={fadeUpVariant}
-                className="flex items-center gap-2 text-xs text-slate-600 font-medium"
-              >
-                <Link to="/" className="hover:text-[#D94D78] transition-colors">
-                  Home
-                </Link>
-                <ChevronRight className="w-3.5 h-3.5 opacity-60 text-slate-400" />
-                <span className="font-bold text-[#D94D78] bg-white border border-[#FF87B3] px-2.5 py-0.5 rounded-md shadow-2xs">
-                  Doctors
-                </span>
-              </motion.nav>
-            </motion.div>
-
-            {/* ── Right Column: Doctors Image with Curved Outline & Hover Zoom ── */}
-            <div className="relative flex items-center justify-center lg:justify-end w-full max-w-[480px] h-[360px] mx-auto lg:mx-0">
-              <div
-                className="absolute inset-0 pointer-events-none select-none z-0"
-                aria-hidden="true"
-              >
-                <div className="absolute inset-x-2 inset-y-1 rounded-[200px_80px_200px_200px] border border-dashed border-[#f06a99]/60 scale-102" />
-              </div>
-
-              {/* Main Photo Card */}
+              {/* Action Button & Floating Stethoscope Badge */}
               <motion.div
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.03 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                className="relative z-10 w-full h-[320px] overflow-hidden rounded-[200px_80px_200px_200px] border-8 border-white shadow-2xl shadow-pink-900/10 group"
+                variants={fadeUpVariant}
+                className="flex items-center gap-4 mb-8"
               >
-                <motion.img
-                  src={ourStoryDoctors}
-                  alt="SreeDevi Hospital Doctors Team"
-                  whileHover={shouldReduceMotion ? undefined : { scale: 1.07 }}
-                  transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
-                  className="w-full h-full object-cover object-center transform-gpu"
-                />
+                <button
+                  onClick={() => {
+                    const el = document.getElementById("specialists-section");
+                    el?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#FF5C8A] via-[#FB5783] to-[#DE356A] text-white px-7 py-3.5 text-sm font-bold shadow-lg shadow-pink-500/25 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 cursor-pointer"
+                >
+                  <span>Meet Our Doctors</span>
+                  <ArrowRight className="w-4 h-4 text-white" />
+                </button>
+
+                {/* Floating Soft Pink Stethoscope Badge */}
+                <motion.div
+                  animate={shouldReduceMotion ? undefined : { y: [0, -6, 0] }}
+                  transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+                  className="w-12 h-12 rounded-full bg-white/95 backdrop-blur-md border border-[#FF87B3]/70 text-[#FB5783] shadow-md flex items-center justify-center pointer-events-none"
+                  aria-hidden="true"
+                >
+                  <Stethoscope className="w-5 h-5 text-[#FB5783]" />
+                </motion.div>
               </motion.div>
 
+              {/* ── Bottom Left Trust Feature Strip ── */}
               <motion.div
-                animate={shouldReduceMotion ? undefined : { scale: [1, 1.2, 1] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -bottom-2 left-[50%] lg:left-[46%] -translate-x-1/2 w-6 h-6 rounded-full bg-[#FF87B3] z-20 border-4 border-white shadow-md"
+                variants={fadeUpVariant}
+                className="bg-white/95 backdrop-blur-md rounded-2xl border border-[#FF87B3]/50 p-4 sm:p-5 shadow-[0_10px_30px_rgba(255,135,179,0.20)] flex flex-wrap sm:flex-nowrap items-center justify-between gap-3 sm:gap-4 max-w-lg"
+              >
+                <div className="flex flex-col items-center text-center gap-1.5 flex-1 min-w-[70px]">
+                  <div className="w-8 h-8 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#FB5783]">
+                    <Users className="w-4 h-4 text-[#FB5783]" />
+                  </div>
+                  <span className="text-[11px] sm:text-xs font-extrabold text-[#14213D] leading-tight">
+                    Experienced <br className="hidden sm:inline" />Professionals
+                  </span>
+                </div>
+
+                <div className="hidden sm:block w-px h-8 bg-pink-100" />
+
+                <div className="flex flex-col items-center text-center gap-1.5 flex-1 min-w-[70px]">
+                  <div className="w-8 h-8 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#FB5783]">
+                    <Heart className="w-4 h-4 text-[#FB5783]" />
+                  </div>
+                  <span className="text-[11px] sm:text-xs font-extrabold text-[#14213D] leading-tight">
+                    Personalized <br className="hidden sm:inline" />Care
+                  </span>
+                </div>
+
+                <div className="hidden sm:block w-px h-8 bg-pink-100" />
+
+                <div className="flex flex-col items-center text-center gap-1.5 flex-1 min-w-[70px]">
+                  <div className="w-8 h-8 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#FB5783]">
+                    <FlaskConical className="w-4 h-4 text-[#FB5783]" />
+                  </div>
+                  <span className="text-[11px] sm:text-xs font-extrabold text-[#14213D] leading-tight">
+                    Latest <br className="hidden sm:inline" />Technology
+                  </span>
+                </div>
+
+                <div className="hidden sm:block w-px h-8 bg-pink-100" />
+
+                <div className="flex flex-col items-center text-center gap-1.5 flex-1 min-w-[70px]">
+                  <div className="w-8 h-8 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#FB5783]">
+                    <ShieldCheck className="w-4 h-4 text-[#FB5783]" />
+                  </div>
+                  <span className="text-[11px] sm:text-xs font-extrabold text-[#14213D] leading-tight">
+                    Patient First <br className="hidden sm:inline" />Approach
+                  </span>
+                </div>
+              </motion.div>
+            </motion.div>
+
+            {/* ── Right Column: Organic Arch Image & Floating Pink Medical Elements (6 cols) ── */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.75, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:col-span-6 relative flex items-center justify-center select-none py-2"
+            >
+              {/* Organic Arch Container Framing the 4 Doctors */}
+              <div className="relative w-full max-w-[560px] h-[360px] sm:h-[430px] lg:h-[470px] overflow-hidden rounded-[180px_40px_160px_160px] border-4 border-white shadow-[0_20px_50px_rgba(251,87,131,0.25)] ring-2 ring-[#FF87B3]/40 group">
+                <img
+                  src={doctorsTeamArch}
+                  alt="SreeDevi Hospital Expert Medical Doctors Team"
+                  className="w-full h-full object-cover group-hover:scale-104 transition-transform duration-700"
+                />
+
+                {/* Soft pink gradient highlight along arch bottom */}
+                <div className="absolute inset-0 bg-gradient-to-t from-pink-500/10 via-transparent to-transparent pointer-events-none" />
+              </div>
+
+              {/* Floating Heartbeat ECG Badge (Top-Right) */}
+              <motion.div
+                animate={shouldReduceMotion ? undefined : { y: [0, -6, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-4 right-2 sm:right-6 z-20 w-12 h-12 rounded-full bg-white/95 backdrop-blur-md border border-[#FF87B3] text-[#FB5783] shadow-md flex items-center justify-center pointer-events-none"
                 aria-hidden="true"
-              />
-            </div>
+              >
+                <HeartPulse className="w-6 h-6 text-[#FB5783]" />
+              </motion.div>
+
+              {/* Floating 3D Pink Plus Symbol (Bottom-Right) */}
+              <motion.div
+                animate={
+                  shouldReduceMotion
+                    ? undefined
+                    : { scale: [1, 1.08, 1], rotate: [0, 4, 0, -4, 0] }
+                }
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute bottom-2 right-2 sm:right-6 z-20 pointer-events-none"
+                aria-hidden="true"
+              >
+                <div className="w-14 h-14 rounded-full bg-white/70 backdrop-blur-md border border-white flex items-center justify-center shadow-lg shadow-pink-500/20">
+                  <div className="relative w-6 h-6 flex items-center justify-center">
+                    <div className="absolute w-2 h-6 bg-gradient-to-b from-[#FF6B97] to-[#DE356A] rounded-full shadow-xs border border-white/50" />
+                    <div className="absolute h-2 w-6 bg-gradient-to-r from-[#FF6B97] to-[#DE356A] rounded-full shadow-xs border border-white/50" />
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* ── 2. Filter & Specialist Section ── */}
-      <section className="relative py-14 md:py-20 bg-gradient-to-b from-white via-[#FFF5F8]/40 to-white overflow-hidden">
+      <section id="specialists-section" className="relative py-14 md:py-20 bg-gradient-to-b from-white via-[#FFF5F8]/40 to-white overflow-hidden">
         <div className="container-page relative z-10">
           {/* Section Header */}
           <motion.div
@@ -242,9 +321,11 @@ function DoctorsPage() {
                     )}
 
                     <span className="relative z-10 flex items-center gap-1.5">
-                      <Icon
-                        className={`w-3.5 h-3.5 ${isSelected ? "text-[#D94D78]" : "text-slate-500"}`}
-                      />
+                      {Icon && (
+                        <Icon
+                          className={`w-3.5 h-3.5 ${isSelected ? "text-[#D94D78]" : "text-slate-500"}`}
+                        />
+                      )}
                       <span>{tab.label}</span>
                     </span>
                   </motion.button>
@@ -311,7 +392,7 @@ function DoctorsPage() {
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     className="inline-flex items-center gap-2 rounded-full border border-[#FF87B3] bg-white px-3.5 py-2 text-xs font-semibold text-[#14213D] shadow-2xs hover:border-[#f06a99] hover:bg-[#FFF5F8] hover:text-[#14213D] transition-colors cursor-default"
                   >
-                    <Icon className="h-3.5 h-3.5 text-[#D94D78]" />
+                    {Icon && <Icon className="w-3.5 h-3.5 text-[#D94D78]" />}
                     <span>{d.name}</span>
                   </motion.div>
                 );

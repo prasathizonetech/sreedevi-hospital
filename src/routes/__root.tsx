@@ -50,6 +50,11 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
       <div className="max-w-md text-center">
         <h1 className="font-display text-xl font-semibold text-[#14213D]">This page didn't load</h1>
         <p className="mt-2 text-sm text-slate-500">Something went wrong. Please try again.</p>
+        {error?.message && (
+          <p className="mt-3 text-xs text-rose-600 bg-rose-50 border border-rose-200 rounded-lg p-2 font-mono break-all text-left">
+            {error.message}
+          </p>
+        )}
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <button
             onClick={() => {
@@ -84,7 +89,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Manyata-certified maternity, fertility & IVF, women's health, general medicine, diabetes and respiratory care in Srirangam, Tiruchirappalli.",
       },
       { name: "author", content: "SreeDevi Hospital & Fertility Centre" },
-      { name: "theme-color", content: "#ffc8d6" },
+      { name: "theme-color", content: "#FF87B3" },
       { property: "og:type", content: "website" },
       { property: "og:title", content: "SreeDevi Hospital & Fertility Centre — Srirangam" },
       {
@@ -122,7 +127,7 @@ function RootComponent() {
       <HeadContent />
       <ScrollProgressBar />
       <DesktopCursorGlow />
-      <div className="flex min-h-screen flex-col bg-[#fffcfd] text-[#1a2b49] selection:bg-[#ffc8d6] selection:text-[#7a1231]">
+      <div className="flex min-h-screen flex-col bg-[#fffcfd] text-[#1a2b49] selection:bg-[#FF87B3]/40 selection:text-[#14213D]">
         <Header />
         <main className="flex-1">
           <AnimatePresence mode="wait" initial={false}>

@@ -50,7 +50,7 @@ function MagneticCard({
 
 export function CTASection() {
   return (
-    <section className="py-20 bg-[#FFF5F8]">
+    <section className="py-12 lg:py-16 bg-[#FFF5F8]">
       <div className="container-page max-w-6xl mx-auto">
         {/* Outer card */}
         <motion.div

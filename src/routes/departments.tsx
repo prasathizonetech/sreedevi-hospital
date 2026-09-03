@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Layers,
@@ -13,16 +14,40 @@ import {
   HeartHandshake,
   Sparkles,
   ChevronRight,
+  Users,
+  ShieldCheck,
+  Heart,
+  Scissors,
+  Bone,
+  Wind,
 } from "lucide-react";
 import { HeroBackground } from "@/components/site/hero/HeroBackground";
 import { departments } from "@/data/departments";
-import fertilityImg from "@/assets/fertility-lab.jpg";
-import familyImg from "@/assets/family-care.jpg";
-import reception from "@/assets/reception.jpg";
-import heroMaternity from "@/assets/hero-maternity.jpg";
-import lab from "@/assets/lab.jpg";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion, type Variants } from "framer-motion";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
+
+const DEPARTMENT_HEADLINES = [
+  {
+    id: "dept-head-1",
+    content: (
+      <>
+        Comprehensive Care, <br />
+        Quietly Organised <br />
+        <span className="text-[#DE356A]">Around You.</span>
+      </>
+    ),
+  },
+  {
+    id: "dept-head-2",
+    content: (
+      <>
+        Better Healthcare, <br />
+        Beautifully Organised <br />
+        <span className="text-[#DE356A]">for You.</span>
+      </>
+    ),
+  },
+];
 
 const serviceCategories = [
   {
@@ -134,155 +159,374 @@ const fadeUpVariant: Variants = {
 };
 
 function DepartmentsPage() {
+  const [headlineIndex, setHeadlineIndex] = useState(0);
   const shouldReduceMotion = useReducedMotion();
+
+  // Rotate headline every 5 seconds with smooth left-to-right flow
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setHeadlineIndex((prev) => (prev + 1) % DEPARTMENT_HEADLINES.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <>
-      {/* ── 1. Departments Page Hero on Solid #FF87B3 ── */}
-      <section className="relative bg-[#FF87B3] text-[#14213D] overflow-hidden pt-12 pb-12 lg:pt-16 lg:pb-16 border-b border-[#FF87B3]">
-        {/* Shared Hero Background with animated curves & decor */}
+      {/* ── 1. Departments Page Hero ── */}
+      <section className="relative bg-gradient-to-br from-[#FFF5F8] via-[#FFEBF2] to-[#FFF0F6] text-[#14213D] overflow-hidden pt-4 pb-10 sm:pt-6 sm:pb-12 lg:pt-6 lg:pb-14 border-b border-[#FF87B3]">
+        {/* Shared Hero Background with animated glow orbs, organic curves & decor */}
         <HeroBackground />
 
-        <div className="container-page relative z-10 pt-4 md:pt-6 pb-2">
-          <div className="grid md:grid-cols-2 gap-10 lg:gap-14 items-center">
-            {/* ── Left Column: Title & Subtitle ── */}
-            <motion.div variants={staggerContainer} initial="hidden" animate="show">
+        <div className="container-page relative z-10 pt-1 md:pt-2 pb-2">
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+            {/* ── Left Column: Title, Subtitle, CTA & Stats (7 cols) ── */}
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              animate="show"
+              className="lg:col-span-7 max-w-2xl"
+            >
+              {/* Eyebrow Tag */}
               <motion.div
                 variants={fadeUpVariant}
                 whileHover={shouldReduceMotion ? undefined : { scale: 1.05, y: -2 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="inline-flex items-center gap-2 rounded-full bg-white/80 backdrop-blur-md border border-[#f06a99] px-4 py-1.5 text-xs font-extrabold tracking-widest text-[#D94D78] uppercase mb-6 shadow-sm cursor-default"
+                className="inline-flex items-center gap-2 rounded-full bg-white/80 backdrop-blur-md border border-[#f06a99] px-4 py-1.5 text-xs font-extrabold tracking-widest text-[#DE356A] uppercase mb-3.5 shadow-sm cursor-default"
               >
-                <Layers className="w-3.5 h-3.5 text-[#D94D78]" />
-                Departments &amp; Specialities
+                <Layers className="w-3.5 h-3.5 text-[#DE356A]" />
+                <span>DEPARTMENTS &amp; SPECIALITIES</span>
               </motion.div>
 
-              <motion.h1
-                variants={fadeUpVariant}
-                className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.12] mb-4 tracking-tight text-[#14213D]"
-              >
-                Comprehensive care, quietly organised{" "}
-                <span className="text-[#D94D78] underline decoration-[#FF87B3] decoration-wavy decoration-1 underline-offset-8">
-                  around you.
-                </span>
-              </motion.h1>
+              {/* ── Animated Headline in Title Case & Elegant Serif Style (No Glow/Shadow) ── */}
+              <div className="relative min-h-[130px] sm:min-h-[145px] md:min-h-[165px] lg:min-h-[180px] xl:min-h-[195px] flex items-start mb-2">
+                <AnimatePresence mode="wait">
+                  <motion.h1
+                    key={DEPARTMENT_HEADLINES[headlineIndex].id}
+                    initial={
+                      shouldReduceMotion
+                        ? { opacity: 0 }
+                        : { opacity: 0, x: -35 }
+                    }
+                    animate={
+                      shouldReduceMotion
+                        ? { opacity: 1 }
+                        : {
+                            opacity: 1,
+                            x: 0,
+                            transition: {
+                              duration: 0.85,
+                              ease: [0.16, 1, 0.3, 1], // Smooth luxury ease-out
+                            },
+                          }
+                    }
+                    exit={
+                      shouldReduceMotion
+                        ? { opacity: 0 }
+                        : {
+                            opacity: 0,
+                            x: 35,
+                            transition: {
+                              duration: 0.6,
+                              ease: [0.7, 0, 0.84, 0], // Smooth left-to-right flow slide-out
+                            },
+                          }
+                    }
+                    className="font-serif font-semibold text-[34px] sm:text-[42px] md:text-[48px] lg:text-[52px] xl:text-[56px] leading-[1.14] tracking-tight text-[#14213D]"
+                    style={{ fontFamily: "'Playfair Display', 'Lora', Georgia, serif", fontWeight: 600 }}
+                  >
+                    {DEPARTMENT_HEADLINES[headlineIndex].content}
+                  </motion.h1>
+                </AnimatePresence>
+              </div>
 
+              {/* Pink Accent Line */}
               <motion.div
                 variants={fadeUpVariant}
-                className="w-14 h-1.5 bg-gradient-to-r from-[#FF87B3] to-[#D94D78] rounded-full mb-6"
+                className="w-14 h-1.5 bg-[#DE356A] rounded-full mb-4"
               />
 
+              {/* Description Paragraph */}
               <motion.p
                 variants={fadeUpVariant}
-                className="text-slate-700 text-sm md:text-base leading-relaxed mb-8 max-w-xl font-medium"
+                className="text-slate-700 text-sm md:text-base leading-relaxed mb-5 max-w-xl font-medium"
               >
-                From fertility and maternity to everyday family medicine, all our specialities work
-                together as one united team to support you at every stage of life.
+                From fertility and maternity to everyday family medicine, our specialists and
+                advanced facilities work together to support you at every stage of life.
               </motion.p>
 
-              {/* Breadcrumbs */}
-              <motion.nav
+              {/* Action Button */}
+              <motion.div variants={fadeUpVariant} className="mb-6">
+                <button
+                  onClick={() => {
+                    const el = document.getElementById("departments-list");
+                    el?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#FF5C8A] to-[#DE356A] text-white px-7 py-3.5 text-sm font-bold shadow-md shadow-pink-500/25 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 cursor-pointer"
+                >
+                  <span>Explore All Departments</span>
+                  <ChevronRight className="w-4 h-4 text-white" />
+                </button>
+              </motion.div>
+
+              {/* ── 3 Stats Pill Row ── */}
+              <motion.div
                 variants={fadeUpVariant}
-                className="flex items-center gap-2 text-xs text-slate-600 font-medium"
+                className="flex flex-wrap items-center gap-6 sm:gap-10 pt-3 border-t border-pink-200/70"
               >
-                <Link to="/" className="hover:text-[#D94D78] transition-colors">
-                  Home
-                </Link>
-                <ChevronRight className="w-3.5 h-3.5 opacity-60 text-slate-400" />
-                <span className="font-bold text-[#D94D78] bg-white border border-[#FF87B3] px-2.5 py-0.5 rounded-md shadow-2xs">
-                  Departments
-                </span>
-              </motion.nav>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-white/90 border border-[#FF87B3] flex items-center justify-center text-[#DE356A] shadow-2xs">
+                    <Users className="w-5 h-5 text-[#DE356A]" />
+                  </div>
+                  <div>
+                    <div className="text-lg font-extrabold text-[#14213D] leading-tight">20+</div>
+                    <div className="text-xs text-slate-600 font-semibold">Specialities</div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-white/90 border border-[#FF87B3] flex items-center justify-center text-[#DE356A] shadow-2xs">
+                    <ShieldCheck className="w-5 h-5 text-[#DE356A]" />
+                  </div>
+                  <div>
+                    <div className="text-lg font-extrabold text-[#14213D] leading-tight">50+</div>
+                    <div className="text-xs text-slate-600 font-semibold">Expert Doctors</div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-white/90 border border-[#FF87B3] flex items-center justify-center text-[#DE356A] shadow-2xs">
+                    <Heart className="w-5 h-5 text-[#DE356A]" />
+                  </div>
+                  <div>
+                    <div className="text-lg font-extrabold text-[#14213D] leading-tight">1L+</div>
+                    <div className="text-xs text-slate-600 font-semibold">Lives Touched</div>
+                  </div>
+                </div>
+              </motion.div>
             </motion.div>
 
-            {/* ── Right Column: Custom Curved Mosaic Collage ── */}
+            {/* ── Right Column: 3D Floating Diamond Department Cluster (Shifted slightly Left for perfect balance) ── */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.15 }}
-              className="relative w-full h-[400px] max-w-[480px] overflow-visible hidden md:block mx-auto"
+              transition={{ duration: 0.75, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:col-span-5 relative w-full min-h-[440px] sm:min-h-[480px] lg:min-h-[510px] flex items-center justify-center lg:justify-start lg:-ml-6 xl:-ml-12 select-none py-4"
             >
-              {/* Tile 1 (top center): Maternity / family care */}
-              <motion.div
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.05, rotate: 0 }}
-                transition={{ duration: 0.4 }}
-                className="absolute top-[5%] left-[8%] w-[42%] h-[38%] rounded-[60px_20px_60px_60px] border-4 border-white overflow-hidden shadow-lg z-10 transform rotate-[-1deg] group"
-              >
-                <img
-                  src={familyImg}
-                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
-                  alt="Family care"
-                />
-              </motion.div>
+              {/* Radial Container for Cluster */}
+              <div className="relative w-[340px] h-[340px] sm:w-[420px] sm:h-[420px] md:w-[460px] md:h-[460px] flex items-center justify-center">
+                {/* ── Center Large Pink Diamond: Obstetrics & Gynecology ── */}
+                <motion.div
+                  whileHover={shouldReduceMotion ? undefined : { scale: 1.05 }}
+                  animate={
+                    shouldReduceMotion
+                      ? undefined
+                      : {
+                          y: [0, -4, 0],
+                        }
+                  }
+                  transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute z-30 w-36 h-36 sm:w-44 sm:h-44 rounded-[32px] sm:rounded-[38px] bg-gradient-to-tr from-[#FF5C8A] via-[#FB5783] to-[#DE356A] shadow-[0_20px_50px_rgba(251,87,131,0.45)] border-3 sm:border-4 border-white rotate-45 flex items-center justify-center cursor-pointer group"
+                >
+                  <div className="-rotate-45 flex flex-col items-center justify-center text-center text-white px-2">
+                    <Baby className="w-8 h-8 sm:w-10 sm:h-10 text-white mb-1 drop-shadow-xs group-hover:scale-110 transition-transform duration-300" />
+                    <span className="font-extrabold text-xs sm:text-sm md:text-[15px] leading-tight drop-shadow-xs">
+                      Obstetrics &amp; <br />Gynecology
+                    </span>
+                  </div>
+                </motion.div>
 
-              {/* Tile 2 (top right): Fertility petri dish */}
-              <motion.div
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.05, rotate: 0 }}
-                transition={{ duration: 0.4 }}
-                className="absolute top-0 right-[5%] w-[38%] h-[34%] rounded-[20px_60px_60px_60px] border-4 border-white overflow-hidden shadow-lg z-10 transform rotate-[2deg] group"
-              >
-                <img
-                  src={fertilityImg}
-                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
-                  alt="Fertility lab"
-                />
-              </motion.div>
+                {/* ── CARD 1: Top (Pediatrics) ── */}
+                <motion.div
+                  whileHover={shouldReduceMotion ? undefined : { scale: 1.08, zIndex: 35 }}
+                  animate={
+                    shouldReduceMotion
+                      ? undefined
+                      : {
+                          y: [0, -6, 0],
+                        }
+                  }
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
+                  className="absolute -top-1 sm:-top-3 left-1/2 -translate-x-1/2 z-20 w-22 h-22 sm:w-26 sm:h-26 rounded-2xl sm:rounded-[22px] bg-white/95 backdrop-blur-md border-2 border-white shadow-[0_12px_28px_rgba(251,87,131,0.20)] rotate-45 flex items-center justify-center cursor-pointer group hover:bg-[#FFF5F8] transition-colors"
+                >
+                  <div className="-rotate-45 flex flex-col items-center justify-center text-center px-1">
+                    <Users className="w-5 h-5 text-[#FB5783] mb-0.5 group-hover:scale-110 transition-transform" />
+                    <span className="text-[10px] sm:text-[11px] font-extrabold text-[#14213D] leading-tight">
+                      Pediatrics
+                    </span>
+                  </div>
+                </motion.div>
 
-              {/* Tile 3 (center diamond logo badge) */}
-              <motion.div
-                animate={shouldReduceMotion ? undefined : { scale: [1, 1.06, 1] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.15, rotate: 45 }}
-                className="absolute top-[38%] left-[43%] w-14 h-14 bg-white rounded-2xl border-4 border-[#FF87B3] flex items-center justify-center text-[#D94D78] shadow-xl z-25 transform rotate-[45deg] cursor-default"
-              >
-                <HeartHandshake className="w-6 h-6 transform -rotate-[45deg]" />
-              </motion.div>
+                {/* ── CARD 2: Top-Right (General Surgery) ── */}
+                <motion.div
+                  whileHover={shouldReduceMotion ? undefined : { scale: 1.08, zIndex: 35 }}
+                  animate={
+                    shouldReduceMotion
+                      ? undefined
+                      : {
+                          x: [0, 4, 0],
+                          y: [0, -3, 0],
+                        }
+                  }
+                  transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
+                  className="absolute top-[12%] right-[4%] sm:right-[6%] z-20 w-22 h-22 sm:w-26 sm:h-26 rounded-2xl sm:rounded-[22px] bg-white/95 backdrop-blur-md border-2 border-white shadow-[0_12px_28px_rgba(251,87,131,0.20)] rotate-45 flex items-center justify-center cursor-pointer group hover:bg-[#FFF5F8] transition-colors"
+                >
+                  <div className="-rotate-45 flex flex-col items-center justify-center text-center px-1">
+                    <Scissors className="w-5 h-5 text-[#FB5783] mb-0.5 group-hover:scale-110 transition-transform" />
+                    <span className="text-[10px] sm:text-[11px] font-extrabold text-[#14213D] leading-tight">
+                      General<br />Surgery
+                    </span>
+                  </div>
+                </motion.div>
 
-              {/* Tile 4 (middle left): Welcoming Reception */}
-              <motion.div
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.05, rotate: 0 }}
-                transition={{ duration: 0.4 }}
-                className="absolute bottom-[5%] left-0 w-[42%] h-[40%] rounded-[60px_60px_20px_60px] border-4 border-white overflow-hidden shadow-lg z-15 transform rotate-[1.5deg] group"
-              >
-                <img
-                  src={reception}
-                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
-                  alt="Hospital reception"
-                />
-              </motion.div>
+                {/* ── CARD 3: Right (Infertility & IVF) ── */}
+                <motion.div
+                  whileHover={shouldReduceMotion ? undefined : { scale: 1.08, zIndex: 35 }}
+                  animate={
+                    shouldReduceMotion
+                      ? undefined
+                      : {
+                          x: [0, 5, 0],
+                        }
+                  }
+                  transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+                  className="absolute top-1/2 -right-2 sm:-right-4 -translate-y-1/2 z-20 w-22 h-22 sm:w-26 sm:h-26 rounded-2xl sm:rounded-[22px] bg-white/95 backdrop-blur-md border-2 border-white shadow-[0_12px_28px_rgba(251,87,131,0.20)] rotate-45 flex items-center justify-center cursor-pointer group hover:bg-[#FFF5F8] transition-colors"
+                >
+                  <div className="-rotate-45 flex flex-col items-center justify-center text-center px-1">
+                    <Sparkles className="w-5 h-5 text-[#FB5783] mb-0.5 group-hover:scale-110 transition-transform" />
+                    <span className="text-[10px] sm:text-[11px] font-extrabold text-[#14213D] leading-tight">
+                      Infertility<br />&amp; IVF
+                    </span>
+                  </div>
+                </motion.div>
 
-              {/* Tile 5 (middle right): Pregnant Mother */}
-              <motion.div
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.05, rotate: 0 }}
-                transition={{ duration: 0.4 }}
-                className="absolute bottom-[10%] right-0 w-[42%] h-[42%] rounded-[60px_60px_60px_20px] border-4 border-white overflow-hidden shadow-lg z-15 transform rotate-[-2deg] group"
-              >
-                <img
-                  src={heroMaternity}
-                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
-                  alt="Pregnant mother care"
-                />
-              </motion.div>
+                {/* ── CARD 4: Bottom-Right (Radiology / Scan) ── */}
+                <motion.div
+                  whileHover={shouldReduceMotion ? undefined : { scale: 1.08, zIndex: 35 }}
+                  animate={
+                    shouldReduceMotion
+                      ? undefined
+                      : {
+                          x: [0, 4, 0],
+                          y: [0, 4, 0],
+                        }
+                  }
+                  transition={{ duration: 5.2, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+                  className="absolute bottom-[12%] right-[4%] sm:right-[6%] z-20 w-22 h-22 sm:w-26 sm:h-26 rounded-2xl sm:rounded-[22px] bg-white/95 backdrop-blur-md border-2 border-white shadow-[0_12px_28px_rgba(251,87,131,0.20)] rotate-45 flex items-center justify-center cursor-pointer group hover:bg-[#FFF5F8] transition-colors"
+                >
+                  <div className="-rotate-45 flex flex-col items-center justify-center text-center px-1">
+                    <Waves className="w-5 h-5 text-[#FB5783] mb-0.5 group-hover:scale-110 transition-transform" />
+                    <span className="text-[10px] sm:text-[11px] font-extrabold text-[#14213D] leading-tight">
+                      Radiology &amp;<br />Scan
+                    </span>
+                  </div>
+                </motion.div>
 
-              {/* Tile 6 (bottom center): Diagnostic Lab */}
-              <motion.div
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.05, rotate: 0 }}
-                transition={{ duration: 0.4 }}
-                className="absolute bottom-0 left-[35%] w-[30%] h-[30%] rounded-[30px_10px_30px_30px] border-4 border-white overflow-hidden shadow-md z-10 transform rotate-[-1deg] group"
-              >
-                <img
-                  src={lab}
-                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
-                  alt="Diagnostic laboratory"
+                {/* ── CARD 5: Bottom (Pathology & Lab) ── */}
+                <motion.div
+                  whileHover={shouldReduceMotion ? undefined : { scale: 1.08, zIndex: 35 }}
+                  animate={
+                    shouldReduceMotion
+                      ? undefined
+                      : {
+                          y: [0, 6, 0],
+                        }
+                  }
+                  transition={{ duration: 4.6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                  className="absolute -bottom-1 sm:-bottom-3 left-1/2 -translate-x-1/2 z-20 w-22 h-22 sm:w-26 sm:h-26 rounded-2xl sm:rounded-[22px] bg-white/95 backdrop-blur-md border-2 border-white shadow-[0_12px_28px_rgba(251,87,131,0.20)] rotate-45 flex items-center justify-center cursor-pointer group hover:bg-[#FFF5F8] transition-colors"
+                >
+                  <div className="-rotate-45 flex flex-col items-center justify-center text-center px-1">
+                    <FlaskConical className="w-5 h-5 text-[#FB5783] mb-0.5 group-hover:scale-110 transition-transform" />
+                    <span className="text-[10px] sm:text-[11px] font-extrabold text-[#14213D] leading-tight">
+                      Pathology &amp;<br />Lab
+                    </span>
+                  </div>
+                </motion.div>
+
+                {/* ── CARD 6: Bottom-Left (Orthopaedics) ── */}
+                <motion.div
+                  whileHover={shouldReduceMotion ? undefined : { scale: 1.08, zIndex: 35 }}
+                  animate={
+                    shouldReduceMotion
+                      ? undefined
+                      : {
+                          x: [0, -4, 0],
+                          y: [0, 4, 0],
+                        }
+                  }
+                  transition={{ duration: 5.4, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+                  className="absolute bottom-[12%] left-[4%] sm:left-[6%] z-20 w-22 h-22 sm:w-26 sm:h-26 rounded-2xl sm:rounded-[22px] bg-white/95 backdrop-blur-md border-2 border-white shadow-[0_12px_28px_rgba(251,87,131,0.20)] rotate-45 flex items-center justify-center cursor-pointer group hover:bg-[#FFF5F8] transition-colors"
+                >
+                  <div className="-rotate-45 flex flex-col items-center justify-center text-center px-1">
+                    <Bone className="w-5 h-5 text-[#FB5783] mb-0.5 group-hover:scale-110 transition-transform" />
+                    <span className="text-[10px] sm:text-[11px] font-extrabold text-[#14213D] leading-tight">
+                      Orthopaedic<br />Care
+                    </span>
+                  </div>
+                </motion.div>
+
+                {/* ── CARD 7: Left (Pulmonology & Chest) ── */}
+                <motion.div
+                  whileHover={shouldReduceMotion ? undefined : { scale: 1.08, zIndex: 35 }}
+                  animate={
+                    shouldReduceMotion
+                      ? undefined
+                      : {
+                          x: [0, -5, 0],
+                        }
+                  }
+                  transition={{ duration: 4.7, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                  className="absolute top-1/2 -left-2 sm:-left-4 -translate-y-1/2 z-20 w-22 h-22 sm:w-26 sm:h-26 rounded-2xl sm:rounded-[22px] bg-white/95 backdrop-blur-md border-2 border-white shadow-[0_12px_28px_rgba(251,87,131,0.20)] rotate-45 flex items-center justify-center cursor-pointer group hover:bg-[#FFF5F8] transition-colors"
+                >
+                  <div className="-rotate-45 flex flex-col items-center justify-center text-center px-1">
+                    <Wind className="w-5 h-5 text-[#FB5783] mb-0.5 group-hover:scale-110 transition-transform" />
+                    <span className="text-[10px] sm:text-[11px] font-extrabold text-[#14213D] leading-tight">
+                      Pulmonology<br />&amp; Chest
+                    </span>
+                  </div>
+                </motion.div>
+
+                {/* ── CARD 8: Top-Left (General Medicine) ── */}
+                <motion.div
+                  whileHover={shouldReduceMotion ? undefined : { scale: 1.08, zIndex: 35 }}
+                  animate={
+                    shouldReduceMotion
+                      ? undefined
+                      : {
+                          x: [0, -4, 0],
+                          y: [0, -3, 0],
+                        }
+                  }
+                  transition={{ duration: 5.1, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}
+                  className="absolute top-[12%] left-[4%] sm:left-[6%] z-20 w-22 h-22 sm:w-26 sm:h-26 rounded-2xl sm:rounded-[22px] bg-white/95 backdrop-blur-md border-2 border-white shadow-[0_12px_28px_rgba(251,87,131,0.20)] rotate-45 flex items-center justify-center cursor-pointer group hover:bg-[#FFF5F8] transition-colors"
+                >
+                  <div className="-rotate-45 flex flex-col items-center justify-center text-center px-1">
+                    <HeartPulse className="w-5 h-5 text-[#FB5783] mb-0.5 group-hover:scale-110 transition-transform" />
+                    <span className="text-[10px] sm:text-[11px] font-extrabold text-[#14213D] leading-tight">
+                      General<br />Medicine
+                    </span>
+                  </div>
+                </motion.div>
+
+                {/* ── Ambient Glossy Pink Spheres ── */}
+                <motion.div
+                  animate={shouldReduceMotion ? undefined : { y: [0, -8, 0], scale: [1, 1.05, 1] }}
+                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute -top-3 -right-2 sm:-top-6 sm:right-0 z-10 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-gradient-to-tr from-[#FF5C8A] via-[#FF87B3] to-white shadow-[0_8px_20px_rgba(251,87,131,0.35)] border border-white/80 pointer-events-none"
                 />
-              </motion.div>
+
+                <motion.div
+                  animate={shouldReduceMotion ? undefined : { y: [0, 8, 0], scale: [1, 1.06, 1] }}
+                  transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                  className="absolute -bottom-4 -left-2 sm:-bottom-6 sm:left-0 z-10 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-tr from-[#FF5C8A] via-[#FF87B3] to-white shadow-[0_8px_20px_rgba(251,87,131,0.35)] border border-white/80 pointer-events-none"
+                />
+              </div>
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* ── 2. Departments List Section ── */}
-      <section className="relative container-page py-16 md:py-24 overflow-hidden">
+      <section id="departments-list" className="relative container-page py-16 md:py-24 overflow-hidden">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
