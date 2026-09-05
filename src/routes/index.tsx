@@ -22,6 +22,12 @@ import infertilityImg from "@/assets/departments/infertility.jpg";
 import generalMedicineImg from "@/assets/departments/general-medicine.jpg";
 import generalSurgeryImg from "@/assets/departments/general-surgery.jpg";
 import orthopaedicImg from "@/assets/departments/orthopaedic.jpg";
+import obstetricsArt from "@/assets/departments/obstetrics-illustration-2x.png";
+import gynaecologyArt from "@/assets/departments/gynaecology-illustration-2x.png";
+import infertilityArt from "@/assets/departments/infertility-illustration-2x.png";
+import generalMedicineArt from "@/assets/departments/general-medicine-illustration-2x.png";
+import generalSurgeryArt from "@/assets/departments/general-surgery-illustration-2x.png";
+import orthopaedicArt from "@/assets/departments/orthopaedic-illustration-2x.png";
 import { departments } from "@/data/departments";
 import { doctors } from "@/data/doctors";
 import { testimonials } from "@/data/testimonials";
@@ -91,7 +97,7 @@ function Welcome() {
   ];
 
   return (
-    <section className="relative pt-10 pb-12 lg:pt-14 lg:pb-14 bg-gradient-to-br from-[#FFF5F8] to-white overflow-hidden">
+    <section className="relative pt-8 pb-10 lg:pt-10 lg:pb-12 bg-gradient-to-br from-[#FFF5F8] to-white overflow-hidden">
       <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-[#FF87B3]/20 blur-[100px] -translate-y-1/2 translate-x-1/3 pointer-events-none" />
       <div className="container-page relative z-10 grid gap-12 lg:grid-cols-2 lg:items-center">
         {/* Left: Card with attached background image & cutout image */}
@@ -232,6 +238,15 @@ function TiltCard({ children, className }: { children: React.ReactNode; classNam
 
 // ─── Specialities section ─────────────────────────────────────────────────────
 function SpecialitiesPreview() {
+  const deptIllustrations: Record<string, string> = {
+    obstetrics: obstetricsArt,
+    gynaecology: gynaecologyArt,
+    infertility: infertilityArt,
+    "general-medicine": generalMedicineArt,
+    "general-surgery": generalSurgeryArt,
+    orthopaedic: orthopaedicArt,
+  };
+
   const deptImages: Record<string, string> = {
     obstetrics: obstetricsImg,
     gynaecology: gynaecologyImg,
@@ -242,94 +257,140 @@ function SpecialitiesPreview() {
   };
 
   return (
-    <section className="container-page pt-8 pb-14 lg:pt-10 lg:pb-16 bg-white">
-      {/* Header */}
-      <motion.div
-        variants={staggerContainer(0.12)}
-        initial="hidden"
-        whileInView="show"
-        viewport={viewport}
-        className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12"
-      >
-        <div className="max-w-2xl">
-          <motion.div
-            variants={fadeUp}
-            className="inline-flex items-center gap-2 rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1.5 text-[11px] font-bold tracking-widest text-[#D94D78] uppercase mb-5"
-          >
-            <LayoutGrid className="w-3.5 h-3.5 text-[#D94D78]" />
-            Departments
-          </motion.div>
-          <motion.h2
-            variants={fadeUp}
-            className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#14213D] font-display tracking-tight mb-4"
-          >
-            Specialised care,
-            <br />
-            delivered with warmth.
-          </motion.h2>
-          <motion.p variants={fadeUp} className="text-base text-slate-600 mb-8 font-medium">
-            From fertility and maternity to everyday family medicine,
-            <br className="hidden md:block" />
-            our departments work together around you.
-          </motion.p>
-        </div>
-        <motion.div variants={fadeUp}>
-          <Link
-            to="/departments"
-            className="inline-flex items-center gap-2 rounded-full border-2 border-[#FF87B3] bg-white px-6 py-3 text-sm font-extrabold text-[#14213D] hover:bg-[#FFF5F8] transition-colors group cursor-pointer shadow-xs"
-          >
-            View all departments{" "}
-            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </Link>
-        </motion.div>
-      </motion.div>
+    <section className="pt-6 pb-6 lg:pt-8 lg:pb-8 bg-[#FFF8FA] relative overflow-hidden">
+      {/* Decorative ambient background glows */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-[#FF87B3]/10 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[450px] h-[450px] rounded-full bg-[#FF87B3]/10 blur-[100px] pointer-events-none" />
 
-      {/* Cards grid with stagger */}
-      <motion.div
-        variants={staggerContainer(0.08, 0.1)}
-        initial="hidden"
-        whileInView="show"
-        viewport={viewport}
-        className="grid gap-6 md:grid-cols-2 xl:grid-cols-3"
-      >
-        {departments.slice(0, 6).map((d) => (
-          <motion.div key={d.id} variants={scaleIn}>
-            <TiltCard>
-              <Link
-                to={d.route}
-                className="group relative overflow-hidden rounded-3xl border border-[#FF87B3] bg-white shadow-sm hover:shadow-xl transition-all flex h-60"
-              >
-                {/* Right side Image */}
-                <div className="absolute top-0 right-0 w-1/2 h-full z-0 overflow-hidden">
-                  <img
-                    src={
-                      deptImages[d.id] ||
-                      "https://images.unsplash.com/photo-1551076805-e1869043e560?w=800&q=80"
-                    }
-                    alt={d.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                </div>
-                {/* Content */}
-                <div className="relative z-10 p-6 md:p-8 flex flex-col w-1/2 bg-white">
-                  <div className="absolute inset-y-0 -right-12 w-12 bg-gradient-to-r from-white via-white/40 to-transparent pointer-events-none" />
-                  <div className="w-12 h-12 rounded-full bg-[#FF87B3] border border-[#f06a99] flex items-center justify-center text-[#14213D] mb-4 shadow-sm group-hover:scale-110 transition-transform duration-300 relative z-20">
-                    <d.icon className="w-6 h-6" strokeWidth={1.75} />
-                  </div>
-                  <h3 className="text-[19px] font-bold text-[#14213D] mb-2">{d.name}</h3>
-                  <p className="text-[13px] text-slate-500 font-medium mb-4 leading-relaxed line-clamp-2">
-                    {d.short}
-                  </p>
-                  <div className="mt-auto flex items-center gap-1 text-sm font-bold text-[#D94D78]">
-                    Learn more{" "}
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </div>
-                </div>
-              </Link>
-            </TiltCard>
+      <div className="container-page relative z-10">
+        {/* Header */}
+        <motion.div
+          variants={staggerContainer(0.12)}
+          initial="hidden"
+          whileInView="show"
+          viewport={viewport}
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 md:mb-10"
+        >
+          <div className="max-w-2xl">
+            <motion.div
+              variants={fadeUp}
+              className="inline-flex items-center gap-2 rounded-full bg-white/90 backdrop-blur-md border border-[#FF87B3] px-4 py-1.5 text-xs font-extrabold tracking-widest text-[#D94D78] uppercase mb-3.5 shadow-2xs cursor-default"
+            >
+              <LayoutGrid className="w-3.5 h-3.5 text-[#D94D78]" />
+              Departments
+            </motion.div>
+            <motion.h2
+              variants={fadeUp}
+              className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-[1.12] mb-3 tracking-tight text-[#14213D]"
+            >
+              Specialised care,{" "}
+              <span className="text-[#D94D78]">
+                delivered with warmth.
+              </span>
+            </motion.h2>
+            <motion.div
+              variants={fadeUp}
+              className="w-14 h-1.5 bg-gradient-to-r from-[#FF87B3] to-[#D94D78] rounded-full mb-3.5"
+            />
+            <motion.p variants={fadeUp} className="text-sm sm:text-base text-slate-600 leading-relaxed font-medium max-w-xl">
+              From fertility and maternity to everyday family medicine,
+              <br className="hidden md:block" />
+              our departments work together seamlessly around you.
+            </motion.p>
+          </div>
+          <motion.div variants={fadeUp} className="shrink-0">
+            <Link
+              to="/departments"
+              className="inline-flex items-center gap-3 rounded-full bg-white hover:bg-[#FFF5F8] border-2 border-[#FF87B3] pl-6 pr-3.5 py-2.5 text-sm font-extrabold text-[#14213D] hover:text-[#D94D78] shadow-xs hover:shadow-[0_10px_25px_rgba(255,135,179,0.25)] transition-all group cursor-pointer"
+            >
+              View all departments
+              <div className="w-7 h-7 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] group-hover:bg-[#D94D78] group-hover:text-white transition-all duration-300">
+                <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+              </div>
+            </Link>
           </motion.div>
-        ))}
-      </motion.div>
+        </motion.div>
+
+        {/* Cards grid with stagger */}
+        <motion.div
+          variants={staggerContainer(0.08, 0.1)}
+          initial="hidden"
+          whileInView="show"
+          viewport={viewport}
+          className="grid gap-6 md:gap-7 md:grid-cols-2 xl:grid-cols-3"
+        >
+          {departments.slice(0, 6).map((d, index) => {
+            const num = String(index + 1).padStart(2, "0");
+            const illustrationSrc = deptIllustrations[d.id] || deptImages[d.id];
+
+            return (
+              <motion.div key={d.id} variants={scaleIn}>
+                <TiltCard>
+                  <Link
+                    to={d.route}
+                    className="group relative overflow-hidden rounded-[28px] sm:rounded-[32px] border border-[#FCE7F0] bg-white shadow-[0_4px_24px_rgba(244,63,94,0.06)] hover:shadow-[0_16px_36px_rgba(244,63,94,0.13)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between p-6 sm:p-7 min-h-[290px] sm:min-h-[300px]"
+                  >
+                    {/* Top Row: Left Icon & Dots, Right Number Badge */}
+                    <div className="flex items-start justify-between relative z-10">
+                      {/* Left: Dot Pattern + Circular Pink Icon */}
+                      <div className="relative">
+                        {/* 3x3 Pink Dots */}
+                        <div className="absolute -top-1 -left-1 grid grid-cols-3 gap-1 opacity-70 pointer-events-none">
+                          {[...Array(9)].map((_, i) => (
+                            <span key={i} className="w-1 h-1 rounded-full bg-[#FBA9C5]" />
+                          ))}
+                        </div>
+
+                        {/* Circular Icon Badge */}
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#E11D48] to-[#F43F5E] text-white flex items-center justify-center shadow-md shadow-pink-500/20 group-hover:scale-110 transition-transform duration-300 relative z-10 mt-1 ml-1">
+                          <d.icon className="w-5 h-5 text-white" strokeWidth={2.2} />
+                        </div>
+                      </div>
+
+                      {/* Right: Number Badge (01, 02, etc.) */}
+                      <div className="flex flex-col items-center">
+                        <span className="text-[#E11D48] font-bold text-sm sm:text-base tracking-tight leading-none px-2.5 py-1 rounded-full bg-[#FFF0F4]">
+                          {num}
+                        </span>
+                        <span className="w-4 h-[2px] bg-[#E11D48] rounded-full mt-1" />
+                      </div>
+                    </div>
+
+                    {/* Middle: Title with Short Pink Underline & Description */}
+                    <div className="mt-4 mb-2 relative z-10">
+                      <h3 className="text-xl sm:text-[22px] font-bold text-[#14213D] tracking-tight font-display">
+                        {d.name}
+                      </h3>
+                      <div className="w-7 h-[2.5px] bg-[#E11D48] rounded-full mt-1.5 mb-2.5" />
+                      <p className="text-slate-600 text-[13.5px] sm:text-[14px] leading-relaxed font-normal max-w-[190px] sm:max-w-[210px]">
+                        {d.short}
+                      </p>
+                    </div>
+
+                    {/* Bottom: Explore Department CTA */}
+                    <div className="mt-4 relative z-10">
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E11D48] bg-white px-4 py-1.5 text-[12.5px] font-semibold text-[#E11D48] group-hover:bg-[#E11D48] group-hover:text-white transition-all duration-300 shadow-xs">
+                        Explore Department
+                        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                      </span>
+                    </div>
+
+                    {/* Right-Side Line Art Illustration with Botanical Base */}
+                    <div className="absolute right-1 bottom-0 w-[50%] sm:w-[52%] h-[88%] pointer-events-none flex items-end justify-end overflow-hidden select-none z-0">
+                      <img
+                        src={illustrationSrc}
+                        alt={d.name}
+                        loading="eager"
+                        className="w-full h-full object-contain object-bottom transition-transform duration-700 group-hover:scale-105"
+                      />
+                    </div>
+                  </Link>
+                </TiltCard>
+              </motion.div>
+            );
+          })}
+        </motion.div>
+      </div>
     </section>
   );
 }
@@ -337,7 +398,7 @@ function SpecialitiesPreview() {
 // ─── Fertility highlight ──────────────────────────────────────────────────────
 function FertilityHighlight() {
   return (
-    <section className="py-12 lg:py-16 bg-[#FFF5F8]">
+    <section className="pt-2 pb-6 lg:pt-3 lg:pb-8 bg-[#FFF5F8]">
       <div className="container-page max-w-7xl mx-auto">
         <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] shadow-[0_8px_30px_rgba(255,135,179,0.30)] overflow-hidden flex flex-col md:flex-row border border-[#FF87B3]">
           {/* Left: Image */}
@@ -364,26 +425,26 @@ function FertilityHighlight() {
             initial="hidden"
             whileInView="show"
             viewport={viewport}
-            className="w-full md:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center"
+            className="w-full md:w-1/2 p-6 md:p-8 lg:p-10 flex flex-col justify-center"
           >
             <motion.div
               variants={fadeUp}
-              className="self-start inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1.5 text-[11px] font-bold tracking-widest text-[#D94D78] uppercase mb-6"
+              className="self-start inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1.5 text-[11px] font-bold tracking-widest text-[#D94D78] uppercase mb-4"
             >
               Fertility &amp; IVF Centre
             </motion.div>
             <motion.h2
               variants={fadeUp}
-              className="text-3xl lg:text-4xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-5"
+              className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-3"
             >
               Where the science of fertility meets a very human kind of hope.
             </motion.h2>
-            <motion.p variants={fadeUp} className="text-slate-600 font-medium leading-relaxed mb-8">
+            <motion.p variants={fadeUp} className="text-slate-600 font-medium leading-relaxed text-sm md:text-base mb-6">
               Our dedicated fertility unit combines internationally-trained expertise with the
               ethics, transparency and warmth families deserve on this journey.
             </motion.p>
 
-            <motion.ul variants={staggerContainer(0.07)} className="space-y-4 mb-10">
+            <motion.ul variants={staggerContainer(0.07)} className="space-y-3 mb-6">
               {[
                 "Personalised fertility evaluation for both partners",
                 "IUI, IVF and ICSI cycles with clear cost counselling",
@@ -416,58 +477,70 @@ function FertilityHighlight() {
 // ─── Doctors preview ──────────────────────────────────────────────────────────
 function DoctorsPreview() {
   return (
-    <section className="py-12 lg:py-16 bg-white">
-      <div className="container-page">
+    <section className="pt-4 pb-6 lg:pt-6 lg:pb-8 bg-[#FFF8FA] relative overflow-hidden">
+      {/* Decorative ambient background glows */}
+      <div className="absolute top-0 left-0 w-[500px] h-[500px] rounded-full bg-[#FF87B3]/10 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[450px] h-[450px] rounded-full bg-[#FF87B3]/10 blur-[100px] pointer-events-none" />
+
+      <div className="container-page relative z-10">
         {/* Header */}
         <motion.div
           variants={staggerContainer(0.1)}
           initial="hidden"
           whileInView="show"
           viewport={viewport}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14"
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 md:mb-10"
         >
           <div className="max-w-xl">
             <motion.div
               variants={fadeUp}
-              className="inline-flex items-center gap-2 rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1.5 text-[11px] font-bold tracking-widest text-[#D94D78] uppercase mb-5"
+              className="inline-flex items-center gap-2 rounded-full bg-white/90 backdrop-blur-md border border-[#FF87B3] px-4 py-1.5 text-xs font-extrabold tracking-widest text-[#D94D78] uppercase mb-3.5 shadow-2xs cursor-default"
             >
               <Stethoscope className="w-3.5 h-3.5 text-[#D94D78]" />
               Our Specialists
             </motion.div>
             <motion.h2
               variants={fadeUp}
-              className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#14213D] font-display tracking-tight mb-3"
+              className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-[1.12] mb-3 tracking-tight text-[#14213D]"
             >
-              Meet the doctors families
-              <br className="hidden md:block" /> in Srirangam trust.
+              Meet the doctors families{" "}
+              <span className="text-[#D94D78]">
+                in Srirangam trust.
+              </span>
             </motion.h2>
-            <motion.p variants={fadeUp} className="text-slate-600 text-base font-medium">
+            <motion.div
+              variants={fadeUp}
+              className="w-14 h-1.5 bg-gradient-to-r from-[#FF87B3] to-[#D94D78] rounded-full mb-3.5"
+            />
+            <motion.p variants={fadeUp} className="text-sm sm:text-base text-slate-600 leading-relaxed font-medium">
               A close-knit team of consultants across gynaecology, fertility,
               <br className="hidden md:block" /> general medicine, surgery and other specialities.
             </motion.p>
           </div>
-          <motion.div variants={fadeUp}>
+          <motion.div variants={fadeUp} className="shrink-0">
             <Link
               to="/doctors"
-              className="self-start md:self-auto inline-flex items-center gap-2 rounded-full border-2 border-[#FF87B3] bg-white px-6 py-3 text-sm font-extrabold text-[#14213D] hover:bg-[#FFF5F8] transition-colors group cursor-pointer shadow-xs"
+              className="inline-flex items-center gap-3 rounded-full bg-white hover:bg-[#FFF5F8] border-2 border-[#FF87B3] pl-6 pr-3.5 py-2.5 text-sm font-extrabold text-[#14213D] hover:text-[#D94D78] shadow-xs hover:shadow-[0_10px_25px_rgba(255,135,179,0.25)] transition-all group cursor-pointer"
             >
-              All doctors{" "}
-              <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+              All doctors
+              <div className="w-7 h-7 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] group-hover:bg-[#D94D78] group-hover:text-white transition-all duration-300">
+                <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+              </div>
             </Link>
           </motion.div>
         </motion.div>
 
         {/* Cards with stagger */}
         <motion.div
-          variants={staggerContainer(0.1, 0.15)}
+          variants={staggerContainer(0.08, 0.1)}
           initial="hidden"
           whileInView="show"
           viewport={viewport}
-          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 items-stretch"
         >
-          {doctors.map((d) => (
-            <motion.div key={d.id} variants={scaleIn}>
-              <DoctorCard doctor={d} />
+          {doctors.map((d, index) => (
+            <motion.div key={d.id} variants={scaleIn} className="flex h-full w-full">
+              <DoctorCard doctor={d} index={index} className="w-full" />
             </motion.div>
           ))}
         </motion.div>
@@ -533,7 +606,7 @@ function TestimonialsPreview() {
   };
 
   return (
-    <section className="relative py-12 lg:py-16 overflow-hidden">
+    <section className="relative pt-6 pb-6 lg:pt-8 lg:pb-8 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-[#FFF5F8] via-[#fffcfd] to-[#f5f3ff]" />
       <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-[#FF87B3]/25 blur-3xl pointer-events-none" />
       <div className="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-purple-200/30 blur-3xl pointer-events-none" />
@@ -545,11 +618,11 @@ function TestimonialsPreview() {
           initial="hidden"
           whileInView="show"
           viewport={viewport}
-          className="text-center mb-14"
+          className="text-center mb-8 lg:mb-10"
         >
           <motion.div
             variants={scaleIn}
-            className="inline-flex items-center gap-2 rounded-full bg-white border border-[#FF87B3] px-4 py-1.5 text-[11px] font-bold tracking-widest text-[#D94D78] uppercase mb-6 shadow-sm"
+            className="inline-flex items-center gap-2 rounded-full bg-white border border-[#FF87B3] px-4 py-1.5 text-[11px] font-bold tracking-widest text-[#D94D78] uppercase mb-4 shadow-sm"
           >
             <Heart className="w-3.5 h-3.5 fill-current text-[#D94D78]" />
             Family Stories
@@ -569,7 +642,7 @@ function TestimonialsPreview() {
           {/* Rating badge */}
           <motion.div
             variants={scaleIn}
-            className="inline-flex items-center gap-4 mt-8 bg-white border border-[#FF87B3] rounded-2xl px-6 py-4 shadow-[0_8px_30px_rgba(255,135,179,0.30)]"
+            className="inline-flex items-center gap-4 mt-6 bg-white border border-[#FF87B3] rounded-2xl px-6 py-4 shadow-[0_8px_30px_rgba(255,135,179,0.30)]"
           >
             <div className="text-left">
               <div className="text-3xl font-extrabold text-[#14213D]">4.6</div>
@@ -656,21 +729,21 @@ function TestimonialsPreview() {
           <button
             onClick={prev}
             aria-label="Previous testimonial"
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 w-10 h-10 rounded-full bg-white border border-[#FF87B3] shadow-md flex items-center justify-center text-slate-700 hover:text-[#14213D] hover:bg-[#FFF5F8] transition-colors cursor-pointer"
+            className="hidden sm:flex absolute -left-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border border-[#FF87B3] shadow-md items-center justify-center text-slate-700 hover:text-[#14213D] hover:bg-[#FFF5F8] transition-colors cursor-pointer z-10"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={next}
             aria-label="Next testimonial"
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 w-10 h-10 rounded-full bg-white border border-[#FF87B3] shadow-md flex items-center justify-center text-slate-700 hover:text-[#14213D] hover:bg-[#FFF5F8] transition-colors cursor-pointer"
+            className="hidden sm:flex absolute -right-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border border-[#FF87B3] shadow-md items-center justify-center text-slate-700 hover:text-[#14213D] hover:bg-[#FFF5F8] transition-colors cursor-pointer z-10"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
         </motion.div>
 
         {/* Dot navigation */}
-        <div className="flex justify-center gap-2 mt-8">
+        <div className="flex justify-center gap-2 mt-5 sm:mt-6">
           {items.map((_, i) => (
             <button
               key={i}

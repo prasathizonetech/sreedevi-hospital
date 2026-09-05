@@ -10,6 +10,8 @@ import {
   Sparkle,
   Dumbbell,
   Ear,
+  Activity,
+  HeartHandshake,
 } from "lucide-react";
 
 export interface Department {
@@ -181,6 +183,38 @@ export const departments: Department[] = [
     services: ["Audiometry", "Hearing Aid Fitting", "Ear Infections & Care", "Throat & Sinus Care"],
     icon: Ear,
     accent: "from-accent to-primary-soft",
+    route: "/departments",
+  },
+  {
+    id: "pediatrics",
+    name: "Pediatrics & Neonatology",
+    short: "Gentle, expert healthcare for your little ones",
+    description:
+      "Dedicated neonatal and child care ensuring your newborn and growing children receive compassionate medical attention.",
+    services: [
+      "Newborn Screening & Care",
+      "Vaccination & Immunization",
+      "Growth & Developmental Assessment",
+      "Pediatric Consultations",
+    ],
+    icon: Activity,
+    accent: "from-rose-100 to-primary-soft",
+    route: "/departments",
+  },
+  {
+    id: "diabetology",
+    name: "Diabetology & Endocrinology",
+    short: "Comprehensive diabetes & metabolic wellness",
+    description:
+      "Personalized management of Type 1 & 2 diabetes, gestational diabetes, and long-term metabolic health for the family.",
+    services: [
+      "Gestational Diabetes Care",
+      "Continuous Glucose Monitoring",
+      "Diet & Lifestyle Counseling",
+      "Diabetic Foot & Neuropathy Care",
+    ],
+    icon: HeartHandshake,
+    accent: "from-primary-soft to-accent",
     route: "/departments",
   },
 ];

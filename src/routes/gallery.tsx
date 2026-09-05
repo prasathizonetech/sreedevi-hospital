@@ -1,4 +1,3 @@
-import { useState, useEffect, useCallback } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Sparkles,
@@ -19,7 +18,6 @@ import {
   HeartHandshake,
   FlaskConical,
   ChevronRight,
-  ChevronLeft,
 } from "lucide-react";
 import exterior from "@/assets/hospital-exterior.jpg";
 import reception from "@/assets/reception.jpg";
@@ -30,53 +28,12 @@ import family from "@/assets/family-care.jpg";
 import hero from "@/assets/hero-maternity.jpg";
 import ultrasound from "@/assets/hero-doctor-mother.jpg";
 import general from "@/assets/departments/general-medicine.jpg";
-import heroCoupleDoctor from "@/assets/hero-couple-doctor.jpg";
-import aboutHero1 from "@/assets/about/about-hero-1.jpg";
-import fertilityLab from "@/assets/fertility-lab.jpg";
+import { useState } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { GalleryLightbox, type LightboxImage } from "@/components/site/GalleryLightbox";
 import { MagneticButton } from "@/components/site/MagneticButton";
 import { HeroBackground } from "@/components/site/hero/HeroBackground";
-
-interface CarouselCardItem {
-  id: string;
-  title: string;
-  subtitle: string;
-  image: string;
-  alt: string;
-  badge: string;
-  badgeColor: string;
-}
-
-const HERO_CAROUSEL_ITEMS: CarouselCardItem[] = [
-  {
-    id: "consultation",
-    title: "Expert Clinical Consultation",
-    subtitle: "Unhurried, compassionate guidance by senior fertility specialists",
-    image: heroCoupleDoctor,
-    alt: "Doctor consulting warmly with couple at SreeDevi Fertility Centre",
-    badge: "Specialist Care",
-    badgeColor: "#FB5783",
-  },
-  {
-    id: "maternity",
-    title: "Cherished Family Moments",
-    subtitle: "Walking with you until you hold your healthy newborn",
-    image: aboutHero1,
-    alt: "Happy Indian parents with newborn baby receiving expert maternity care",
-    badge: "98% Positive Experience",
-    badgeColor: "#E6396B",
-  },
-  {
-    id: "lab",
-    title: "Advanced IVF & Embryology Lab",
-    subtitle: "Class 10,000 cleanroom with world-class micromanipulation systems",
-    image: fertilityLab,
-    alt: "Senior embryologist operating high-power microscope in IVF cleanroom",
-    badge: "Advanced Tech",
-    badgeColor: "#0284C7",
-  },
-];
+import { GalleryHeroCarousel } from "@/components/site/hero/GalleryHeroCarousel";
 
 export const Route = createFileRoute("/gallery")({
   head: () => ({
@@ -179,36 +136,7 @@ const galleryItems = [
 
 function Gallery() {
   const [selectedImage, setSelectedImage] = useState<LightboxImage | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
   const shouldReduceMotion = useReducedMotion();
-
-  const total = HERO_CAROUSEL_ITEMS.length;
-
-  const nextSlide = useCallback(() => {
-    setActiveIndex((prev) => (prev + 1) % total);
-  }, [total]);
-
-  const prevSlide = useCallback(() => {
-    setActiveIndex((prev) => (prev - 1 + total) % total);
-  }, [total]);
-
-  // Autoplay every 4.5 seconds when not paused and not reduced-motion
-  useEffect(() => {
-    if (isPaused) return;
-    const timer = setInterval(() => {
-      nextSlide();
-    }, 4500);
-    return () => clearInterval(timer);
-  }, [isPaused, nextSlide]);
-
-  // Helper to determine relative position offset (-1, 0, 1)
-  const getCardOffset = (index: number) => {
-    const diff = (index - activeIndex + total) % total;
-    if (diff === 0) return 0; // Active (center)
-    if (diff === 1) return 1; // Next (right)
-    return -1; // Previous (left)
-  };
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
@@ -222,24 +150,67 @@ function Gallery() {
       <GalleryLightbox image={selectedImage} onClose={() => setSelectedImage(null)} />
 
       {/* ── 1. Gallery Page Hero ── */}
-      <section className="relative bg-gradient-to-br from-[#FFF5F8] via-[#FF87B3] to-[#f06a99] text-[#14213D] overflow-hidden pt-12 pb-12 lg:pt-16 lg:pb-16 border-b border-[#FF87B3]">
+      <section className="relative bg-gradient-to-br from-[#FFF5F8] via-[#FF87B3] to-[#f06a99] text-[#14213D] overflow-hidden pt-4 pb-12 sm:pt-6 sm:pb-14 lg:pt-8 lg:pb-16 flex flex-col justify-between">
         {/* Shared Hero Background with animated glow orbs, organic curves & decor */}
         <HeroBackground />
 
-        <div className="container-page relative z-10 pt-4 md:pt-6 pb-2">
-          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Left Column: Title, Subtitle, Buttons */}
+        {/* ── Smooth Decorative Wave Transition at the Bottom ── */}
+        <div className="absolute -bottom-[2px] inset-x-0 w-full overflow-hidden pointer-events-none z-20 leading-none select-none">
+          <svg
+            viewBox="0 0 1440 120"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-full block"
+            preserveAspectRatio="none"
+            style={{ height: "70px", minHeight: "50px", maxHeight: "110px" }}
+          >
+            <defs>
+              {/* Subtle Pink Ribbon Accent Gradient */}
+              <linearGradient id="galleryWaveStrokePink" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#FFAEC7" stopOpacity="0.8" />
+                <stop offset="30%" stopColor="#FF85AA" stopOpacity="0.9" />
+                <stop offset="70%" stopColor="#FFAEC7" stopOpacity="0.85" />
+                <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.6" />
+              </linearGradient>
+
+              {/* Subtle Depth Shadow */}
+              <filter id="galleryWaveDepthGlow" x="-5%" y="-40%" width="110%" height="180%">
+                <feDropShadow dx="0" dy="-2" stdDeviation="4" floodColor="#C92556" floodOpacity="0.18" />
+              </filter>
+            </defs>
+
+            {/* Secondary Ambient Crest Line */}
+            <path
+              d="M0,52 C280,18 560,78 840,42 C1120,8 1320,58 1440,38 L1440,125 L0,125 Z"
+              fill="#FFFFFF"
+              fillOpacity="0.3"
+            />
+
+            {/* Main Pure White Transition Wave */}
+            <path
+              d="M0,65 C260,28 540,88 820,50 C1100,16 1300,66 1440,48 L1440,125 L0,125 Z"
+              fill="#FFFFFF"
+              stroke="url(#galleryWaveStrokePink)"
+              strokeWidth="1.8"
+              filter="url(#galleryWaveDepthGlow)"
+            />
+          </svg>
+        </div>
+
+        <div className="container-page relative z-10 pt-1 md:pt-2 pb-4">
+          <div className="grid md:grid-cols-12 gap-8 lg:gap-10 items-center">
+            {/* Left Column: Title, Subtitle, Buttons (7 cols) */}
             <motion.div
               variants={staggerContainer}
               initial="hidden"
               animate="show"
-              className="lg:col-span-5 xl:col-span-5 max-w-xl"
+              className="md:col-span-6 lg:col-span-6 max-w-xl flex flex-col justify-center"
             >
               <motion.div
                 variants={fadeUpVariant}
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.05, y: -2 }}
+                whileHover={shouldReduceMotion ? undefined : { scale: 1.04, y: -1 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="inline-flex items-center gap-1.5 rounded-full bg-white/80 backdrop-blur-md border border-[#f06a99] px-4 py-1.5 text-xs font-extrabold tracking-widest text-[#D94D78] uppercase mb-4 w-max shadow-sm cursor-default"
+                className="inline-flex items-center gap-1.5 rounded-full bg-white/85 backdrop-blur-md border border-[#f06a99] px-4 py-1.5 text-xs font-extrabold tracking-widest text-[#D94D78] uppercase mb-3 w-max shadow-xs cursor-default"
               >
                 <Sparkles className="w-3.5 h-3.5 text-[#D94D78]" />
                 Gallery
@@ -247,7 +218,7 @@ function Gallery() {
 
               <motion.h1
                 variants={fadeUpVariant}
-                className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.12] mb-3 tracking-tight text-[#14213D]"
+                className="font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-[1.12] mb-2.5 tracking-tight text-[#14213D]"
               >
                 A quiet tour of{" "}
                 <span className="text-[#D94D78] underline decoration-[#FF87B3] decoration-wavy decoration-1 underline-offset-8">
@@ -257,12 +228,12 @@ function Gallery() {
 
               <motion.div
                 variants={fadeUpVariant}
-                className="w-14 h-1.5 bg-gradient-to-r from-[#FF87B3] to-[#D94D78] rounded-full mb-4"
+                className="w-14 h-1.5 bg-gradient-to-r from-[#FF87B3] to-[#D94D78] rounded-full mb-3"
               />
 
               <motion.p
                 variants={fadeUpVariant}
-                className="text-slate-700 text-sm leading-relaxed mb-8 max-w-md font-medium"
+                className="text-slate-700 text-xs sm:text-sm md:text-base leading-relaxed mb-5 max-w-md font-medium"
               >
                 Warm interiors, modern equipment and the everyday moments of care that make SreeDevi
                 Hospital special. Click any image to view in full resolution.
@@ -271,16 +242,16 @@ function Gallery() {
               {/* Action Buttons */}
               <motion.div
                 variants={fadeUpVariant}
-                className="flex flex-wrap items-center gap-4 mb-8"
+                className="flex flex-wrap items-center gap-3.5 mb-5"
               >
                 <MagneticButton>
                   <button
                     onClick={() => scrollToSection("facility-moments")}
-                    className="inline-flex items-center gap-3 bg-[#14213D] hover:bg-[#1a2b49] border border-[#14213D] text-white pl-6 pr-2 py-2.5 rounded-full font-extrabold text-sm shadow-md hover:shadow-lg transition-all cursor-pointer"
+                    className="inline-flex items-center gap-2.5 bg-[#14213D] hover:bg-[#1a2b49] border border-[#14213D] text-white pl-5 pr-2 py-2 rounded-full font-extrabold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all cursor-pointer"
                   >
                     Explore Gallery
-                    <div className="w-7 h-7 rounded-full bg-white text-[#14213D] flex items-center justify-center shadow-xs">
-                      <ArrowRight className="w-4 h-4" />
+                    <div className="w-6 h-6 rounded-full bg-white text-[#14213D] flex items-center justify-center shadow-xs">
+                      <ArrowRight className="w-3.5 h-3.5" />
                     </div>
                   </button>
                 </MagneticButton>
@@ -288,10 +259,10 @@ function Gallery() {
                 <MagneticButton>
                   <button
                     onClick={() => scrollToSection("video-tour")}
-                    className="inline-flex items-center gap-2.5 text-[#14213D] font-bold text-sm hover:text-[#D94D78] transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-2 text-[#14213D] font-bold text-xs sm:text-sm hover:text-[#D94D78] transition-colors cursor-pointer"
                   >
-                    <div className="w-9 h-9 rounded-full border border-[#FF87B3] bg-white/80 backdrop-blur-xs flex items-center justify-center shadow-xs text-[#D94D78]">
-                      <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
+                    <div className="w-8 h-8 rounded-full border border-[#FF87B3] bg-white/85 backdrop-blur-xs flex items-center justify-center shadow-2xs text-[#D94D78]">
+                      <Play className="w-3 h-3 fill-current ml-0.5" />
                     </div>
                     <span>Watch Video Tour</span>
                   </button>
@@ -304,9 +275,9 @@ function Gallery() {
                 whileHover={
                   shouldReduceMotion
                     ? undefined
-                    : { y: -2, boxShadow: "0 10px 25px rgba(255,135,179,0.3)" }
+                    : { y: -2, boxShadow: "0 10px 25px rgba(255,135,179,0.25)" }
                 }
-                className="bg-white/80 backdrop-blur-md border border-[#FF87B3] rounded-2xl p-4 grid grid-cols-4 gap-3 max-w-[480px] shadow-sm transition-all"
+                className="bg-white/85 backdrop-blur-md border border-[#FF87B3] rounded-2xl p-3 sm:p-3.5 grid grid-cols-4 gap-2 sm:gap-3 max-w-[460px] shadow-xs transition-all"
               >
                 <div className="flex flex-col items-center text-center">
                   <Shield className="w-4 h-4 text-[#D94D78] mb-1" />
@@ -345,7 +316,7 @@ function Gallery() {
               {/* Breadcrumbs */}
               <motion.nav
                 variants={fadeUpVariant}
-                className="flex items-center gap-2 text-xs text-slate-600 font-medium mt-6"
+                className="flex items-center gap-2 text-xs text-slate-600 font-medium mt-4"
               >
                 <Link to="/" className="hover:text-[#D94D78] transition-colors">
                   Home
@@ -357,137 +328,15 @@ function Gallery() {
               </motion.nav>
             </motion.div>
 
-            {/* ── Right Column: 3D Layered Glass Carousel System (Transferred from Fertility Centre) ── */}
-            <div
-              className="lg:col-span-7 xl:col-span-7 relative flex flex-col items-center justify-center min-h-[380px] sm:min-h-[440px] lg:min-h-[480px] select-none"
-              onMouseEnter={() => setIsPaused(true)}
-              onMouseLeave={() => setIsPaused(false)}
+            {/* Right Column: 3D Layered Carousel System (5/6 cols) */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.15 }}
+              className="md:col-span-6 lg:col-span-6 relative w-full flex items-center justify-center select-none mt-4 md:mt-0"
             >
-              {/* Cards Perspective Stage */}
-              <div
-                className="relative w-full max-w-[620px] h-[320px] sm:h-[370px] lg:h-[400px] flex items-center justify-center"
-                style={{ perspective: "1200px" }}
-              >
-                {HERO_CAROUSEL_ITEMS.map((item, idx) => {
-                  const offset = getCardOffset(idx);
-                  const isActive = offset === 0;
-                  const isRight = offset === 1;
-                  const isLeft = offset === -1;
-
-                  return (
-                    <motion.div
-                      key={item.id}
-                      animate={
-                        shouldReduceMotion
-                          ? { opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.95 }
-                          : {
-                              x: isActive ? "0%" : isRight ? "38%" : "-38%",
-                              scale: isActive ? 1 : 0.84,
-                              rotateY: isActive ? 0 : isRight ? 16 : -16,
-                              rotateX: isActive ? 1 : 0,
-                              opacity: isActive ? 1 : 0.65,
-                              zIndex: isActive ? 30 : 10,
-                            }
-                      }
-                      transition={{
-                        duration: 0.75,
-                        ease: [0.16, 1, 0.3, 1],
-                      }}
-                      onClick={() => {
-                        if (!isActive) setActiveIndex(idx);
-                      }}
-                      className={`absolute top-0 w-[270px] sm:w-[330px] lg:w-[360px] h-[310px] sm:h-[360px] lg:h-[390px] rounded-[32px] sm:rounded-[36px] p-2.5 sm:p-3 transition-shadow duration-500 cursor-pointer ${
-                        isActive
-                          ? "border-2 border-white/95 bg-gradient-to-tr from-white/80 via-white/40 to-[#FF87B3]/30 backdrop-blur-md shadow-[0_25px_60px_rgba(251,87,131,0.30)] ring-1 ring-[#FB5783]/30"
-                          : isRight
-                          ? "border-2 border-white/80 bg-gradient-to-tr from-white/60 to-[#38BDF8]/20 backdrop-blur-md shadow-[0_15px_35px_rgba(56,189,248,0.2)] hover:opacity-90"
-                          : "border-2 border-white/80 bg-gradient-to-tr from-white/60 to-[#FFAEC6]/20 backdrop-blur-md shadow-[0_15px_35px_rgba(255,135,179,0.2)] hover:opacity-90"
-                      }`}
-                    >
-                      {/* Image Container with Inner Curved Mask */}
-                      <div className="relative w-full h-full rounded-[24px] sm:rounded-[28px] overflow-hidden group">
-                        <motion.img
-                          src={item.image}
-                          alt={item.alt}
-                          whileHover={shouldReduceMotion ? undefined : { scale: 1.05 }}
-                          transition={{ duration: 0.6, ease: "easeOut" }}
-                          className="w-full h-full object-cover select-none"
-                        />
-
-                        {/* Top Subtle Pill Badge on Active Card */}
-                        {isActive && (
-                          <div
-                            className="absolute top-3 left-3 z-30 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-white text-xs font-extrabold shadow-sm flex items-center gap-1.5"
-                            style={{ color: item.badgeColor }}
-                          >
-                            <Sparkles className="w-3.5 h-3.5" />
-                            <span>{item.badge}</span>
-                          </div>
-                        )}
-                      </div>
-                    </motion.div>
-                  );
-                })}
-
-                {/* ── Floating Heart Badge near Center Card ── */}
-                <motion.div
-                  animate={
-                    shouldReduceMotion
-                      ? undefined
-                      : {
-                          y: [0, -7, 0],
-                          rotate: [0, 4, 0, -4, 0],
-                        }
-                  }
-                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute -top-3 right-[18%] sm:right-[22%] z-40 w-11 h-11 rounded-full bg-white/95 backdrop-blur-md border-2 border-white text-[#FB5783] shadow-lg shadow-pink-500/20 flex items-center justify-center pointer-events-none"
-                >
-                  <Heart className="w-5 h-5 text-[#FB5783] fill-[#FB5783]" />
-                </motion.div>
-
-                {/* ── Navigation Arrows (Left / Right) ── */}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    prevSlide();
-                  }}
-                  aria-label="Previous slide"
-                  className="absolute left-1 sm:-left-3 top-1/2 -translate-y-1/2 z-40 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 backdrop-blur-md border border-[#FF87B3] text-[#FB5783] shadow-lg flex items-center justify-center cursor-pointer hover:bg-[#FB5783] hover:text-white hover:scale-110 active:scale-95 transition-all duration-300"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    nextSlide();
-                  }}
-                  aria-label="Next slide"
-                  className="absolute right-1 sm:-right-3 top-1/2 -translate-y-1/2 z-40 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 backdrop-blur-md border border-[#FF87B3] text-[#FB5783] shadow-lg flex items-center justify-center cursor-pointer hover:bg-[#FB5783] hover:text-white hover:scale-110 active:scale-95 transition-all duration-300"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* ── Carousel Progress Dots Below ── */}
-              <div className="flex items-center gap-2 mt-4 z-30">
-                {HERO_CAROUSEL_ITEMS.map((_, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => setActiveIndex(i)}
-                    aria-label={`Go to slide ${i + 1}`}
-                    className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                      activeIndex === i
-                        ? "w-7 bg-[#FB5783] shadow-xs"
-                        : "w-2.5 bg-slate-300 hover:bg-[#FF87B3]"
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
+              <GalleryHeroCarousel onSelectImage={(img) => setSelectedImage(img)} />
+            </motion.div>
           </div>
         </div>
       </section>
@@ -495,7 +344,7 @@ function Gallery() {
       {/* ── 2. Facility & Moments Section ── */}
       <section
         id="facility-moments"
-        className="bg-gradient-to-b from-white via-[#FFF5F8]/40 to-white py-16 md:py-24 border-b border-slate-100 relative overflow-hidden"
+        className="bg-gradient-to-b from-white via-[#FFF5F8]/40 to-white pt-6 pb-6 md:pt-8 md:pb-8 border-b border-slate-100 relative overflow-hidden"
       >
         <div className="container-page relative z-10">
           <motion.div
@@ -503,7 +352,7 @@ function Gallery() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.5 }}
-            className="text-center mb-12 md:mb-16"
+            className="text-center mb-8 md:mb-10"
           >
             <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4 shadow-2xs">
               Facility &amp; Moments
@@ -574,7 +423,7 @@ function Gallery() {
       {/* ── 3. Video Tour Section ── */}
       <section
         id="video-tour"
-        className="bg-gradient-to-tr from-[#FFF5F8] via-[#fffcfd] to-white py-16 md:py-24 border-t border-slate-100 overflow-hidden relative"
+        className="bg-gradient-to-tr from-[#FFF5F8] via-[#fffcfd] to-white pt-6 pb-6 md:pt-8 md:pb-8 border-t border-slate-100 overflow-hidden relative"
       >
         <div className="container-page relative z-10">
           <motion.div
@@ -582,7 +431,7 @@ function Gallery() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.5 }}
-            className="text-center mb-12 md:mb-16"
+            className="text-center mb-8 md:mb-10"
           >
             <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4 shadow-2xs">
               Video Tour

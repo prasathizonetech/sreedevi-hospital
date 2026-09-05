@@ -11,11 +11,14 @@ import {
   Stethoscope,
   Activity,
   Check,
+  FlaskConical,
+  Snowflake,
 } from "lucide-react";
 import fertilityImg from "@/assets/fertility-lab.jpg";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { FertilityHero } from "@/components/site/hero/FertilityHero";
 import { FertilityWhyChooseUs } from "@/components/site/FertilityWhyChooseUs";
+import { FertilitySuccessStories } from "@/components/site/FertilitySuccessStories";
 
 export const Route = createFileRoute("/fertility-centre")({
   head: () => ({
@@ -86,9 +89,19 @@ const treatmentsList = [
     desc: "Advanced assisted reproduction in our certified laboratory, guided with transparency and personalised care.",
   },
   {
-    title: "ICSI",
+    title: "ICSI (Intracytoplasmic Sperm Injection)",
     icon: Plus,
     desc: "A specialised IVF technique where a single sperm is injected into an egg to support fertilisation in selected cases of male-factor infertility.",
+  },
+  {
+    title: "Blastocyst Culture & Transfer",
+    icon: FlaskConical,
+    desc: "Advanced incubation up to Day 5 (blastocyst stage) to select the healthiest embryos with the highest implantation and pregnancy potential.",
+  },
+  {
+    title: "Cryopreservation & Freezing",
+    icon: Snowflake,
+    desc: "State-of-the-art vitrification technology to safely freeze and preserve eggs, sperm, and embryos for future family planning cycles.",
   },
   {
     title: "Reproductive Endocrinology",
@@ -96,7 +109,7 @@ const treatmentsList = [
     desc: "Expert care for hormonal imbalances and reproductive disorders to restore hormonal health and support fertility naturally.",
   },
   {
-    title: "Emotional Support",
+    title: "Emotional Support & Counselling",
     icon: Heart,
     desc: "Compassionate counselling and wellness support to help you navigate every step of your fertility journey.",
   },
@@ -111,7 +124,7 @@ function FertilityCentre() {
       <FertilityHero />
 
       {/* ── 2. Overview Section ── */}
-      <section className="bg-white py-12 md:py-20 border-b border-slate-100 overflow-hidden relative">
+      <section className="bg-white pt-6 pb-6 md:pt-8 md:pb-8 border-b border-slate-100 overflow-hidden relative">
         <div className="container-page grid gap-12 md:grid-cols-2 md:items-center">
           {/* Left Column: Image */}
           <motion.div
@@ -197,7 +210,7 @@ function FertilityCentre() {
             </motion.div>
 
             {/* Button */}
-            <motion.div variants={fadeUpVariant} className="mt-8">
+            <motion.div variants={fadeUpVariant} className="mt-5">
               <motion.div
                 whileHover={shouldReduceMotion ? undefined : { scale: 1.03, y: -1 }}
                 whileTap={{ scale: 0.97 }}
@@ -217,14 +230,14 @@ function FertilityCentre() {
       </section>
 
       {/* ── 3. Treatments Section ── */}
-      <section className="bg-gradient-to-b from-white via-[#FFF5F8]/40 to-white py-14 md:py-20 border-b border-slate-100 relative overflow-hidden">
+      <section className="bg-gradient-to-b from-white via-[#FFF5F8]/40 to-white pt-6 pb-6 md:pt-8 md:pb-8 border-b border-slate-100 relative overflow-hidden">
         <div className="container-page relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.5 }}
-            className="text-center mb-12"
+            className="text-center mb-8"
           >
             <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4 shadow-2xs">
               Our Treatments
@@ -302,124 +315,7 @@ function FertilityCentre() {
       <FertilityWhyChooseUs />
 
       {/* ── 5. Success Stories Section ── */}
-      <section className="bg-gradient-to-tr from-[#FFF5F8] via-[#fffcfd] to-white py-14 md:py-20 overflow-hidden relative border-t border-slate-100">
-        <div className="container-page relative z-10">
-          <div className="grid gap-10 lg:grid-cols-[1fr_2fr] items-center">
-            {/* Left content block */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, type: "spring", stiffness: 60 }}
-              className="flex flex-col justify-center"
-            >
-              <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4 w-max shadow-2xs">
-                Success Stories
-              </span>
-
-              <h2 className="text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-4">
-                Hope, care and journeys shared.
-              </h2>
-
-              <p className="text-slate-600 text-sm md:text-base leading-relaxed mb-6 max-w-sm font-medium">
-                Every journey is unique and every story is precious. We thank our patients for
-                trusting us and sharing their experiences.
-              </p>
-
-              {/* Verified badge */}
-              <div className="inline-flex items-center gap-1.5 bg-[#FFF5F8] border border-[#FF87B3] px-3.5 py-1.5 rounded-full text-xs font-bold text-[#D94D78] w-max mb-4 shadow-2xs">
-                <Check className="w-3.5 h-3.5 text-[#D94D78]" strokeWidth={3.5} />
-                Shared with permission
-              </div>
-
-              {/* CTA button */}
-              <motion.div
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.03, y: -1 }}
-                whileTap={{ scale: 0.97 }}
-                className="w-max mt-4"
-              >
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#FF87B3] bg-white px-6 py-3.5 text-sm font-extrabold text-[#14213D] hover:bg-[#FFF5F8] transition-all shadow-xs cursor-pointer"
-                >
-                  Read more stories
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </motion.div>
-            </motion.div>
-
-            {/* Right content block: Story cards */}
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, margin: "-60px" }}
-              className="grid gap-6 sm:grid-cols-3"
-            >
-              {[
-                {
-                  quote:
-                    "From our first consultation to holding our baby, the team was with us at every step. Their compassion, expertise and patience made all the difference.",
-                  author: "A & R",
-                },
-                {
-                  quote:
-                    "We felt heard, understood and truly cared for. The doctors explained every step clearly and gave us the confidence to keep going. We are forever grateful.",
-                  author: "S & K",
-                },
-                {
-                  quote:
-                    "After years of hope and waiting, our dream came true. Thank you for your kindness, support and never giving up on us.",
-                  author: "M & P",
-                },
-              ].map((s, idx) => (
-                <motion.div
-                  key={idx}
-                  variants={fadeUpVariant}
-                  whileHover={
-                    shouldReduceMotion
-                      ? undefined
-                      : {
-                          y: -6,
-                          scale: 1.015,
-                          boxShadow: "0 20px 45px -10px rgba(255,135,179,0.35)",
-                        }
-                  }
-                  transition={{ type: "spring", stiffness: 280, damping: 20 }}
-                  className="bg-white rounded-[28px] border border-[#FF87B3] p-6 md:p-8 shadow-xs hover:border-[#D94D78] transition-all duration-300 flex flex-col justify-between min-h-[360px] cursor-default"
-                >
-                  <div>
-                    <div className="w-14 h-14 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center mb-6 relative overflow-hidden mx-auto shadow-2xs">
-                      <Heart className="w-5 h-5 text-[#D94D78] relative z-10 fill-[#FF87B3]" />
-                    </div>
-
-                    <span
-                      className="text-4xl font-serif text-[#FF87B3] opacity-60 leading-none select-none block mb-2"
-                      aria-hidden="true"
-                    >
-                      “
-                    </span>
-
-                    <p className="text-xs md:text-sm text-slate-600 leading-relaxed italic font-medium">
-                      {s.quote}
-                    </p>
-                  </div>
-
-                  <div className="text-center mt-6">
-                    <div className="w-px h-6 bg-pink-100 mx-auto mb-4" />
-                    <div className="w-11 h-11 rounded-full border border-[#FF87B3] bg-[#FFF5F8] flex items-center justify-center font-display text-[13px] font-extrabold text-[#14213D] mx-auto mb-2 shadow-2xs">
-                      {s.author}
-                    </div>
-                    <div className="text-[10px] md:text-[11px] text-slate-400 font-semibold leading-none">
-                      Fertility Centre · Srirangam
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </div>
-      </section>
+      <FertilitySuccessStories />
     </>
   );
 }

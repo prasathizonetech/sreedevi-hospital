@@ -6,9 +6,9 @@ import {
   useRouter,
   HeadContent,
   useRouterState,
+  ScrollRestoration,
 } from "@tanstack/react-router";
-import { useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
 
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/site/Header";
@@ -16,7 +16,7 @@ import { Footer } from "@/components/site/Footer";
 import { FloatingSocialMenu } from "@/components/site/FloatingSocialMenu";
 import { ScrollProgressBar } from "@/components/site/ScrollProgressBar";
 import { DesktopCursorGlow } from "@/components/site/DesktopCursorGlow";
-import { pageVariants } from "@/lib/animations";
+import { SplashScreen } from "@/components/site/SplashScreen";
 
 function NotFoundComponent() {
   return (
@@ -50,11 +50,6 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
       <div className="max-w-md text-center">
         <h1 className="font-display text-xl font-semibold text-[#14213D]">This page didn't load</h1>
         <p className="mt-2 text-sm text-slate-500">Something went wrong. Please try again.</p>
-        {error?.message && (
-          <p className="mt-3 text-xs text-rose-600 bg-rose-50 border border-rose-200 rounded-lg p-2 font-mono break-all text-left">
-            {error.message}
-          </p>
-        )}
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <button
             onClick={() => {
@@ -121,26 +116,26 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const [splashFinished, setSplashFinished] = useState(false);
+
+  // Guarantee immediate scroll to top on page navigation
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [pathname]);
 
   return (
     <QueryClientProvider client={queryClient}>
       <HeadContent />
+      <ScrollRestoration />
       <ScrollProgressBar />
       <DesktopCursorGlow />
+      {!splashFinished && (
+        <SplashScreen onComplete={() => setSplashFinished(true)} />
+      )}
       <div className="flex min-h-screen flex-col bg-[#fffcfd] text-[#1a2b49] selection:bg-[#FF87B3]/40 selection:text-[#14213D]">
         <Header />
         <main className="flex-1">
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={pathname}
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <Outlet />
-            </motion.div>
-          </AnimatePresence>
+          <Outlet />
         </main>
         <Footer />
         <FloatingSocialMenu />

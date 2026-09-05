@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from "react";
+import { Link } from "@tanstack/react-router";
 import {
   motion,
   useScroll,
@@ -271,23 +272,21 @@ export function HomeHero() {
             variants={fadeUpVariant}
             className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
           >
-            <motion.a
-              href="/fertility-centre"
-              whileHover={{ scale: 1.04, y: -2 }}
-              whileTap={{ scale: 0.96 }}
-              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF87B3] via-[#ff9ec2] to-[#D94D78] border border-[#e86595] px-8 py-4 text-base font-extrabold text-[#14213D] shadow-lg shadow-pink-400/30 transition-shadow hover:shadow-pink-400/50 cursor-pointer"
+            <Link
+              to="/fertility-centre"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF87B3] via-[#ff9ec2] to-[#D94D78] border border-[#e86595] px-8 py-4 text-base font-extrabold text-[#14213D] shadow-lg shadow-pink-400/30 transition-all hover:scale-[1.03] active:scale-[0.98] hover:shadow-pink-400/50 cursor-pointer"
             >
               Explore Treatments
               <ArrowRight className="w-5 h-5" />
-            </motion.a>
+            </Link>
           </motion.div>
 
           {/* Hero Stats Bar */}
           <motion.div
             variants={fadeUpVariant}
-            className="mt-12 bg-white border border-[#FF87B3] rounded-2xl shadow-md shadow-pink-200/30 px-6 py-4 w-fit mx-auto lg:mx-0"
+            className="mt-10 sm:mt-12 bg-white/95 backdrop-blur-md border border-[#FF87B3] rounded-2xl sm:rounded-3xl shadow-md shadow-pink-200/30 p-4 sm:px-6 sm:py-4 w-full max-w-xl mx-auto lg:mx-0"
           >
-            <div className="flex items-center divide-x divide-pink-100">
+            <div className="grid grid-cols-2 sm:flex sm:items-center sm:divide-x divide-pink-100 gap-y-3 sm:gap-y-0">
               {(
                 [
                   { Icon: Award, numeric: 28, suffix: "+", label: "Years of Experience" },
@@ -295,18 +294,20 @@ export function HomeHero() {
                   { Icon: Heart, numeric: 95, suffix: "%", label: "Success Rate" },
                   { Icon: Clock, numeric: null, static: "24×7", label: "Emergency" },
                 ] as const
-              ).map(({ Icon, label, ...rest }) => (
+              ).map(({ Icon, label, ...rest }, index) => (
                 <motion.div
                   key={label}
                   whileHover={{ y: -2 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  className="flex items-center gap-3 px-5 first:pl-0 last:pr-0 group cursor-default"
+                  className={`flex items-center gap-2.5 sm:gap-3 px-2 sm:px-4 md:px-5 ${
+                    index === 0 ? "sm:pl-0" : ""
+                  } ${index === 3 ? "sm:pr-0" : ""} group cursor-default`}
                 >
-                  <div className="shrink-0 w-10 h-10 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center group-hover:bg-[#FF87B3] transition-colors duration-300">
-                    <Icon className="w-5 h-5 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300" />
+                  <div className="shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center group-hover:bg-[#FF87B3] transition-colors duration-300">
+                    <Icon className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300" />
                   </div>
-                  <div className="text-left">
-                    <div className="font-bold text-[#14213D] text-sm leading-tight whitespace-nowrap">
+                  <div className="text-left min-w-0">
+                    <div className="font-bold text-[#14213D] text-xs sm:text-sm leading-tight whitespace-nowrap">
                       {"numeric" in rest && rest.numeric !== null ? (
                         <CountUp
                           target={rest.numeric}
@@ -316,7 +317,7 @@ export function HomeHero() {
                         rest.static
                       ) : null}
                     </div>
-                    <div className="text-xs text-slate-500 whitespace-nowrap">{label}</div>
+                    <div className="text-[10.5px] sm:text-xs text-slate-500 whitespace-nowrap truncate">{label}</div>
                   </div>
                 </motion.div>
               ))}

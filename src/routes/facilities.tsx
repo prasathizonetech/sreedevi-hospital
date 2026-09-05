@@ -14,11 +14,12 @@ import {
   Users,
   Baby,
 } from "lucide-react";
-import { HeroBackground } from "@/components/site/hero/HeroBackground";
 import reception from "@/assets/reception.jpg";
 import delivery from "@/assets/delivery-room.jpg";
 import lab from "@/assets/lab.jpg";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { FacilitiesHero } from "@/components/site/hero/FacilitiesHero";
+import { EmergencySection } from "@/components/site/EmergencySection";
 
 export const Route = createFileRoute("/facilities")({
   head: () => ({
@@ -64,93 +65,17 @@ function FacilitiesPage() {
   return (
     <>
       {/* ── 1. Facilities Page Hero ── */}
-      <section className="relative bg-gradient-to-br from-[#FFF5F8] via-[#FF87B3] to-[#f06a99] text-[#14213D] overflow-hidden pt-12 pb-12 lg:pt-16 lg:pb-16 border-b border-[#FF87B3]">
-        {/* Shared Hero Background with animated glow orbs, organic curves & decor */}
-        <HeroBackground />
-
-        <div className="container-page flex flex-col md:flex-row w-full items-center md:items-stretch gap-8 md:gap-0 relative z-10">
-          {/* Left Column: Text Content */}
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="show"
-            className="flex-1 py-10 md:py-16 pr-0 md:pr-10 z-10 flex flex-col justify-center"
-          >
-            <motion.div
-              variants={fadeUpVariant}
-              whileHover={shouldReduceMotion ? undefined : { scale: 1.05, y: -2 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="inline-flex items-center gap-2 rounded-full bg-white/80 backdrop-blur-md border border-[#f06a99] px-4 py-1.5 text-xs font-extrabold tracking-widest text-[#D94D78] uppercase mb-6 w-max shadow-sm cursor-default"
-            >
-              <Building2 className="w-3.5 h-3.5 text-[#D94D78]" />
-              Facilities
-            </motion.div>
-
-            <motion.h1
-              variants={fadeUpVariant}
-              className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.12] mb-4 tracking-tight text-[#14213D]"
-            >
-              World-class facilities,{" "}
-              <span className="text-[#D94D78] underline decoration-[#FF87B3] decoration-wavy decoration-1 underline-offset-8">
-                better care.
-              </span>
-            </motion.h1>
-
-            <motion.div
-              variants={fadeUpVariant}
-              className="w-14 h-1.5 bg-gradient-to-r from-[#FF87B3] to-[#D94D78] rounded-full mb-6"
-            />
-
-            <motion.p
-              variants={fadeUpVariant}
-              className="text-slate-700 text-sm md:text-base leading-relaxed mb-8 max-w-md font-medium"
-            >
-              Our hospital is equipped with advanced technology and modern infrastructure to ensure
-              the best care and comfort for every patient.
-            </motion.p>
-
-            {/* Breadcrumbs */}
-            <motion.nav
-              variants={fadeUpVariant}
-              className="flex items-center gap-2 text-xs text-slate-600 font-medium"
-            >
-              <Link to="/" className="hover:text-[#D94D78] transition-colors">
-                Home
-              </Link>
-              <ChevronRight className="w-3.5 h-3.5 opacity-60 text-slate-400" />
-              <span className="font-bold text-[#D94D78] bg-white border border-[#FF87B3] px-2.5 py-0.5 rounded-md shadow-2xs">
-                Facilities
-              </span>
-            </motion.nav>
-          </motion.div>
-
-          {/* Right Column: Reception lobby image */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.15 }}
-            className="relative w-full md:w-[45%] lg:w-[50%] min-h-[300px] md:min-h-auto self-stretch overflow-hidden md:rounded-l-[200px] rounded-3xl shadow-2xl shadow-pink-900/10 border-4 border-white group"
-          >
-            <motion.img
-              src={reception}
-              alt="SreeDevi Hospital modern reception lobby"
-              whileHover={shouldReduceMotion ? undefined : { scale: 1.06 }}
-              transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
-              className="absolute inset-0 w-full h-full object-cover object-center transform-gpu"
-            />
-          </motion.div>
-        </div>
-      </section>
+      <FacilitiesHero />
 
       {/* ── 2. Overview Section with Facility Cards ── */}
-      <section className="bg-gradient-to-b from-white via-[#FFF5F8]/40 to-white py-16 md:py-24 border-b border-slate-100 relative overflow-hidden">
+      <section className="bg-gradient-to-b from-white via-[#FFF5F8]/40 to-white pt-6 pb-6 md:pt-8 md:pb-8 border-b border-slate-100 relative overflow-hidden">
         <div className="container-page relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.5 }}
-            className="text-center mb-12 md:mb-16"
+            className="text-center mb-8 md:mb-10"
           >
             <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4 shadow-2xs">
               Our Facilities
@@ -256,14 +181,14 @@ function FacilitiesPage() {
       </section>
 
       {/* ── 3. Inside SreeDevi Section ── */}
-      <section className="bg-white py-16 md:py-24 border-b border-slate-100 relative overflow-hidden">
+      <section className="bg-white pt-6 pb-6 md:pt-8 md:pb-8 border-b border-slate-100 relative overflow-hidden">
         <div className="container-page relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.5 }}
-            className="text-center mb-12 md:mb-16"
+            className="text-center mb-8 md:mb-10"
           >
             <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4 shadow-2xs">
               Inside SreeDevi
@@ -362,7 +287,7 @@ function FacilitiesPage() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="flex justify-center mt-12"
+            className="flex justify-center mt-6 md:mt-8"
           >
             <motion.div
               whileHover={shouldReduceMotion ? undefined : { scale: 1.04, y: -1 }}
@@ -380,90 +305,8 @@ function FacilitiesPage() {
         </div>
       </section>
 
-      {/* ── 4. Emergency Section ── */}
-      <section className="bg-gradient-to-tr from-[#FFF5F8] via-[#fffcfd] to-white py-16 md:py-24 border-t border-b border-slate-100 overflow-hidden relative">
-        <div className="container-page relative z-10">
-          <div className="grid gap-10 md:grid-cols-[1fr_1.2fr] items-center">
-            {/* Left Card: Large Navy Block */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, type: "spring", stiffness: 60 }}
-              whileHover={
-                shouldReduceMotion
-                  ? undefined
-                  : { y: -4, boxShadow: "0 25px 60px -15px rgba(16,42,84,0.35)" }
-              }
-              className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-[#102A54] to-[#0A1D3D] p-8 md:p-12 text-white flex flex-col justify-center min-h-[380px] shadow-xl transition-all duration-300"
-            >
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#dc2626] text-white font-extrabold text-[11px] uppercase tracking-wider mb-6 w-max shadow-md">
-                <span className="w-2 h-2 rounded-full bg-white animate-ping" />
-                Emergency
-              </span>
-
-              <h2 className="text-3xl md:text-4xl font-extrabold text-white font-display leading-tight mb-4">
-                24×7 emergency response.
-              </h2>
-
-              <p className="text-slate-300 text-sm md:text-base leading-relaxed opacity-90 max-w-sm mb-6 font-medium">
-                Our emergency line is answered around the clock. In case of a maternity or medical
-                emergency, call for the fastest response.
-              </p>
-
-              <div className="w-12 h-1 bg-[#FF87B3] rounded-full" />
-            </motion.div>
-
-            {/* Right Card: Emergency phone line box */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, type: "spring", stiffness: 60 }}
-              className="flex flex-col items-center justify-center"
-            >
-              <div className="w-full max-w-[480px] bg-white rounded-3xl border border-[#FF87B3] p-8 md:p-10 shadow-[0_8px_30px_rgba(255,135,179,0.15)] flex flex-col items-center justify-center text-center">
-                <motion.div
-                  animate={shouldReduceMotion ? undefined : { scale: [1, 1.08, 1] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  className="w-16 h-16 rounded-full border-2 border-[#FF87B3] bg-[#FFF5F8] flex items-center justify-center text-[#D94D78] mb-6 shadow-sm"
-                >
-                  <div className="w-12 h-12 rounded-full border border-[#FF87B3] bg-white flex items-center justify-center text-[#D94D78]">
-                    <Phone className="w-5 h-5" />
-                  </div>
-                </motion.div>
-
-                <span className="text-[#dc2626] text-xs font-extrabold tracking-widest uppercase block mb-3">
-                  Emergency Line
-                </span>
-
-                <a
-                  href="tel:+919843499055"
-                  className="text-2xl md:text-3xl font-extrabold text-[#14213D] font-display hover:text-[#D94D78] transition-colors mb-4 block"
-                >
-                  +91 98434 99055
-                </a>
-
-                <div className="text-xs md:text-sm text-slate-500 font-extrabold mb-8 flex justify-center gap-3">
-                  <span>0431-4011631</span>
-                  <span className="text-pink-300">•</span>
-                  <span>0431-2437071</span>
-                </div>
-
-                <motion.a
-                  whileHover={shouldReduceMotion ? undefined : { scale: 1.03, y: -1 }}
-                  whileTap={{ scale: 0.97 }}
-                  href="tel:+919843499055"
-                  className="inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-[#dc2626] to-[#b91c1c] text-white px-8 py-4 font-bold text-base shadow-lg shadow-red-500/25 w-full transition-all cursor-pointer"
-                >
-                  <Phone className="w-5 h-5" />
-                  Call now
-                </motion.a>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+      {/* ── 4. Emergency Section (Neumorphic) ── */}
+      <EmergencySection />
     </>
   );
 }

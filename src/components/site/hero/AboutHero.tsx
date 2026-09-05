@@ -9,10 +9,9 @@ import {
   Heart,
   Clock,
   ChevronRight,
-  HeartPulse,
-  Stethoscope,
+  Quote,
+  Star,
 } from "lucide-react";
-import doctorsTeamArch from "@/assets/doctors-team-arch.png";
 
 // Image imports for hero rotating carousel
 import heroImg1 from "@/assets/about/about-hero-1.jpg";
@@ -88,9 +87,47 @@ const STATS = [
   },
 ] as const;
 
+// ─── Elegant Curve Frame: Top-Left Quote Badge ──────────────────────────────
+function QuoteBadge() {
+  return (
+    <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center p-1 bg-white/95 backdrop-blur-md border-[2.5px] border-[#FF87B3] shadow-[0_8px_24px_rgba(255,135,179,0.40)] group">
+      {/* Specular Highlight Ring */}
+      <div className="absolute inset-1 rounded-full border border-white/60 pointer-events-none" />
+      {/* Inner Pink Core */}
+      <div className="relative w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-tr from-[#DE356A] via-[#FB5783] to-[#FF87B3] flex items-center justify-center text-white shadow-inner transform-gpu group-hover:scale-105 transition-transform duration-300">
+        <Quote className="w-5 h-5 sm:w-6 sm:h-6 fill-white text-white rotate-180 drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)]" />
+      </div>
+    </div>
+  );
+}
+
+// ─── Elegant Curve Frame: Bottom-Right Star Badge ────────────────────────────
+function StarBadge() {
+  return (
+    <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center p-1 bg-white/95 backdrop-blur-md border-[2.5px] border-[#FF87B3] shadow-[0_8px_24px_rgba(255,135,179,0.40)] group">
+      {/* Specular Highlight Ring */}
+      <div className="absolute inset-1 rounded-full border border-white/60 pointer-events-none" />
+      {/* Inner Pink Core */}
+      <div className="relative w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-tr from-[#DE356A] via-[#FB5783] to-[#FF87B3] flex items-center justify-center text-white shadow-inner transform-gpu group-hover:scale-105 transition-transform duration-300">
+        <Star className="w-5 h-5 sm:w-6 sm:h-6 fill-white text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)]" />
+      </div>
+    </div>
+  );
+}
+
 export function AboutHero() {
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [headlineIndex, setHeadlineIndex] = useState(0);
   const shouldReduceMotion = useReducedMotion();
+
+  // Automatic slideshow changing every 5.5 seconds
+  useEffect(() => {
+    const imageTimer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 5500);
+
+    return () => clearInterval(imageTimer);
+  }, []);
 
   // Text transition timer: changes headline every 5 seconds with left-to-right flow
   useEffect(() => {
@@ -99,6 +136,14 @@ export function AboutHero() {
     }, 5000);
 
     return () => clearInterval(textTimer);
+  }, []);
+
+  // Preload all 4 images on mount to ensure instant, butter-smooth transitions
+  useEffect(() => {
+    HERO_IMAGES.forEach((img) => {
+      const imageLoader = new Image();
+      imageLoader.src = img.src;
+    });
   }, []);
 
   return (
@@ -257,147 +302,168 @@ export function AboutHero() {
           </div>
 
           {/* ═════════════════════════════════════════════════════════════════ */}
-          {/* ── RIGHT COLUMN: Organic Arch Doctor Team & Floating Medical Elements (6 cols) ─ */}
+          {/* ── RIGHT COLUMN: Elegant Curve Frame Hero Carousel (6 cols) ──── */}
           {/* ═════════════════════════════════════════════════════════════════ */}
-          <div className="lg:col-span-6 xl:col-span-6 relative flex items-center justify-center lg:justify-end py-4 lg:py-2 select-none">
-            <div className="relative w-full max-w-[560px] xl:max-w-[600px] flex items-center justify-center">
-              {/* ── Background Soft Pink Decorative Wave Curves ── */}
-              <div className="absolute -inset-4 sm:-inset-6 pointer-events-none z-0">
-                <svg
-                  viewBox="0 0 600 500"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-full h-full opacity-65 filter drop-shadow-[0_10px_20px_rgba(255,135,179,0.25)]"
-                >
-                  {/* Outer sweeping soft pink wave */}
-                  <path
-                    d="M120,40 C280,-20 460,30 560,160 C640,270 540,430 380,470 C220,510 60,420 40,280 C20,150 50,60 120,40 Z"
-                    fill="url(#waveBgGrad1)"
-                    fillOpacity="0.45"
-                  />
-                  {/* Inner accent wave line */}
-                  <path
-                    d="M160,80 C300,30 460,70 520,190 C580,300 480,410 350,440 C220,470 90,380 80,260 C70,150 90,100 160,80 Z"
-                    stroke="#FF87B3"
-                    strokeWidth="1.5"
-                    strokeDasharray="6 6"
-                    strokeOpacity="0.6"
-                  />
-                  <defs>
-                    <linearGradient id="waveBgGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#FFF0F5" stopOpacity="0.8" />
-                      <stop offset="50%" stopColor="#FFE4ED" stopOpacity="0.6" />
-                      <stop offset="100%" stopColor="#FFD1E0" stopOpacity="0.4" />
-                    </linearGradient>
-                  </defs>
-                </svg>
+          <div className="lg:col-span-6 xl:col-span-6 relative flex flex-col items-center justify-center lg:items-end py-6 lg:py-4">
+            <div className="relative w-full max-w-[530px] xl:max-w-[570px]">
+              
+              {/* Corner Dot Grid Particle Accents in Signature Pink */}
+              {/* Top-Right Dots */}
+              <div className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 w-12 h-12 pointer-events-none opacity-75 z-0 select-none">
+                <div className="grid grid-cols-4 gap-1.5">
+                  {Array.from({ length: 12 }).map((_, i) => (
+                    <div key={i} className="w-1 h-1 rounded-full bg-[#FF87B3]" />
+                  ))}
+                </div>
               </div>
 
-              {/* ── Main Organic Arch Image Frame ── */}
+              {/* Bottom-Left Dots */}
+              <div className="absolute -bottom-3 -left-3 sm:-bottom-4 sm:-left-4 w-12 h-12 pointer-events-none opacity-75 z-0 select-none">
+                <div className="grid grid-cols-4 gap-1.5">
+                  {Array.from({ length: 12 }).map((_, i) => (
+                    <div key={i} className="w-1 h-1 rounded-full bg-[#FF87B3]" />
+                  ))}
+                </div>
+              </div>
+
+              {/* ── Outer Elegant Curve Frame Container in #FF87B3 ── */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-                className="relative z-10 w-full aspect-[4/3] sm:aspect-[16/11] max-h-[460px] overflow-hidden rounded-[160px_40px_140px_140px] p-2 bg-gradient-to-br from-white/95 via-white/50 to-[#FFEBF2]/80 backdrop-blur-xl border-4 border-white shadow-[0_20px_50px_rgba(251,87,131,0.22)] ring-2 ring-[#FF87B3]/50 group"
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="relative w-full rounded-[34px] sm:rounded-[46px] p-3 sm:p-4.5 bg-gradient-to-br from-[#FFF5F8] via-white to-[#FFEBF2] border-[3.5px] border-[#FF87B3] shadow-[0_20px_60px_rgba(255,135,179,0.30)]"
               >
-                {/* Inner Image Container */}
-                <div className="relative w-full h-full rounded-[148px_32px_128px_128px] overflow-hidden bg-[#FFF5F8]">
-                  <img
-                    src={doctorsTeamArch}
-                    alt="SreeDevi Hospital Expert Medical Specialists Team"
-                    className="w-full h-full object-cover object-center transform-gpu group-hover:scale-104 transition-transform duration-700 ease-out"
+                {/* Inner Sculpted Bevel Frame for Image */}
+                <div className="relative w-full aspect-[16/11] sm:aspect-[16/10.5] rounded-[26px] sm:rounded-[36px] overflow-hidden bg-[#FFF5F8] shadow-inner border border-[#FFCCD9]">
+                  <AnimatePresence initial={false}>
+                    {HERO_IMAGES.map((item, index) => {
+                      if (index !== currentIndex) return null;
+                      return (
+                        <motion.div
+                          key={item.src}
+                          initial={{ opacity: 0 }}
+                          animate={{
+                            opacity: 1,
+                            transition: { duration: 1.2, ease: "easeInOut" },
+                          }}
+                          exit={{
+                            opacity: 0,
+                            transition: { duration: 1.2, ease: "easeInOut" },
+                          }}
+                          className="absolute inset-0 w-full h-full"
+                        >
+                          {/* Ken Burns Subtle Zoom Animation */}
+                          <motion.img
+                            src={item.src}
+                            alt={item.alt}
+                            initial={{ scale: 1.0 }}
+                            animate={{
+                              scale: shouldReduceMotion ? 1.0 : 1.07,
+                              transition: {
+                                duration: 6,
+                                ease: "linear",
+                              },
+                            }}
+                            className="w-full h-full object-cover object-center transform-gpu"
+                          />
+
+                          {/* Subtle gradient vignette at bottom for contrast */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#14213D]/20 via-transparent to-transparent pointer-events-none" />
+                        </motion.div>
+                      );
+                    })}
+                  </AnimatePresence>
+                </div>
+
+                {/* ── Top-Left Floating Quote Badge ── */}
+                <motion.div
+                  animate={
+                    shouldReduceMotion
+                      ? undefined
+                      : {
+                          y: [0, -6, 0],
+                          rotate: [0, 2, -1, 0],
+                        }
+                  }
+                  transition={{
+                    duration: 5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className="absolute -top-5 -left-5 sm:-top-6 sm:-left-6 z-30 pointer-events-auto cursor-default"
+                >
+                  <QuoteBadge />
+                </motion.div>
+
+                {/* ── Bottom-Right Floating Star Badge ── */}
+                <motion.div
+                  animate={
+                    shouldReduceMotion
+                      ? undefined
+                      : {
+                          y: [0, 6, 0],
+                          rotate: [0, -2, 2, 0],
+                        }
+                  }
+                  transition={{
+                    duration: 5.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 0.5,
+                  }}
+                  className="absolute -bottom-5 -right-5 sm:-bottom-6 sm:-right-6 z-30 pointer-events-auto cursor-default"
+                >
+                  <StarBadge />
+                </motion.div>
+              </motion.div>
+
+              {/* ── Carousel Pagination Dots Centered Under Frame ── */}
+              <div className="mt-4 flex items-center justify-center gap-2">
+                {HERO_IMAGES.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setCurrentIndex(idx)}
+                    aria-label={`Go to slide ${idx + 1}`}
+                    className={`rounded-full transition-all duration-300 cursor-pointer ${
+                      idx === currentIndex
+                        ? "w-6 h-2 bg-[#DE356A] shadow-xs shadow-pink-500/40"
+                        : "w-2 h-2 bg-[#FFCCD9] hover:bg-[#FF87B3]"
+                    }`}
                   />
+                ))}
+              </div>
 
-                  {/* Soft pink bottom gradient highlight for contrast */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-pink-500/15 via-transparent to-transparent pointer-events-none" />
-                </div>
-              </motion.div>
-
-              {/* ── 1. Floating ECG Heart Icon (Top-Right) ── */}
-              <motion.div
-                animate={shouldReduceMotion ? undefined : { y: [0, -7, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-3 right-3 sm:-top-5 sm:right-6 z-20 pointer-events-none"
-              >
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/95 backdrop-blur-md border border-[#FF87B3] text-[#FB5783] shadow-lg shadow-pink-500/20 flex items-center justify-center">
-                  <HeartPulse className="w-6 h-6 sm:w-7 sm:h-7 text-[#FB5783]" />
-                </div>
-              </motion.div>
-
-              {/* ── 2. Floating Stethoscope Icon (Left-Center) ── */}
-              <motion.div
-                animate={shouldReduceMotion ? undefined : { y: [0, 8, 0], x: [0, -3, 0] }}
-                transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-                className="absolute top-1/2 -left-3 sm:-left-6 -translate-y-1/2 z-20 pointer-events-none"
-              >
-                <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-white/95 backdrop-blur-md border border-[#FF87B3]/80 text-[#FB5783] shadow-md shadow-pink-500/15 flex items-center justify-center">
-                  <Stethoscope className="w-5 h-5 sm:w-6 sm:h-6 text-[#FB5783]" />
-                </div>
-              </motion.div>
-
-              {/* ── 3. Floating 3D Medical Plus Icon (Bottom-Right) ── */}
-              <motion.div
-                animate={
-                  shouldReduceMotion
-                    ? undefined
-                    : { scale: [1, 1.08, 1], rotate: [0, 5, -5, 0] }
-                }
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                className="absolute -bottom-4 right-2 sm:-bottom-6 sm:right-6 z-20 pointer-events-none"
-              >
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/80 backdrop-blur-md border-2 border-white shadow-xl shadow-pink-500/25 flex items-center justify-center">
-                  <div className="relative w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center">
-                    <div className="absolute w-2.5 h-6 sm:h-7 bg-gradient-to-b from-[#FF6B97] to-[#DE356A] rounded-full shadow-xs border border-white/60" />
-                    <div className="absolute h-2.5 w-6 sm:w-7 bg-gradient-to-r from-[#FF6B97] to-[#DE356A] rounded-full shadow-xs border border-white/60" />
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* ── 4. Floating Small Heart Decoration (Bottom-Left) ── */}
-              <motion.div
-                animate={
-                  shouldReduceMotion
-                    ? undefined
-                    : { y: [0, -6, 0], scale: [1, 1.05, 1] }
-                }
-                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-                className="absolute -bottom-3 left-6 sm:-bottom-4 sm:left-10 z-20 pointer-events-none"
-              >
-                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gradient-to-tr from-[#E93B6C] to-[#FF87B3] border border-white text-white shadow-md shadow-pink-500/30 flex items-center justify-center">
-                  <Heart className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-white fill-white" />
-                </div>
-              </motion.div>
             </div>
           </div>
         </div>
 
         {/* ═════════════════════════════════════════════════════════════════ */}
-        {/* ── BOTTOM STATS BAR: 4 Metrics Pill Card ────────────────────── */}
+        {/* ── BOTTOM STATS BAR: 4 Metrics Compact Pill Card ────────────── */}
         {/* ═════════════════════════════════════════════════════════════════ */}
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.35, ease: "easeOut" }}
-          className="mt-10 sm:mt-12 bg-white/95 backdrop-blur-md border border-[#FFCCD9] rounded-2xl sm:rounded-3xl shadow-[0_12px_36px_rgba(255,135,179,0.18)] px-5 py-4 sm:px-8 sm:py-5 w-fit max-w-full"
+          className="mt-8 sm:mt-10 bg-white/95 backdrop-blur-md border border-[#FFCCD9] rounded-2xl sm:rounded-full shadow-[0_8px_28px_rgba(255,135,179,0.15)] px-3.5 py-2.5 sm:px-5 sm:py-3 md:px-6 md:py-3 w-fit max-w-full"
         >
-          <div className="grid grid-cols-2 sm:flex sm:flex-wrap md:flex-nowrap items-center divide-y sm:divide-y-0 sm:divide-x divide-pink-100 gap-y-4 sm:gap-y-0">
+          <div className="grid grid-cols-2 sm:flex sm:flex-nowrap items-center sm:divide-x divide-pink-100/90 gap-y-2.5 sm:gap-y-0">
             {STATS.map(({ icon: Icon, value, label }, index) => (
               <div
                 key={label}
-                className={`flex items-center gap-3.5 px-3 sm:px-5 md:px-6 ${
-                  index === 0 ? "sm:pl-0" : ""
-                } ${index === STATS.length - 1 ? "sm:pr-0" : ""}`}
+                className={`flex items-center gap-2 sm:gap-2.5 px-1.5 sm:px-3.5 md:px-4 ${
+                  index === 0 ? "sm:pl-1" : ""
+                } ${index === STATS.length - 1 ? "sm:pr-1" : ""}`}
               >
                 {/* Soft Pink Icon Circle Badge */}
-                <div className="shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#FFF0F5] border border-[#FFCCD9] flex items-center justify-center text-[#DE356A] shadow-xs">
-                  <Icon className="w-5 h-5 sm:w-5.5 sm:h-5.5" />
+                <div className="shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-[#FFF0F5] border border-[#FFCCD9] flex items-center justify-center text-[#DE356A] shadow-2xs">
+                  <Icon className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
                 </div>
                 {/* Value and Label */}
-                <div className="text-left">
-                  <div className="font-extrabold text-[#14213D] text-lg sm:text-xl leading-tight whitespace-nowrap">
+                <div className="text-left min-w-0">
+                  <div className="font-extrabold text-[#14213D] text-sm sm:text-base md:text-[17px] leading-tight whitespace-nowrap">
                     {value}
                   </div>
-                  <div className="text-xs sm:text-sm text-slate-500 font-medium whitespace-nowrap">
+                  <div className="text-[9.5px] sm:text-[10.5px] md:text-[11.5px] text-slate-500 font-medium whitespace-nowrap truncate">
                     {label}
                   </div>
                 </div>

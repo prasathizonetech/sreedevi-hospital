@@ -50,7 +50,7 @@ function MagneticCard({
 
 export function CTASection() {
   return (
-    <section className="py-12 lg:py-16 bg-[#FFF5F8]">
+    <section className="pt-2 pb-8 lg:pt-2 lg:pb-10 bg-[#FFF5F8]">
       <div className="container-page max-w-6xl mx-auto">
         {/* Outer card */}
         <motion.div
@@ -58,7 +58,7 @@ export function CTASection() {
           initial="hidden"
           whileInView="show"
           viewport={viewport}
-          className="relative overflow-hidden rounded-3xl bg-white shadow-[0_8px_40px_rgba(255,135,179,0.30)] border border-[#FF87B3]/60 px-10 py-14 md:px-16 md:py-16"
+          className="relative overflow-hidden rounded-3xl bg-white shadow-[0_8px_40px_rgba(255,135,179,0.30)] border border-[#FF87B3]/60 px-6 py-8 sm:px-10 sm:py-10 md:px-12 md:py-10"
         >
           {/* Decorative pink blob */}
           <div className="absolute top-0 right-0 w-80 h-80 pointer-events-none opacity-60">
@@ -73,7 +73,7 @@ export function CTASection() {
             </svg>
           </div>
 
-          <div className="relative grid md:grid-cols-[1fr_380px] gap-14 md:gap-20 items-center">
+          <div className="relative grid md:grid-cols-[1fr_380px] gap-8 md:gap-12 items-center">
             {/* ── LEFT: Text ── */}
             <motion.div
               variants={staggerContainer(0.1, 0.1)}
@@ -84,7 +84,7 @@ export function CTASection() {
               {/* Pill */}
               <motion.div
                 variants={fadeUp}
-                className="inline-flex items-center gap-2 rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-4 py-2 text-[11px] font-bold tracking-widest text-[#D94D78] uppercase mb-7"
+                className="inline-flex items-center gap-2 rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-4 py-1.5 text-[11px] font-bold tracking-widest text-[#D94D78] uppercase mb-4"
               >
                 <Headphones className="w-3.5 h-3.5 text-[#D94D78]" />
                 Talk to a Specialist
@@ -93,7 +93,7 @@ export function CTASection() {
               {/* Heading */}
               <motion.h2
                 variants={fadeUp}
-                className="font-display text-4xl md:text-5xl font-extrabold text-[#14213D] leading-[1.1] mb-5"
+                className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#14213D] leading-[1.1] mb-3"
               >
                 Every consultation
                 <br />
@@ -105,7 +105,7 @@ export function CTASection() {
               {/* Description */}
               <motion.p
                 variants={fadeUp}
-                className="text-slate-600 text-[15px] leading-relaxed mb-8 max-w-sm font-medium"
+                className="text-slate-600 text-sm md:text-[15px] leading-relaxed mb-6 max-w-sm font-medium"
               >
                 Call us and speak with our gynaecology, fertility, medicine, diabetes or respiratory
                 specialists — we will guide you every step of the way.

@@ -144,14 +144,14 @@ function About() {
       <AboutHero />
 
       {/* 2. About Us & Mission/Vision Section */}
-      <section className="relative bg-gradient-to-b from-white via-[#FFF5F8]/40 to-white py-14 md:py-20 border-b border-slate-100 overflow-hidden">
+      <section className="relative bg-gradient-to-b from-white via-[#FFF5F8]/40 to-white pt-6 pb-8 md:pt-8 md:pb-10 border-b border-slate-100 overflow-hidden">
         <div
           className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-[#FF87B3]/20 blur-3xl pointer-events-none"
           aria-hidden="true"
         />
 
         <div className="container-page relative z-10">
-          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+          <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
             {/* Left Content Column */}
             <motion.div
               variants={staggerContainer}
@@ -161,7 +161,7 @@ function About() {
             >
               <motion.div
                 variants={fadeLeftVariant}
-                className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4"
+                className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-3"
               >
                 About Us
               </motion.div>
@@ -177,12 +177,12 @@ function About() {
 
               <motion.div
                 variants={fadeLeftVariant}
-                className="w-12 h-1 bg-[#FF87B3] rounded-full mb-6"
+                className="w-12 h-1 bg-[#FF87B3] rounded-full mb-4"
               />
 
               <motion.p
                 variants={fadeLeftVariant}
-                className="text-slate-600 text-sm md:text-base leading-relaxed mb-8 max-w-xl font-medium"
+                className="text-slate-600 text-sm md:text-base leading-relaxed mb-6 max-w-xl font-medium"
               >
                 SreeDevi Hospital &amp; Fertility Centre is dedicated to providing advanced, ethical
                 and patient-centric healthcare for every family. With a team of experienced doctors,
@@ -191,7 +191,7 @@ function About() {
               </motion.p>
 
               {/* 3 Feature Pillars */}
-              <motion.div variants={staggerContainer} className="grid gap-5 sm:grid-cols-3">
+              <motion.div variants={staggerContainer} className="grid gap-4 sm:grid-cols-3">
                 {[
                   {
                     icon: HeartPulse,
@@ -222,16 +222,16 @@ function About() {
                           }
                     }
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    className="flex flex-col gap-3 p-4 rounded-2xl bg-white border border-[#FF87B3] shadow-sm hover:border-[#D94D78] transition-all duration-300 group cursor-default"
+                    className="flex flex-col gap-2.5 p-3.5 rounded-2xl bg-white border border-[#FF87B3] shadow-sm hover:border-[#D94D78] transition-all duration-300 group cursor-default"
                   >
-                    <div className="w-11 h-11 rounded-full border border-[#FF87B3] bg-[#FFF5F8] flex items-center justify-center text-[#D94D78] shrink-0 shadow-xs group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-all duration-300">
-                      <Icon className="w-5 h-5" />
+                    <div className="w-10 h-10 rounded-full border border-[#FF87B3] bg-[#FFF5F8] flex items-center justify-center text-[#D94D78] shrink-0 shadow-xs group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-all duration-300">
+                      <Icon className="w-4.5 h-4.5" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-[#14213D] text-[14px] mb-1 group-hover:text-[#D94D78] transition-colors">
+                      <h3 className="font-bold text-[#14213D] text-[13.5px] mb-0.5 group-hover:text-[#D94D78] transition-colors">
                         {title}
                       </h3>
-                      <p className="text-[12px] text-slate-500 leading-snug">{desc}</p>
+                      <p className="text-[11.5px] text-slate-500 leading-snug">{desc}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -265,9 +265,9 @@ function About() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-50px" }}
-            className="mt-14 md:mt-18 relative"
+            className="mt-8 md:mt-10 relative"
           >
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-2 gap-6 md:gap-8">
               {/* Mission Card */}
               <motion.div
                 variants={fadeUpVariant}
@@ -277,11 +277,11 @@ function About() {
                     : { y: -8, scale: 1.015, boxShadow: "0 25px 50px -12px rgba(255,135,179,0.35)" }
                 }
                 transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                className="group relative overflow-hidden rounded-[28px] border border-[#FF87B3] bg-white p-8 md:p-10 shadow-[0_8px_30px_rgba(255,135,179,0.15)] flex flex-col md:flex-row gap-6 items-start transition-all duration-300 cursor-default"
+                className="group relative overflow-hidden rounded-[28px] border border-[#FF87B3] bg-white p-6 md:p-8 shadow-[0_8px_30px_rgba(255,135,179,0.15)] flex flex-col md:flex-row gap-5 items-start transition-all duration-300 cursor-default"
               >
-                <div className="w-16 h-16 bg-[#FFF5F8] border border-[#FF87B3] rounded-full flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:bg-[#FF87B3] transition-all duration-300 shadow-xs">
+                <div className="w-14 h-14 bg-[#FFF5F8] border border-[#FF87B3] rounded-full flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:bg-[#FF87B3] transition-all duration-300 shadow-xs">
                   <Target
-                    className="w-8 h-8 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300"
+                    className="w-7 h-7 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300"
                     strokeWidth={1.8}
                   />
                 </div>
@@ -289,7 +289,7 @@ function About() {
                   <h3 className="font-display text-xl md:text-2xl font-extrabold text-[#14213D] group-hover:text-[#D94D78] transition-colors">
                     Our Mission
                   </h3>
-                  <div className="w-12 h-1 bg-[#FF87B3] rounded-full mt-2 mb-4" />
+                  <div className="w-12 h-1 bg-[#FF87B3] rounded-full mt-2 mb-3" />
                   <p className="text-slate-600 text-sm md:text-base leading-relaxed max-w-sm font-medium">
                     {hospital.mission}
                   </p>
@@ -306,11 +306,11 @@ function About() {
                     : { y: -8, scale: 1.015, boxShadow: "0 25px 50px -12px rgba(255,135,179,0.35)" }
                 }
                 transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                className="group relative overflow-hidden rounded-[28px] border border-[#FF87B3] bg-white p-8 md:p-10 shadow-[0_8px_30px_rgba(255,135,179,0.15)] flex flex-col md:flex-row gap-6 items-start transition-all duration-300 cursor-default"
+                className="group relative overflow-hidden rounded-[28px] border border-[#FF87B3] bg-white p-6 md:p-8 shadow-[0_8px_30px_rgba(255,135,179,0.15)] flex flex-col md:flex-row gap-5 items-start transition-all duration-300 cursor-default"
               >
-                <div className="w-16 h-16 bg-[#FFF5F8] border border-[#FF87B3] rounded-full flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:bg-[#FF87B3] transition-all duration-300 shadow-xs">
+                <div className="w-14 h-14 bg-[#FFF5F8] border border-[#FF87B3] rounded-full flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:bg-[#FF87B3] transition-all duration-300 shadow-xs">
                   <Eye
-                    className="w-8 h-8 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300"
+                    className="w-7 h-7 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300"
                     strokeWidth={1.8}
                   />
                 </div>
@@ -318,7 +318,7 @@ function About() {
                   <h3 className="font-display text-xl md:text-2xl font-extrabold text-[#14213D] group-hover:text-[#D94D78] transition-colors">
                     Our Vision
                   </h3>
-                  <div className="w-12 h-1 bg-[#FF87B3] rounded-full mt-2 mb-4" />
+                  <div className="w-12 h-1 bg-[#FF87B3] rounded-full mt-2 mb-3" />
                   <p className="text-slate-600 text-sm md:text-base leading-relaxed max-w-sm font-medium">
                     {hospital.vision}
                   </p>
@@ -331,19 +331,19 @@ function About() {
       </section>
 
       {/* 3. Our Values Section */}
-      <section className="relative bg-white py-14 md:py-20 border-b border-slate-100 overflow-hidden">
+      <section className="relative bg-white pt-6 pb-8 md:pt-8 md:pb-10 border-b border-slate-100 overflow-hidden">
         <div className="container-page relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.5 }}
-            className="text-center mb-10 md:mb-12"
+            className="text-center mb-6 md:mb-8"
           >
-            <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4">
+            <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-3">
               Our Values
             </span>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-3">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-2">
               What guides us, every day.
             </h2>
             <div className="flex items-center justify-center gap-1.5 mt-2">
@@ -385,20 +385,20 @@ function About() {
                         }
                   }
                   transition={{ type: "spring", stiffness: 280, damping: 20 }}
-                  className="group relative rounded-3xl border border-[#FF87B3] bg-[#FFF5F8]/40 p-8 shadow-xs hover:bg-white transition-all duration-300 cursor-default"
+                  className="group relative rounded-3xl border border-[#FF87B3] bg-[#FFF5F8]/40 p-6 sm:p-7 shadow-xs hover:bg-white transition-all duration-300 cursor-default"
                 >
                   <span className="absolute top-6 right-6 text-xs font-extrabold text-[#14213D] bg-[#FF87B3] group-hover:bg-[#f06a99] px-2.5 py-0.5 rounded-md transition-colors duration-300">
                     {numStr}
                   </span>
 
-                  <div className="w-14 h-14 rounded-full border border-[#FF87B3] bg-[#FFF5F8] flex items-center justify-center text-[#D94D78] mb-6 mt-2 group-hover:bg-[#FF87B3] group-hover:text-[#14213D] group-hover:scale-110 transition-all duration-300 shadow-xs">
+                  <div className="w-13 h-13 rounded-full border border-[#FF87B3] bg-[#FFF5F8] flex items-center justify-center text-[#D94D78] mb-4 mt-1 group-hover:bg-[#FF87B3] group-hover:text-[#14213D] group-hover:scale-110 transition-all duration-300 shadow-xs">
                     {icons[i]}
                   </div>
 
                   <h3 className="font-display text-lg font-bold text-[#14213D] mb-1 group-hover:text-[#D94D78] transition-colors">
                     {v.title}
                   </h3>
-                  <div className="w-8 h-0.5 bg-[#FF87B3] mb-3 group-hover:w-12 transition-all duration-300" />
+                  <div className="w-8 h-0.5 bg-[#FF87B3] mb-2.5 group-hover:w-12 transition-all duration-300" />
                   <p className="text-slate-600 text-xs md:text-sm leading-relaxed font-medium">
                     {v.desc}
                   </p>
@@ -410,9 +410,9 @@ function About() {
       </section>
 
       {/* 4. Chairman's Message Section */}
-      <section className="bg-gradient-to-tr from-[#FFF5F8] via-[#fffcfd] to-white py-14 md:py-20 border-b border-slate-100 overflow-hidden relative">
+      <section className="bg-gradient-to-tr from-[#FFF5F8] via-[#fffcfd] to-white pt-6 pb-8 md:pt-8 md:pb-10 border-b border-slate-100 overflow-hidden relative">
         <div className="container-page relative z-10">
-          <div className="grid md:grid-cols-[1.1fr_1.3fr] gap-12 items-center">
+          <div className="grid md:grid-cols-[1.1fr_1.3fr] gap-8 md:gap-12 items-center">
             {/* Left Column: Monogram & Header */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -420,35 +420,23 @@ function About() {
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, type: "spring", stiffness: 60 }}
             >
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center gap-2 mb-3">
                 <div className="w-6 h-0.5 bg-[#FF87B3]" />
                 <span className="text-xs font-bold uppercase tracking-widest text-[#D94D78]">
                   Chairman's Message
                 </span>
               </div>
 
-              <h2 className="font-display text-3xl md:text-5xl font-extrabold text-[#14213D] leading-tight mb-4">
+              <h2 className="font-display text-3xl md:text-5xl font-extrabold text-[#14213D] leading-tight mb-3">
                 A note from our leadership.
               </h2>
 
-              <div className="w-12 h-1 bg-[#FF87B3] rounded-full mb-6" />
+              <div className="w-12 h-1 bg-[#FF87B3] rounded-full mb-4" />
 
-              <p className="text-slate-600 text-sm md:text-base leading-relaxed mb-8 max-w-sm font-medium">
+              <p className="text-slate-600 text-sm md:text-base leading-relaxed max-w-sm font-medium">
                 At SreeDevi Hospital &amp; Fertility Centre, we believe that true clinical
                 excellence begins with listening with kindness and treating every family as our own.
               </p>
-
-              {/* Monogram Seal */}
-              <motion.div
-                animate={shouldReduceMotion ? undefined : { y: [0, -6, 0], rotate: [0, 2, -2, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.08 }}
-                className="relative w-24 h-24 rounded-full border-2 border-[#FF87B3] flex items-center justify-center bg-white shadow-md mt-8 select-none cursor-default hover:shadow-lg transition-shadow duration-300"
-              >
-                <span className="font-serif text-3xl font-bold text-[#D94D78] tracking-tight">
-                  SD
-                </span>
-              </motion.div>
             </motion.div>
 
             {/* Right Column: Quote Card */}
@@ -465,23 +453,18 @@ function About() {
                     : { y: -6, boxShadow: "0 25px 50px rgba(255,135,179,0.30)" }
                 }
                 transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                className="relative rounded-[32px] bg-white border border-[#FF87B3] p-8 md:p-12 shadow-[0_15px_45px_rgba(255,135,179,0.15)] transition-all duration-300"
+                className="relative rounded-[32px] bg-white border border-[#FF87B3] p-6 md:p-8 shadow-[0_15px_45px_rgba(255,135,179,0.15)] transition-all duration-300"
               >
-                <span
-                  className="absolute top-4 left-6 text-7xl font-serif text-[#FF87B3] opacity-60 leading-none select-none"
-                  aria-hidden="true"
-                >
-                  “
-                </span>
                 <p className="text-[#14213D] text-base md:text-lg font-semibold leading-relaxed italic relative z-10">
-                  "Medicine is not just about diagnosis and treatment. It is about listening — to a
+                  <span className="text-[#D94D78] text-xl md:text-2xl font-serif font-bold mr-1 leading-none select-none">“</span>
+                  Medicine is not just about diagnosis and treatment. It is about listening to a
                   young woman anxious about her first pregnancy, to a couple longing for a child, to
                   a father worried about his diabetes. Every day at SreeDevi, we try to earn that
-                  trust, again and again."
+                  trust, again and again.
+                  <span className="text-[#D94D78] text-xl md:text-2xl font-serif font-bold ml-1 leading-none select-none">”</span>
                 </p>
-                <div className="w-8 h-px bg-pink-100 my-5" />
-                <footer className="text-xs md:text-sm text-slate-500 font-semibold">
-                  — Chairman, SreeDevi Hospital &amp; Fertility Centre
+                <footer className="mt-4 text-xs md:text-sm text-slate-500 font-semibold">
+                  Chairman, SreeDevi Hospital &amp; Fertility Centre
                 </footer>
               </motion.div>
             </motion.div>
@@ -493,16 +476,16 @@ function About() {
       <MilestoneTimeline />
 
       {/* 6. Certifications Section */}
-      <section className="bg-gradient-to-b from-white to-[#FFF5F8] py-14 md:py-20 border-t border-slate-100 overflow-hidden relative">
+      <section className="bg-gradient-to-b from-white to-[#FFF5F8] pt-6 pb-8 md:pt-8 md:pb-12 border-t border-slate-100 overflow-hidden relative">
         <div className="container-page relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.5 }}
-            className="text-center mb-10 md:mb-12"
+            className="text-center mb-6 md:mb-8"
           >
-            <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4">
+            <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-3">
               Certifications
             </span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-[#14213D] leading-tight font-display tracking-tight">
@@ -693,16 +676,16 @@ function MilestoneTimeline() {
   const milestones = hospital.milestones;
 
   return (
-    <section className="py-14 md:py-20 overflow-hidden bg-white border-b border-slate-100 relative">
+    <section className="pt-6 pb-8 md:pt-8 md:pb-10 overflow-hidden bg-white border-b border-slate-100 relative">
       <div className="container-page relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-10 md:mb-14"
+          className="text-center mb-6 md:mb-8"
         >
-          <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4">
+          <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-3">
             Milestones
           </span>
           <h2 className="text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight">
@@ -714,7 +697,7 @@ function MilestoneTimeline() {
           </div>
         </motion.div>
 
-        <div className="relative max-w-5xl mx-auto py-8" ref={containerRef}>
+        <div className="relative max-w-5xl mx-auto py-2" ref={containerRef}>
           {/* Vertical Timeline Line Container */}
           <div
             ref={lineRef}
@@ -740,7 +723,7 @@ function MilestoneTimeline() {
           </div>
 
           {/* Cards List */}
-          <div className="space-y-12 md:space-y-20 relative">
+          <div className="space-y-6 md:space-y-8 relative">
             {milestones.map((m, idx) => {
               const threshold = cardThresholds[idx] || 0;
               const isActive = scrollProgress >= threshold - 0.02;

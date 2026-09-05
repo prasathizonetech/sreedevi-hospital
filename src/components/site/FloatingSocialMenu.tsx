@@ -114,7 +114,7 @@ export function FloatingSocialMenu() {
   return (
     <div
       ref={menuRef}
-      className="fixed bottom-6 right-6 z-[9999] flex items-center justify-center select-none"
+      className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[9999] flex items-center justify-center select-none"
     >
       {/* 3D Arc Floating Social Icons */}
       <AnimatePresence>

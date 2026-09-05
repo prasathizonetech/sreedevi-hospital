@@ -55,23 +55,28 @@ export function Header() {
       {/* ── Desktop navbar ─── */}
       <div className="hidden lg:flex items-stretch w-full">
         {/* LEFT: White brand panel */}
-        <Link to="/" className="flex items-center gap-3 bg-white pl-6 pr-6 py-2.5 shrink-0 group">
+        <Link
+          to="/"
+          preload="intent"
+          className="flex items-center gap-2 xl:gap-3 bg-white pl-3 pr-2 xl:pl-6 xl:pr-5 py-2 xl:py-2.5 shrink-0 group cursor-pointer select-none"
+        >
           <motion.div
+            id="nav-logo-desktop"
             whileHover={shouldReduceMotion ? undefined : { scale: 1.06, rotate: 2 }}
             transition={{ type: "spring", stiffness: 300, damping: 18 }}
-            className="relative shrink-0"
+            className="relative shrink-0 pointer-events-none rounded-full overflow-hidden"
           >
             <img
               src={logoAsset}
               alt="SreeDevi Hospital logo"
-              className="h-14 w-14 xl:h-16 xl:w-16 object-contain"
+              className="h-11 w-11 xl:h-15 xl:w-15 object-contain rounded-full"
             />
           </motion.div>
-          <div className="leading-tight">
-            <div className="font-display text-[15px] xl:text-[17px] font-bold text-[#14213D] tracking-tight transition-colors group-hover:text-[#D94D78]">
+          <div className="leading-tight pointer-events-none">
+            <div className="font-display text-[13.5px] xl:text-[16.5px] font-bold text-[#14213D] tracking-tight transition-colors group-hover:text-[#D94D78]">
               SreeDevi Hospital
             </div>
-            <div className="text-[11px] xl:text-[12px] font-medium text-slate-500 mt-0.5">
+            <div className="text-[10px] xl:text-[11.5px] font-medium text-slate-500 mt-0.5">
               &amp; <span className="font-bold text-[#D94D78]">Fertility Centre</span> · Srirangam
             </div>
           </div>
@@ -79,13 +84,13 @@ export function Header() {
 
         {/* CURVE: sigmoid S-curve per graph */}
         <div
-          className="relative shrink-0 self-stretch pointer-events-none"
-          style={{ width: "100px", backgroundColor: NAV_PINK }}
+          className="relative shrink-0 self-stretch pointer-events-none w-8 xl:w-16"
+          style={{ backgroundColor: NAV_PINK }}
         >
           <svg
             viewBox="0 0 100 100"
             preserveAspectRatio="none"
-            className="absolute inset-0 h-full w-full"
+            className="absolute inset-0 h-full w-full pointer-events-none"
           >
             <path d="M 0 100 C 15 100 22 90 32 65 C 46 30 64 5 100 0 L 0 0 Z" fill="white" />
           </svg>
@@ -93,10 +98,10 @@ export function Header() {
 
         {/* RIGHT: Pink nav panel with #FF87B3 */}
         <nav
-          className="flex flex-1 items-center pl-3 pr-5 xl:pr-6 overflow-hidden"
+          className="flex flex-1 items-center justify-end xl:justify-start pl-1 xl:pl-2 pr-2 xl:pr-6 overflow-visible"
           style={{ backgroundColor: NAV_PINK }}
         >
-          <div className="flex items-center gap-0.5 xl:gap-1 flex-wrap">
+          <div className="flex items-center gap-0.5 xl:gap-1 flex-nowrap">
             {navItems.map((item) => {
               const isActive =
                 item.to === "/"
@@ -107,13 +112,14 @@ export function Header() {
                 <Link
                   key={item.to}
                   to={item.to}
-                  className="relative px-3.5 py-1.5 rounded-full text-[13px] xl:text-[13.5px] font-medium whitespace-nowrap transition-colors duration-200 group/nav"
+                  preload="intent"
+                  className="relative px-2 xl:px-3 py-1.5 rounded-full text-[11.5px] xl:text-[13px] font-semibold whitespace-nowrap transition-colors duration-200 group/nav shrink-0 cursor-pointer select-none"
                 >
                   {/* Smooth active background pill with layoutId */}
                   {isActive && (
                     <motion.div
                       layoutId="navActiveBackground"
-                      className="absolute inset-0 bg-white rounded-full shadow-md shadow-pink-950/15"
+                      className="absolute inset-0 bg-white rounded-full shadow-md shadow-pink-950/15 pointer-events-none"
                       transition={{ type: "spring", stiffness: 350, damping: 28 }}
                     />
                   )}
@@ -122,21 +128,21 @@ export function Header() {
                   {isActive && (
                     <motion.div
                       layoutId="navActiveUnderline"
-                      className="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-5 h-[3px] rounded-full bg-[#D94D78] shadow-xs"
+                      className="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-5 h-[3px] rounded-full bg-[#D94D78] shadow-xs pointer-events-none"
                       transition={{ type: "spring", stiffness: 350, damping: 28 }}
                     />
                   )}
 
                   {/* Hover glow background for inactive items */}
                   {!isActive && (
-                    <span className="absolute inset-0 rounded-full bg-white/0 group-hover/nav:bg-white/35 transition-all duration-200" />
+                    <span className="absolute inset-0 rounded-full bg-white/0 group-hover/nav:bg-white/35 transition-all duration-200 pointer-events-none" />
                   )}
 
                   <span
-                    className={`relative z-10 transition-all duration-200 ${
+                    className={`relative z-10 transition-all duration-200 pointer-events-none ${
                       isActive
                         ? "text-[#D94D78] font-bold"
-                        : "text-[#14213D] font-medium group-hover/nav:text-white"
+                        : "text-[#14213D] font-semibold group-hover/nav:text-white"
                     }`}
                   >
                     {item.label}
@@ -151,12 +157,14 @@ export function Header() {
       {/* ── Mobile navbar ─── */}
       <div className="lg:hidden w-full">
         <div className="flex items-center justify-between w-full overflow-hidden px-4 py-2.5">
-          <Link to="/" className="flex items-center gap-2.5 bg-white shrink-0">
-            <img
-              src={logoAsset}
-              alt="SreeDevi Hospital logo"
-              className="h-11 w-11 object-contain"
-            />
+          <Link to="/" preload="intent" className="flex items-center gap-2.5 bg-white shrink-0 cursor-pointer">
+            <div id="nav-logo-mobile" className="h-11 w-11 shrink-0 rounded-full overflow-hidden">
+              <img
+                src={logoAsset}
+                alt="SreeDevi Hospital logo"
+                className="h-11 w-11 object-contain rounded-full"
+              />
+            </div>
             <div className="leading-tight">
               <div className="font-display text-[14px] font-bold text-[#14213D]">
                 SreeDevi Hospital
@@ -200,8 +208,9 @@ export function Header() {
                 <Link
                   key={item.to}
                   to={item.to}
+                  preload="intent"
                   onClick={() => setMobileOpen(false)}
-                  className={`rounded-xl px-4 py-3 text-[14px] font-bold transition-all ${
+                  className={`rounded-xl px-4 py-3 text-[14px] font-bold transition-all cursor-pointer ${
                     isActive
                       ? "bg-[#FF87B3]/30 text-[#D94D78] shadow-xs border border-[#FF87B3]"
                       : "text-[#14213D] hover:bg-slate-50"
@@ -228,7 +237,7 @@ export function Header() {
                 whileHover={shouldReduceMotion ? undefined : { scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 href={`tel:${hospital.mobile}`}
-                className="px-4 py-2 rounded-xl text-[#14213D] text-xs font-extrabold shadow-xs hover:shadow-md transition-shadow border border-[#f06a99]"
+                className="px-4 py-2 rounded-xl text-[#14213D] text-xs font-extrabold shadow-xs hover:shadow-md transition-shadow border border-[#f06a99] cursor-pointer"
                 style={{ backgroundColor: NAV_PINK }}
               >
                 Call

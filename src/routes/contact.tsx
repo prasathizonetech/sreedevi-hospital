@@ -11,10 +11,11 @@ import {
   Building2,
   Quote,
   ChevronRight,
+  Heart,
 } from "lucide-react";
 import { hospital } from "@/data/hospital";
 import { departments } from "@/data/departments";
-import hospitalExterior from "@/assets/hospital-exterior.jpg";
+import contactHeroSupport from "@/assets/contact/contact-hero-support.jpg";
 import { useState } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { HeroBackground } from "@/components/site/hero/HeroBackground";
@@ -64,27 +65,75 @@ function Contact() {
   return (
     <>
       {/* ── 1. Contact Hero Section ── */}
-      <section className="relative bg-gradient-to-br from-[#FFF5F8] via-[#FF87B3] to-[#f06a99] text-[#14213D] overflow-hidden pt-12 pb-12 lg:pt-16 lg:pb-16 border-b border-[#FF87B3]">
+      <section className="relative bg-gradient-to-br from-[#FFF5F8] via-[#FF87B3] to-[#f06a99] text-[#14213D] overflow-hidden pt-4 pb-12 sm:pt-6 sm:pb-14 lg:pt-6 lg:pb-16 flex flex-col justify-center">
         {/* Shared Hero Background with animated glow orbs, organic curves & decor */}
         <HeroBackground />
 
-        <div className="container-page relative z-10 pt-4 md:pt-6 pb-2">
-          <div className="grid md:grid-cols-2 gap-10 items-center">
-            {/* Left Column: Title & Subtitle */}
-            <motion.div variants={staggerContainer} initial="hidden" animate="show">
+        {/* ── Smooth Decorative Wave Transition at the Bottom ── */}
+        <div className="absolute -bottom-[2px] inset-x-0 w-full overflow-hidden pointer-events-none z-20 leading-none select-none">
+          <svg
+            viewBox="0 0 1440 120"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-full block"
+            preserveAspectRatio="none"
+            style={{ height: "70px", minHeight: "50px", maxHeight: "110px" }}
+          >
+            <defs>
+              {/* Subtle Pink Ribbon Accent Gradient */}
+              <linearGradient id="contactWaveStrokePink" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#FFAEC7" stopOpacity="0.8" />
+                <stop offset="30%" stopColor="#FF85AA" stopOpacity="0.9" />
+                <stop offset="70%" stopColor="#FFAEC7" stopOpacity="0.85" />
+                <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.6" />
+              </linearGradient>
+
+              {/* Subtle Depth Shadow */}
+              <filter id="contactWaveDepthGlow" x="-5%" y="-40%" width="110%" height="180%">
+                <feDropShadow dx="0" dy="-2" stdDeviation="4" floodColor="#C92556" floodOpacity="0.18" />
+              </filter>
+            </defs>
+
+            {/* Secondary Ambient Crest Line */}
+            <path
+              d="M0,52 C280,18 560,78 840,42 C1120,8 1320,58 1440,38 L1440,125 L0,125 Z"
+              fill="#FFFFFF"
+              fillOpacity="0.3"
+            />
+
+            {/* Main Pure White Transition Wave */}
+            <path
+              d="M0,65 C260,28 540,88 820,50 C1100,16 1300,66 1440,48 L1440,125 L0,125 Z"
+              fill="#FFFFFF"
+              stroke="url(#contactWaveStrokePink)"
+              strokeWidth="1.8"
+              filter="url(#contactWaveDepthGlow)"
+            />
+          </svg>
+        </div>
+
+        <div className="container-page relative z-10 pt-0 pb-2 w-full">
+          <div className="grid md:grid-cols-12 gap-8 lg:gap-10 items-center">
+            {/* Left Column: Title & Subtitle (Unchanged text & layout) */}
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              animate="show"
+              className="md:col-span-6 lg:col-span-5 z-10 flex flex-col justify-center"
+            >
               <motion.div
                 variants={fadeUpVariant}
                 whileHover={shouldReduceMotion ? undefined : { scale: 1.05, y: -2 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="inline-flex items-center gap-1.5 rounded-full bg-white/80 backdrop-blur-md border border-[#f06a99] px-4 py-1.5 text-xs font-extrabold tracking-widest text-[#D94D78] uppercase mb-4 w-max shadow-sm cursor-default"
+                className="inline-flex items-center gap-1.5 rounded-full bg-white/80 backdrop-blur-md border border-[#f06a99] px-4 py-1.5 text-xs font-extrabold tracking-widest text-[#D94D78] uppercase mb-3 w-max shadow-sm cursor-default"
               >
-                <Sparkles className="w-3.5 h-3.5 text-[#D94D78]" />
+                <Phone className="w-3.5 h-3.5 text-[#D94D78]" />
                 Contact Us
               </motion.div>
 
               <motion.h1
                 variants={fadeUpVariant}
-                className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.12] mb-3 tracking-tight text-[#14213D]"
+                className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.12] mb-2.5 tracking-tight text-[#14213D]"
               >
                 We are always{" "}
                 <span className="text-[#D94D78] underline decoration-[#FF87B3] decoration-wavy decoration-1 underline-offset-8">
@@ -95,12 +144,12 @@ function Contact() {
 
               <motion.div
                 variants={fadeUpVariant}
-                className="w-14 h-1.5 bg-gradient-to-r from-[#FF87B3] to-[#D94D78] rounded-full mb-4"
+                className="w-14 h-1.5 bg-gradient-to-r from-[#FF87B3] to-[#D94D78] rounded-full mb-3"
               />
 
               <motion.p
                 variants={fadeUpVariant}
-                className="text-slate-700 text-sm md:text-base leading-relaxed mb-6 max-w-md font-medium"
+                className="text-slate-700 text-sm md:text-base leading-relaxed mb-5 max-w-md font-medium"
               >
                 On Gandhi Road, in the heart of Srirangam. We are here to assist with appointments,
                 emergency care, and all your health inquiries.
@@ -121,51 +170,168 @@ function Contact() {
               </motion.nav>
             </motion.div>
 
-            {/* Right Column: Hospital Exterior in curved frame */}
+            {/* Right Column: Large, Prominent & Attractive Patient Care Hero Visual */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, delay: 0.15 }}
-              className="relative flex items-center justify-center lg:justify-end"
+              className="md:col-span-6 lg:col-span-7 relative flex items-center justify-center lg:justify-end select-none mt-6 md:mt-0"
             >
-              {/* Floating Circle 1: Phone */}
-              <motion.div
-                animate={shouldReduceMotion ? undefined : { y: [0, -6, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.15 }}
-                className="absolute top-[12%] -left-3 w-11 h-11 rounded-full border-2 border-white bg-white text-[#D94D78] flex items-center justify-center shadow-lg shadow-pink-900/10 z-20 transition-transform hidden md:flex cursor-default"
-              >
-                <Phone className="w-4.5 h-4.5" />
-              </motion.div>
-
-              {/* Floating Circle 2: Mail */}
-              <motion.div
-                animate={shouldReduceMotion ? undefined : { y: [0, 7, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.15 }}
-                className="absolute top-[48%] -left-7 w-11 h-11 rounded-full border-2 border-white bg-white text-[#D94D78] flex items-center justify-center shadow-lg shadow-pink-900/10 z-20 transition-transform hidden md:flex cursor-default"
-              >
-                <Mail className="w-4.5 h-4.5" />
-              </motion.div>
-
-              {/* Floating Circle 3: MapPin */}
-              <motion.div
-                animate={shouldReduceMotion ? undefined : { y: [0, -6, 0] }}
-                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.15 }}
-                className="absolute bottom-[12%] -left-3 w-11 h-11 rounded-full border-2 border-white bg-white text-[#D94D78] flex items-center justify-center shadow-lg shadow-pink-900/10 z-20 transition-transform hidden md:flex cursor-default"
-              >
-                <MapPin className="w-4.5 h-4.5" />
-              </motion.div>
-
-              <div className="relative z-10 w-full max-w-[420px] h-[260px] md:h-[300px] overflow-hidden rounded-[180px_60px_180px_180px] border-8 border-white shadow-2xl shadow-pink-900/10 group">
-                <motion.img
-                  src={hospitalExterior}
-                  alt="SreeDevi Hospital exterior dusk facade"
-                  whileHover={shouldReduceMotion ? undefined : { scale: 1.07 }}
-                  transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
-                  className="w-full h-full object-cover object-center transform-gpu"
+              <div className="relative w-full max-w-[480px] sm:max-w-[540px] lg:max-w-[600px] xl:max-w-[640px] h-[380px] sm:h-[440px] md:h-[470px] lg:h-[500px] flex items-center justify-center lg:justify-end">
+                
+                {/* Ambient Glow Aura behind the frame */}
+                <div
+                  className="absolute -inset-2 sm:-inset-4 bg-gradient-to-tr from-[#FF87B3]/40 via-[#f06a99]/25 to-white/30 rounded-l-[300px] rounded-r-[60px] blur-2xl pointer-events-none -z-10"
+                  aria-hidden="true"
                 />
+
+                {/* Decorative Connecting Arc SVG along the left contour */}
+                <svg
+                  className="absolute -left-6 sm:-left-10 md:-left-12 inset-y-0 w-[140px] sm:w-[170px] md:w-[190px] h-full pointer-events-none z-10 hidden sm:block"
+                  viewBox="0 0 160 480"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  preserveAspectRatio="none"
+                >
+                  <path
+                    d="M 140,30 C 50,70 15,180 20,260 C 25,340 70,410 130,450"
+                    stroke="#FE84B0"
+                    strokeWidth="2"
+                    strokeDasharray="5 5"
+                    strokeOpacity="0.85"
+                  />
+                  {/* Accent Beads along the curve */}
+                  <circle cx="140" cy="30" r="4" fill="#E6396E" />
+                  <circle cx="20" cy="180" r="3.5" fill="#E6396E" />
+                  <circle cx="24" cy="340" r="3.5" fill="#E6396E" />
+                  <circle cx="130" cy="450" r="4" fill="#E6396E" />
+                </svg>
+
+                {/* ── 3 Interactive Floating Contact Badges along the arch ── */}
+                {/* 1. Phone Badge */}
+                <motion.div
+                  animate={shouldReduceMotion ? undefined : { y: [0, -6, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  whileHover={shouldReduceMotion ? undefined : { scale: 1.15 }}
+                  className="absolute top-[8%] left-[4%] sm:left-[2%] md:left-[0%] z-30"
+                >
+                  <a
+                    href={`tel:${hospital.mobile}`}
+                    aria-label="Call Hospital"
+                    className="group flex items-center gap-2 p-1.5 sm:p-2 pr-3 sm:pr-4 rounded-full bg-[#E6396E] text-white shadow-[0_10px_25px_rgba(230,57,110,0.38)] border-2 sm:border-[3px] border-white transition-all cursor-pointer hover:shadow-xl hover:shadow-pink-900/20"
+                  >
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/20 flex items-center justify-center">
+                      <svg
+                        viewBox="0 0 24 24"
+                        className="w-4.5 h-4.5 sm:w-5 sm:h-5 fill-white text-white"
+                        fill="currentColor"
+                      >
+                        <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.25 1.02l-2.2 2.2z" />
+                      </svg>
+                    </div>
+                    <span className="text-[10px] sm:text-xs font-extrabold text-white tracking-wide hidden md:inline">
+                      Call Us
+                    </span>
+                  </a>
+                </motion.div>
+
+                {/* 2. Mail Badge */}
+                <motion.div
+                  animate={shouldReduceMotion ? undefined : { y: [0, 6, 0] }}
+                  transition={{ duration: 4.6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                  whileHover={shouldReduceMotion ? undefined : { scale: 1.15 }}
+                  className="absolute top-[46%] -left-[3%] sm:-left-[5%] md:-left-[7%] z-30"
+                >
+                  <a
+                    href={`mailto:${hospital.email}`}
+                    aria-label="Email Hospital"
+                    className="group flex items-center gap-2 p-1.5 sm:p-2 pr-3 sm:pr-4 rounded-full bg-white text-[#E6396E] shadow-[0_10px_25px_rgba(200,40,90,0.18)] border-2 sm:border-[3px] border-white transition-all cursor-pointer hover:border-[#FF87B3] hover:shadow-xl"
+                  >
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#FFF5F8] border border-[#FF87B3]/40 flex items-center justify-center">
+                      <svg
+                        viewBox="0 0 24 24"
+                        className="w-4.5 h-4.5 sm:w-5 sm:h-5 stroke-[#E6396E] fill-none"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <rect width="20" height="16" x="2" y="4" rx="2" />
+                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                      </svg>
+                    </div>
+                    <span className="text-[10px] sm:text-xs font-extrabold text-[#14213D] tracking-wide hidden md:inline">
+                      Enquiry
+                    </span>
+                  </a>
+                </motion.div>
+
+                {/* 3. Location Pin Badge */}
+                <motion.div
+                  animate={shouldReduceMotion ? undefined : { y: [0, -5, 0] }}
+                  transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                  whileHover={shouldReduceMotion ? undefined : { scale: 1.15 }}
+                  className="absolute bottom-[10%] left-[2%] sm:left-[0%] md:-left-[2%] z-30"
+                >
+                  <a
+                    href="#contact-info"
+                    aria-label="Hospital Location"
+                    className="group flex items-center gap-2 p-1.5 sm:p-2 pr-3 sm:pr-4 rounded-full bg-white text-[#E6396E] shadow-[0_10px_25px_rgba(200,40,90,0.18)] border-2 sm:border-[3px] border-white transition-all cursor-pointer hover:border-[#FF87B3] hover:shadow-xl"
+                  >
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#FFF5F8] border border-[#FF87B3]/40 flex items-center justify-center">
+                      <svg
+                        viewBox="0 0 24 24"
+                        className="w-4.5 h-4.5 sm:w-5 sm:h-5 fill-[#E6396E]"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M12 2C8.134 2 5 5.134 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.866-3.134-7-7-7zm0 9.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"
+                        />
+                      </svg>
+                    </div>
+                    <span className="text-[10px] sm:text-xs font-extrabold text-[#14213D] tracking-wide hidden md:inline">
+                      Srirangam
+                    </span>
+                  </a>
+                </motion.div>
+
+                {/* ── Main Reception Support Photo in Grand Sweeping Curved Arch Frame ── */}
+                <div className="relative z-20 w-[300px] sm:w-[400px] md:w-[460px] lg:w-[520px] xl:w-[560px] h-[320px] sm:h-[400px] md:h-[440px] lg:h-[470px] rounded-l-[180px] sm:rounded-l-[240px] md:rounded-l-[280px] lg:rounded-l-[320px] rounded-r-[36px] sm:rounded-r-[48px] border-[6px] sm:border-[8px] lg:border-[10px] border-white shadow-[0_24px_60px_rgba(200,40,90,0.24)] overflow-hidden group bg-slate-900">
+                  <motion.img
+                    src={contactHeroSupport}
+                    alt="SreeDevi Hospital friendly patient support and care coordination"
+                    whileHover={shouldReduceMotion ? undefined : { scale: 1.05 }}
+                    transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
+                    className="w-full h-full object-cover object-[35%_center] sm:object-center transform-gpu select-none"
+                    loading="eager"
+                    fetchPriority="high"
+                  />
+                  {/* Subtle inner lighting gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-white/10 pointer-events-none" />
+                </div>
+
+                {/* ── Floating "We are here to help you" Acrylic Glass Card ── */}
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.35, duration: 0.5 }}
+                  whileHover={shouldReduceMotion ? undefined : { scale: 1.04, y: -2 }}
+                  className="absolute -bottom-3 sm:-bottom-4 right-3 sm:right-6 md:right-4 z-30 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl border border-[#FF87B3] px-4 py-2.5 sm:px-5 sm:py-3 shadow-[0_14px_36px_rgba(200,40,90,0.20)] text-[#14213D] flex items-center gap-3 cursor-default"
+                >
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] shrink-0 shadow-2xs">
+                    <Heart className="w-4 h-4 sm:w-5 sm:h-5 fill-[#D94D78] text-[#D94D78] animate-pulse" />
+                  </div>
+                  <div>
+                    <div className="text-[11px] sm:text-[13px] font-extrabold text-[#14213D] leading-tight">
+                      We are here to help you
+                    </div>
+                    <div className="text-[9px] sm:text-[10px] text-[#D94D78] font-bold mt-0.5 flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping inline-block" />
+                      24/7 Patient Care &amp; Support
+                    </div>
+                  </div>
+                </motion.div>
+
               </div>
             </motion.div>
           </div>
@@ -173,7 +339,7 @@ function Contact() {
       </section>
 
       {/* ── 2. Main Content Section ── */}
-      <section className="container-page py-16 md:py-24">
+      <section className="container-page pt-6 pb-6 md:pt-8 md:pb-8">
         <div className="grid gap-10 lg:grid-cols-2 items-start">
           {/* Left Column: Details Cards & Map */}
           <motion.div
@@ -183,11 +349,11 @@ function Contact() {
             viewport={{ once: true, margin: "-60px" }}
             className="space-y-4"
           >
-            <motion.div variants={fadeUpVariant} className="mb-6">
-              <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4 w-max shadow-2xs">
+            <motion.div variants={fadeUpVariant} className="mb-4 md:mb-5">
+              <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-3 w-max shadow-2xs">
                 Contact Details
               </span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-3">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-2">
                 We’re here to help
               </h2>
               <p className="text-slate-600 text-sm leading-relaxed max-w-md font-medium">
@@ -264,7 +430,7 @@ function Contact() {
             transition={{ duration: 0.6, type: "spring", stiffness: 60 }}
             className="flex justify-center lg:justify-end"
           >
-            <div className="w-full max-w-[550px] bg-white border border-[#FF87B3] rounded-[32px] p-8 md:p-10 shadow-xl relative overflow-hidden">
+            <div className="w-full max-w-[550px] bg-white border border-[#FF87B3] rounded-[32px] p-6 md:p-8 shadow-xl relative overflow-hidden">
               <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4 w-max shadow-2xs">
                 Enquiry
               </span>

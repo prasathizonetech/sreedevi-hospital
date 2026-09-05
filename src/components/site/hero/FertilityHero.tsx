@@ -1,4 +1,3 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   Calendar,
@@ -10,139 +9,147 @@ import {
   Baby,
   Heart,
   ChevronRight,
-  ChevronLeft,
 } from "lucide-react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { HeroBackground } from "./HeroBackground";
-import heroCoupleDoctor from "@/assets/hero-couple-doctor.jpg";
-import aboutHero1 from "@/assets/about/about-hero-1.jpg";
-import fertilityLab from "@/assets/fertility-lab.jpg";
-
-interface CarouselCardItem {
-  id: string;
-  title: string;
-  subtitle: string;
-  image: string;
-  alt: string;
-  badge: string;
-  badgeColor: string;
-}
-
-const CAROUSEL_ITEMS: CarouselCardItem[] = [
-  {
-    id: "consultation",
-    title: "Expert Clinical Consultation",
-    subtitle: "Unhurried, compassionate guidance by senior fertility specialists",
-    image: heroCoupleDoctor,
-    alt: "Doctor consulting warmly with couple at SreeDevi Fertility Centre",
-    badge: "Specialist Care",
-    badgeColor: "#FB5783",
-  },
-  {
-    id: "maternity",
-    title: "Cherished Family Moments",
-    subtitle: "Walking with you until you hold your healthy newborn",
-    image: aboutHero1,
-    alt: "Happy Indian parents with newborn baby receiving expert maternity care",
-    badge: "98% Positive Experience",
-    badgeColor: "#E6396B",
-  },
-  {
-    id: "lab",
-    title: "Advanced IVF & Embryology Lab",
-    subtitle: "Class 10,000 cleanroom with world-class micromanipulation systems",
-    image: fertilityLab,
-    alt: "Senior embryologist operating high-power microscope in IVF cleanroom",
-    badge: "Advanced Tech",
-    badgeColor: "#0284C7",
-  },
-];
+import { motion, useReducedMotion } from "framer-motion";
+import fertilityHeroFoetusOrb from "@/assets/fertility/fertility-hero-foetus-orb.webp";
 
 const TRUST_METRICS = [
-  { icon: <HeartHandshake className="w-5 h-5 text-[#FB5783]" />, label: "Advanced IVF" },
-  { icon: <Users className="w-5 h-5 text-[#FB5783]" />, label: "Experienced Specialists" },
-  { icon: <Award className="w-5 h-5 text-[#FB5783]" />, label: "Personalized Care" },
-  { icon: <Heart className="w-5 h-5 text-[#FB5783]" />, label: "Compassionate Support" },
-  { icon: <Baby className="w-5 h-5 text-[#FB5783]" />, label: "Complete Fertility Care" },
+  { icon: <HeartHandshake className="w-4 h-4" />, label: "Advanced IVF" },
+  { icon: <Users className="w-4 h-4" />, label: "Experienced Specialists" },
+  { icon: <Award className="w-4 h-4" />, label: "Personalized Care" },
+  { icon: <Heart className="w-4 h-4" />, label: "Compassionate Support" },
+  { icon: <Baby className="w-4 h-4" />, label: "Complete Fertility Care" },
 ];
 
 export function FertilityHero() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
   const shouldReduceMotion = useReducedMotion();
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const total = CAROUSEL_ITEMS.length;
-
-  const nextSlide = useCallback(() => {
-    setActiveIndex((prev) => (prev + 1) % total);
-  }, [total]);
-
-  const prevSlide = useCallback(() => {
-    setActiveIndex((prev) => (prev - 1 + total) % total);
-  }, [total]);
-
-  // Autoplay every 4.5 seconds when not paused and not reduced-motion
-  useEffect(() => {
-    if (isPaused) return;
-    const timer = setInterval(() => {
-      nextSlide();
-    }, 4500);
-    return () => clearInterval(timer);
-  }, [isPaused, nextSlide]);
-
-  // Keyboard navigation support
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "ArrowLeft") {
-      e.preventDefault();
-      prevSlide();
-    } else if (e.key === "ArrowRight") {
-      e.preventDefault();
-      nextSlide();
-    }
-  };
-
-  // Helper to determine relative position offset (-1, 0, 1)
-  const getCardOffset = (index: number) => {
-    const diff = (index - activeIndex + total) % total;
-    if (diff === 0) return 0; // Active (center)
-    if (diff === 1) return 1; // Next (right)
-    return -1; // Previous (left)
-  };
 
   return (
     <div
-      ref={containerRef}
-      onKeyDown={handleKeyDown}
-      tabIndex={0}
       role="region"
-      aria-label="Fertility & IVF Centre Hero Carousel"
+      aria-label="Fertility & IVF Centre Hero"
       className="outline-none"
     >
-      {/* ── 1. Main Hero Container with Soft Blush Background ── */}
-      <section className="relative bg-gradient-to-br from-[#FFF5F8] via-[#FFEBF2] to-[#FFF0F6] text-[#14213D] overflow-hidden pt-4 pb-14 sm:pt-6 sm:pb-16 lg:pt-6 lg:pb-18 border-b border-[#FF87B3]">
-        {/* Decorative Background Curves and Glow */}
-        <HeroBackground />
+      {/* ── 1. Main Hero Container with Seamless Full-Bleed Pink Atmosphere ── */}
+      <section className="relative bg-gradient-to-r from-[#F9E2EB] via-[#F6C2D4] to-[#E98CAE] text-[#14213D] overflow-hidden min-h-[500px] sm:min-h-[540px] lg:min-h-[580px] xl:min-h-[600px] flex items-center border-b border-[#FF87B3]">
+        
+        {/* ── Seamless Full-Bleed Right-Side Artwork (Touches Top, Right Corner, Bottom, Zero Square Edges) ── */}
+        <div
+          className="absolute right-0 top-0 bottom-0 w-full md:w-[60%] lg:w-[64%] xl:w-[68%] h-full pointer-events-none select-none z-10 overflow-hidden"
+          style={{
+            maskImage:
+              "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.3) 12%, rgba(0,0,0,0.85) 28%, black 45%, black 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.3) 12%, rgba(0,0,0,0.85) 28%, black 45%, black 100%)",
+          }}
+        >
+          {/* Animated 3D Floating Fetus in Womb Artwork */}
+          <motion.div
+            animate={
+              shouldReduceMotion
+                ? undefined
+                : {
+                    y: [0, -6, 2, -4, 0],
+                    scale: [1, 1.015, 0.995, 1.01, 1],
+                  }
+            }
+            transition={{
+              duration: 7,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="w-full h-full flex items-center justify-end"
+          >
+            <img
+              src={fertilityHeroFoetusOrb}
+              alt="Realistic developing fetus inside glowing transparent womb bubble with cellular blastocysts and flowing soft waves"
+              className="w-full h-full object-cover object-right select-none transform-gpu mix-blend-multiply"
+              loading="eager"
+              fetchPriority="high"
+            />
+          </motion.div>
+        </div>
 
-        <div className="container-page relative z-10 pt-1 md:pt-2 pb-2">
-          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* ── Left Column: Headline, Supporting Text, Action Button & Breadcrumb (5.5 cols) ── */}
+        {/* ── Ambient Floating Glows & Fluid Womb Pulse Overlays ── */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-15" aria-hidden="true">
+          {/* Large Radiant Ambient Backlight on Right */}
+          <motion.div
+            animate={
+              shouldReduceMotion
+                ? undefined
+                : {
+                    scale: [1, 1.1, 1],
+                    opacity: [0.55, 0.85, 0.55],
+                  }
+            }
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-1/2 -translate-y-1/2 right-[10%] lg:right-[15%] w-[420px] lg:w-[600px] h-[420px] lg:h-[600px] rounded-full bg-gradient-to-tr from-white/70 via-pink-200/40 to-transparent blur-3xl"
+          />
+
+          {/* Realistic Womb Heartbeat Pulse Rings */}
+          <motion.div
+            animate={
+              shouldReduceMotion
+                ? undefined
+                : {
+                    scale: [0.96, 1.06, 0.98, 1.04, 0.96],
+                    opacity: [0.35, 0.8, 0.45, 0.75, 0.35],
+                  }
+            }
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute right-[18%] sm:right-[22%] lg:right-[20%] top-1/2 -translate-y-1/2 w-[260px] sm:w-[320px] lg:w-[380px] h-[260px] sm:h-[320px] lg:h-[380px] rounded-full bg-gradient-to-tr from-white/90 via-pink-100/50 to-[#FF87B3]/40 blur-2xl"
+          />
+
+          {/* Floating Cellular Blastocysts with Fluid Organic Float */}
+          <motion.div
+            animate={
+              shouldReduceMotion
+                ? undefined
+                : {
+                    y: [0, -12, 3, -8, 0],
+                    x: [0, 4, -3, 2, 0],
+                    scale: [1, 1.06, 0.98, 1.04, 1],
+                    rotate: [0, 8, -5, 3, 0],
+                  }
+            }
+            transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-8 right-6 sm:right-12 lg:right-16 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-white via-pink-100 to-[#FF87B3]/60 shadow-[0_6px_20px_rgba(255,135,179,0.5)] border-2 border-white backdrop-blur-xs"
+          />
+          <motion.div
+            animate={
+              shouldReduceMotion
+                ? undefined
+                : {
+                    y: [0, 10, -4, 8, 0],
+                    x: [0, -3, 3, -2, 0],
+                    scale: [1, 0.94, 1.03, 0.97, 1],
+                    rotate: [0, -7, 4, -3, 0],
+                  }
+            }
+            transition={{ duration: 8.5, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+            className="absolute bottom-8 right-[32%] sm:right-[36%] lg:right-[38%] w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-gradient-to-br from-white via-pink-100 to-[#FF87B3]/50 shadow-[0_6px_18px_rgba(255,135,179,0.45)] border-2 border-white backdrop-blur-xs"
+          />
+        </div>
+
+        {/* ── Left Content: Typography, Actions & Breadcrumbs ── */}
+        <div className="container-page relative z-20 pt-6 pb-16 sm:pt-8 sm:pb-20 lg:pt-10 lg:pb-24">
+          <div className="grid lg:grid-cols-12 gap-8 items-center">
+            
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-              className="lg:col-span-5 xl:col-span-5 max-w-xl"
+              className="lg:col-span-6 xl:col-span-5 max-w-xl"
             >
               {/* Eyebrow Pill Tag */}
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/80 backdrop-blur-md border border-[#f06a99] px-4 py-1.5 text-xs font-extrabold tracking-widest text-[#FB5783] uppercase mb-3.5 shadow-sm cursor-default">
+              <div className="inline-flex items-center gap-2 rounded-full bg-white/85 backdrop-blur-md border border-[#f06a99] px-4 py-1.5 text-xs font-extrabold tracking-widest text-[#FB5783] uppercase mb-4 shadow-sm cursor-default">
                 <Sparkles className="w-3.5 h-3.5 text-[#FB5783]" />
                 <span>FERTILITY &amp; IVF CENTRE</span>
               </div>
 
               {/* Main Heading */}
               <h1
-                className="font-serif font-semibold text-[38px] sm:text-[46px] md:text-[52px] lg:text-[56px] leading-[1.12] tracking-tight text-[#14213D] mb-3"
-                style={{ fontFamily: "'Playfair Display', 'Lora', Georgia, serif", fontWeight: 600 }}
+                className="font-display font-extrabold text-[34px] sm:text-[44px] md:text-[50px] lg:text-[54px] leading-[1.12] tracking-tight text-[#14213D] mb-3"
               >
                 Where hope <br />
                 becomes{" "}
@@ -160,7 +167,7 @@ export function FertilityHero() {
               </p>
 
               {/* Pink "Book Consultation" Button */}
-              <div className="flex flex-wrap items-center gap-4 mb-5">
+              <div className="flex flex-wrap items-center gap-4 mb-6">
                 <Link
                   to="/contact"
                   className="inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#FF5C8A] via-[#FB5783] to-[#DE356A] text-white px-7 py-3.5 text-sm font-bold shadow-lg shadow-pink-500/25 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 cursor-pointer"
@@ -183,170 +190,43 @@ export function FertilityHero() {
               </nav>
             </motion.div>
 
-            {/* ── Right Column: 3D Layered Glass Carousel System (6.5 cols) ── */}
-            <div
-              className="lg:col-span-7 xl:col-span-7 relative flex flex-col items-center justify-center min-h-[380px] sm:min-h-[440px] lg:min-h-[480px] select-none"
-              onMouseEnter={() => setIsPaused(true)}
-              onMouseLeave={() => setIsPaused(false)}
-            >
-              {/* Cards Perspective Stage */}
-              <div
-                className="relative w-full max-w-[620px] h-[320px] sm:h-[370px] lg:h-[400px] flex items-center justify-center"
-                style={{ perspective: "1200px" }}
-              >
-                {CAROUSEL_ITEMS.map((item, idx) => {
-                  const offset = getCardOffset(idx);
-                  const isActive = offset === 0;
-                  const isRight = offset === 1;
-                  const isLeft = offset === -1;
+            {/* Clear spacer for right side on desktop */}
+            <div className="hidden lg:block lg:col-span-6 xl:col-span-7 pointer-events-none min-h-[360px]" />
 
-                  return (
-                    <motion.div
-                      key={item.id}
-                      animate={
-                        shouldReduceMotion
-                          ? { opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.95 }
-                          : {
-                              x: isActive ? "0%" : isRight ? "38%" : "-38%",
-                              scale: isActive ? 1 : 0.84,
-                              rotateY: isActive ? 0 : isRight ? 16 : -16,
-                              rotateX: isActive ? 1 : 0,
-                              opacity: isActive ? 1 : 0.65,
-                              zIndex: isActive ? 30 : 10,
-                            }
-                      }
-                      transition={{
-                        duration: 0.75,
-                        ease: [0.16, 1, 0.3, 1], // Smooth premium ease-out
-                      }}
-                      onClick={() => {
-                        if (!isActive) setActiveIndex(idx);
-                      }}
-                      className={`absolute top-0 w-[270px] sm:w-[330px] lg:w-[360px] h-[310px] sm:h-[360px] lg:h-[390px] rounded-[32px] sm:rounded-[36px] p-2.5 sm:p-3 transition-shadow duration-500 cursor-pointer ${
-                        isActive
-                          ? "border-2 border-white/95 bg-gradient-to-tr from-white/80 via-white/40 to-[#FF87B3]/30 backdrop-blur-md shadow-[0_25px_60px_rgba(251,87,131,0.30)] ring-1 ring-[#FB5783]/30"
-                          : isRight
-                          ? "border-2 border-white/80 bg-gradient-to-tr from-white/60 to-[#38BDF8]/20 backdrop-blur-md shadow-[0_15px_35px_rgba(56,189,248,0.2)] hover:opacity-90"
-                          : "border-2 border-white/80 bg-gradient-to-tr from-white/60 to-[#FFAEC6]/20 backdrop-blur-md shadow-[0_15px_35px_rgba(255,135,179,0.2)] hover:opacity-90"
-                      }`}
-                    >
-                      {/* Image Container with Inner Curved Mask */}
-                      <div className="relative w-full h-full rounded-[24px] sm:rounded-[28px] overflow-hidden group">
-                        <motion.img
-                          src={item.image}
-                          alt={item.alt}
-                          whileHover={shouldReduceMotion ? undefined : { scale: 1.05 }}
-                          transition={{ duration: 0.6, ease: "easeOut" }}
-                          className="w-full h-full object-cover select-none"
-                        />
-
-                        {/* Top Subtle Pill Badge on Active Card */}
-                        {isActive && (
-                          <div
-                            className="absolute top-3 left-3 z-30 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-white text-xs font-extrabold shadow-sm flex items-center gap-1.5"
-                            style={{ color: item.badgeColor }}
-                          >
-                            <Sparkles className="w-3.5 h-3.5" />
-                            <span>{item.badge}</span>
-                          </div>
-                        )}
-                      </div>
-                    </motion.div>
-                  );
-                })}
-
-                {/* ── Floating Heart Badge near Center Card ── */}
-                <motion.div
-                  animate={
-                    shouldReduceMotion
-                      ? undefined
-                      : {
-                          y: [0, -7, 0],
-                          rotate: [0, 4, 0, -4, 0],
-                        }
-                  }
-                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute -top-3 right-[18%] sm:right-[22%] z-40 w-11 h-11 rounded-full bg-white/95 backdrop-blur-md border-2 border-white text-[#FB5783] shadow-lg shadow-pink-500/20 flex items-center justify-center pointer-events-none"
-                >
-                  <Heart className="w-5 h-5 text-[#FB5783] fill-[#FB5783]" />
-                </motion.div>
-
-                {/* ── Navigation Arrows (Left / Right) ── */}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    prevSlide();
-                  }}
-                  aria-label="Previous slide"
-                  className="absolute left-1 sm:-left-3 top-1/2 -translate-y-1/2 z-40 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 backdrop-blur-md border border-[#FF87B3] text-[#FB5783] shadow-lg flex items-center justify-center cursor-pointer hover:bg-[#FB5783] hover:text-white hover:scale-110 active:scale-95 transition-all duration-300"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    nextSlide();
-                  }}
-                  aria-label="Next slide"
-                  className="absolute right-1 sm:-right-3 top-1/2 -translate-y-1/2 z-40 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 backdrop-blur-md border border-[#FF87B3] text-[#FB5783] shadow-lg flex items-center justify-center cursor-pointer hover:bg-[#FB5783] hover:text-white hover:scale-110 active:scale-95 transition-all duration-300"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* ── Carousel Progress Dots Below ── */}
-              <div className="flex items-center gap-2 mt-4 z-30">
-                {CAROUSEL_ITEMS.map((_, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => setActiveIndex(i)}
-                    aria-label={`Go to slide ${i + 1}`}
-                    className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                      activeIndex === i
-                        ? "w-7 bg-[#FB5783] shadow-xs"
-                        : "w-2.5 bg-slate-300 hover:bg-[#FF87B3]"
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* ── 2. Bottom Trust-Feature Metric Strip ── */}
+      {/* ── 2. Bottom Trust-Feature Metric Strip (Compact & Left-Aligned) ── */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay: 0.1 }}
-        className="container-page max-w-5xl mx-auto -translate-y-8 relative z-25"
+        className="container-page relative z-25 -translate-y-6 sm:-translate-y-8 flex justify-start"
       >
-        <div className="bg-white rounded-3xl border border-[#FF87B3] p-5 md:p-6 shadow-[0_12px_40px_rgba(255,135,179,0.30)] flex flex-wrap md:flex-nowrap justify-between gap-4 sm:gap-6 items-center">
-          {TRUST_METRICS.map((item, idx) => (
-            <div
-              key={idx}
-              className="flex items-center gap-3 w-full md:w-auto group cursor-default"
-            >
-              <motion.div
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.15, rotate: 6 }}
-                transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                className="w-10 h-10 rounded-xl bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#FB5783] shrink-0 group-hover:bg-[#FB5783] group-hover:text-white transition-colors duration-300 shadow-2xs"
+        <div className="bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-full border border-[#FFCCD9] px-3 py-2 sm:px-4 sm:py-2.5 md:px-5 md:py-2.5 shadow-[0_8px_28px_rgba(255,135,179,0.20)] w-fit max-w-full">
+          <div className="flex flex-wrap sm:flex-nowrap items-center sm:divide-x divide-pink-100/90 gap-2 sm:gap-0">
+            {TRUST_METRICS.map((item, idx) => (
+              <div
+                key={idx}
+                className={`flex items-center gap-2 sm:gap-2.5 px-1.5 sm:px-2.5 md:px-3.5 group cursor-default ${
+                  idx === 0 ? "sm:pl-0.5" : ""
+                } ${idx === TRUST_METRICS.length - 1 ? "sm:pr-0.5" : ""}`}
               >
-                {item.icon}
-              </motion.div>
-              <div className="text-xs md:text-sm font-extrabold text-[#14213D] leading-tight group-hover:text-[#FB5783] transition-colors">
-                {item.label}
+                <motion.div
+                  whileHover={shouldReduceMotion ? undefined : { scale: 1.1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                  className="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full bg-[#FFF0F5] border border-[#FFCCD9] flex items-center justify-center text-[#FB5783] shrink-0 group-hover:bg-[#FB5783] group-hover:text-white transition-colors duration-200 shadow-2xs"
+                >
+                  {item.icon}
+                </motion.div>
+                <div className="text-[11px] sm:text-xs md:text-[12.5px] font-extrabold text-[#14213D] leading-tight whitespace-nowrap group-hover:text-[#FB5783] transition-colors">
+                  {item.label}
+                </div>
               </div>
-              {idx < TRUST_METRICS.length - 1 && (
-                <div className="hidden md:block w-px h-8 bg-pink-100 self-center ml-4" />
-              )}
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </motion.div>
     </div>

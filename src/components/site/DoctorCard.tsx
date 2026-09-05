@@ -1,15 +1,43 @@
 import type { Doctor } from "@/data/doctors";
-import { CalendarClock, GraduationCap, Calendar, ArrowRight } from "lucide-react";
+import {
+  CalendarClock,
+  GraduationCap,
+  Sparkles,
+  Stethoscope,
+  HeartPulse,
+  Wind,
+  Award,
+} from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
-import { Link } from "@tanstack/react-router";
 
 interface DoctorCardProps {
   doctor: Doctor;
   layout?: boolean;
+  index?: number;
+  className?: string;
 }
 
-export function DoctorCard({ doctor, layout = true }: DoctorCardProps) {
+export function DoctorCard({ doctor, layout = true, index = 0, className = "" }: DoctorCardProps) {
   const shouldReduceMotion = useReducedMotion();
+
+  // Specialty icon mapping
+  const getSpecialityIcon = () => {
+    switch (doctor.departmentId) {
+      case "fertility":
+        return Sparkles;
+      case "diabetes":
+        return HeartPulse;
+      case "general-medicine":
+        return Stethoscope;
+      case "respiratory":
+        return Wind;
+      default:
+        return Stethoscope;
+    }
+  };
+
+  const SpecialityIcon = getSpecialityIcon();
+  const num = String((index ?? 0) + 1).padStart(2, "0");
 
   return (
     <motion.article
@@ -21,101 +49,110 @@ export function DoctorCard({ doctor, layout = true }: DoctorCardProps) {
         shouldReduceMotion
           ? undefined
           : {
-              y: -8,
-              scale: 1.015,
-              boxShadow: "0 25px 60px -12px rgba(255,135,179,0.45)",
+              y: -6,
+              boxShadow: "0 16px 36px rgba(244,63,94,0.13)",
             }
       }
       transition={{ type: "spring", stiffness: 280, damping: 22 }}
-      className="group relative flex flex-col justify-between overflow-hidden rounded-3xl bg-white border border-[#FF87B3] shadow-[0_8px_30px_rgba(0,0,0,0.04)] cursor-default transition-colors duration-300"
+      className={`group relative flex flex-col justify-between h-full w-full overflow-hidden rounded-[28px] sm:rounded-[32px] bg-white border border-[#FCE7F0] shadow-[0_4px_24px_rgba(244,63,94,0.06)] p-6 cursor-default transition-all duration-300 ${className}`}
     >
-      {/* Soft gradient glow behind the card on hover */}
-      <div
-        className="absolute -inset-1 bg-gradient-to-r from-[#FF87B3]/0 via-[#FF87B3]/30 to-[#FF87B3]/0 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-        aria-hidden="true"
-      />
+      <div className="flex flex-col h-full justify-between">
+        {/* ── 1. Top Row: Left Icon + 3x3 Dots, Right Number Badge ── */}
+        <div>
+          <div className="flex items-start justify-between relative z-10">
+            {/* Left: Dot Pattern + Circular Pink Icon */}
+            <div className="relative">
+              {/* 3x3 Pink Dots */}
+              <div className="absolute -top-1 -left-1 grid grid-cols-3 gap-1 opacity-70 pointer-events-none">
+                {[...Array(9)].map((_, i) => (
+                  <span key={i} className="w-1 h-1 rounded-full bg-[#FBA9C5]" />
+                ))}
+              </div>
 
-      <div>
-        {/* Image area with gentle zoom */}
-        <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-br from-[#FFF5F8] to-slate-100">
-          <motion.img
-            src={doctor.image}
-            alt={doctor.name}
-            loading="lazy"
-            width={800}
-            height={1000}
-            transition={{ duration: 0.65, ease: [0.25, 1, 0.5, 1] }}
-            whileHover={shouldReduceMotion ? undefined : { scale: 1.07 }}
-            className="h-full w-full object-cover object-top transform-gpu"
-          />
+              {/* Circular Icon Badge */}
+              <div className="w-11 h-11 rounded-full bg-gradient-to-tr from-[#E11D48] to-[#F43F5E] text-white flex items-center justify-center shadow-md shadow-pink-500/20 group-hover:scale-110 transition-transform duration-300 relative z-10 mt-1 ml-1">
+                <SpecialityIcon className="w-5 h-5 text-white" strokeWidth={2.2} />
+              </div>
+            </div>
 
-          {/* Soft multi-layered gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent pointer-events-none" />
-
-          {/* Experience badge - top right with subtle float effect */}
-          <div className="absolute top-4 right-4 bg-white/30 backdrop-blur-md border border-white/40 rounded-2xl px-3 py-1.5 shadow-lg">
-            <span className="text-white text-xs font-bold tracking-wide">
-              {doctor.experienceYears}+ yrs exp
-            </span>
+            {/* Right: Number Badge (01, 02, etc.) */}
+            <div className="flex flex-col items-center">
+              <span className="text-[#E11D48] font-bold text-sm tracking-tight leading-none px-2.5 py-1 rounded-full bg-[#FFF0F4]">
+                {num}
+              </span>
+              <span className="w-4 h-[2px] bg-[#E11D48] rounded-full mt-1" />
+            </div>
           </div>
 
-          {/* Name + speciality pinned at bottom */}
-          <div className="absolute bottom-0 inset-x-0 p-5">
-            <div className="text-[10px] font-extrabold uppercase tracking-widest text-[#FF87B3] mb-1 drop-shadow-xs">
-              {doctor.speciality}
+          {/* ── 2. Doctor Photo Frame with Experience Badge ── */}
+          <div className="relative rounded-2xl overflow-hidden aspect-[4/4.2] bg-gradient-to-b from-[#FFF5F8] to-slate-100 border border-[#FCE7F0] my-4 shadow-2xs">
+            <motion.img
+              src={doctor.image}
+              alt={doctor.name}
+              loading="lazy"
+              whileHover={shouldReduceMotion ? undefined : { scale: 1.05 }}
+              transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
+              className="h-full w-full object-cover object-top"
+            />
+
+            {/* Floating Experience Badge */}
+            <div className="absolute bottom-2.5 right-2.5 bg-white/95 backdrop-blur-md border border-[#FF87B3]/40 rounded-full px-2.5 py-1 shadow-xs text-[#14213D] text-[11px] font-extrabold flex items-center gap-1">
+              <Award className="w-3 h-3 text-[#D94D78]" />
+              <span>{doctor.experienceYears}+ Yrs Exp</span>
             </div>
-            <h3 className="font-display text-[19px] font-extrabold text-white leading-tight drop-shadow-md group-hover:text-[#FF87B3] transition-colors">
+          </div>
+
+          {/* ── 3. Doctor Name, Pink Underline & Speciality Title (Standardized Height) ── */}
+          <div className="mb-3">
+            <h3 className="font-display text-lg sm:text-[19px] font-bold text-[#14213D] tracking-tight group-hover:text-[#D94D78] transition-colors leading-snug">
               {doctor.name}
             </h3>
+            <div className="w-7 h-[2.5px] bg-[#E11D48] rounded-full mt-1 mb-2" />
+            <p className="text-[11.5px] font-bold text-[#D94D78] uppercase tracking-wider leading-snug min-h-[34px] flex items-center">
+              {doctor.title}
+            </p>
+          </div>
+
+          {/* ── 4. Qualifications Box (Standardized Height) ── */}
+          <div className="bg-[#FFF9FB] border border-[#FCE7F0] rounded-xl p-2.5 flex items-center gap-2.5 mb-2.5 shadow-2xs min-h-[58px]">
+            <div className="w-5 h-5 rounded-full bg-[#FFF0F4] border border-[#FF87B3] flex items-center justify-center shrink-0 text-[#E11D48]">
+              <GraduationCap className="w-3 h-3" />
+            </div>
+            <div>
+              <div className="text-[9.5px] font-bold uppercase tracking-wider text-slate-400">
+                Qualifications
+              </div>
+              <div className="text-[12px] text-[#14213D] font-semibold leading-tight">
+                {doctor.qualifications}
+              </div>
+            </div>
+          </div>
+
+          {/* ── 5. Consultation Schedule Box (Standardized Height) ── */}
+          <div className="bg-[#FFF9FB] border border-[#FCE7F0] rounded-xl p-2.5 flex items-center gap-2.5 mb-3 shadow-2xs min-h-[58px]">
+            <div className="w-5 h-5 rounded-full bg-[#FFF0F4] border border-[#FF87B3] flex items-center justify-center shrink-0 text-[#E11D48]">
+              <CalendarClock className="w-3 h-3" />
+            </div>
+            <div>
+              <div className="text-[9.5px] font-bold uppercase tracking-wider text-slate-400">
+                Consultation Schedule
+              </div>
+              <div className="text-[11.5px] text-slate-700 leading-snug">
+                <span className="font-bold text-[#14213D]">{doctor.consultationDays}</span>
+                <span className="text-slate-400 mx-1">·</span>
+                <span>{doctor.consultationTimes}</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Info area */}
-        <div className="p-5 space-y-3.5">
-          <p className="text-[13px] font-bold text-[#14213D] leading-snug">{doctor.title}</p>
-
-          {/* Qualifications */}
-          <div className="flex items-start gap-2.5">
-            <div className="w-6 h-6 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center shrink-0 text-[#D94D78] shadow-2xs group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300">
-              <GraduationCap className="w-3.5 h-3.5" />
-            </div>
-            <span className="text-[12px] text-slate-600 font-medium leading-relaxed">
-              {doctor.qualifications}
-            </span>
-          </div>
-
-          {/* Consultation */}
-          <div className="flex items-start gap-2.5">
-            <div className="w-6 h-6 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center shrink-0 text-[#D94D78] shadow-2xs group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300">
-              <CalendarClock className="w-3.5 h-3.5" />
-            </div>
-            <span className="text-[12px] text-slate-600 leading-relaxed">
-              <span className="font-semibold text-slate-700">{doctor.consultationDays}</span> ·{" "}
-              {doctor.consultationTimes}
-            </span>
-          </div>
+        {/* ── 6. Doctor Bio Summary (Uniform Height & Bottom Aligned) ── */}
+        <div className="mt-2 pt-1 border-t border-slate-100/80">
+          <p className="text-[12px] text-slate-500 leading-relaxed font-normal line-clamp-3 min-h-[52px]">
+            {doctor.bio}
+          </p>
         </div>
       </div>
-
-      {/* Book Appointment CTA button with smooth hover */}
-      <div className="p-5 pt-0">
-        <motion.div
-          whileHover={shouldReduceMotion ? undefined : { scale: 1.02, y: -1 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          <Link
-            to="/contact"
-            className="w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-[#FF87B3]/25 border border-[#FF87B3] hover:border-[#D94D78] hover:bg-[#FF87B3] py-2.5 px-4 text-xs font-extrabold text-[#14213D] shadow-2xs hover:shadow-md hover:shadow-pink-400/30 transition-all duration-300 group/btn"
-          >
-            <Calendar className="w-3.5 h-3.5" />
-            <span>Book Appointment</span>
-            <ArrowRight className="w-3.5 h-3.5 opacity-70 group-hover/btn:opacity-100 group-hover/btn:translate-x-0.5 transition-transform" />
-          </Link>
-        </motion.div>
-      </div>
-
-      {/* Hover glow ring border */}
-      <div className="absolute inset-0 rounded-3xl ring-0 group-hover:ring-2 ring-[#FF87B3]/80 transition-all duration-500 pointer-events-none" />
     </motion.article>
   );
 }

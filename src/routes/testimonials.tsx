@@ -15,6 +15,7 @@ import welcomeFamilyCare from "@/assets/family-care.jpg";
 import { useState } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { HeroBackground } from "@/components/site/hero/HeroBackground";
+import { PatientReviewsAutoScroll } from "@/components/site/PatientReviewsAutoScroll";
 
 export const Route = createFileRoute("/testimonials")({
   head: () => ({
@@ -61,24 +62,103 @@ function Testimonials() {
   return (
     <>
       {/* ── 1. Custom Hero Section ── */}
-      <section className="relative bg-gradient-to-br from-[#FFF5F8] via-[#FF87B3] to-[#f06a99] text-[#14213D] overflow-hidden pt-12 pb-12 lg:pt-16 lg:pb-16 border-b border-[#FF87B3]">
-        {/* Shared Hero Background with animated glow orbs, organic curves & decor */}
+      <section className="relative bg-gradient-to-br from-[#FFF5F8] via-[#FF87B3] to-[#f06a99] text-[#14213D] overflow-hidden pt-6 pb-16 sm:pt-8 sm:pb-20 lg:pt-10 lg:pb-24 flex flex-col justify-between">
+        {/* Scoped CSS for smooth, continuous 26s clockwise circular orbit & counter-rotation */}
+        <style>{`
+          @keyframes testimonialOrbitClockwise {
+            from {
+              transform: translate(-50%, -50%) rotate(0deg);
+            }
+            to {
+              transform: translate(-50%, -50%) rotate(360deg);
+            }
+          }
+          @keyframes testimonialCounterRotate {
+            from {
+              transform: translate(-50%, -50%) rotate(0deg);
+            }
+            to {
+              transform: translate(-50%, -50%) rotate(-360deg);
+            }
+          }
+          .testimonial-orbit-track {
+            animation: testimonialOrbitClockwise 26s linear infinite;
+          }
+          .testimonial-orbit-card-wrapper {
+            animation: testimonialCounterRotate 26s linear infinite;
+          }
+          .testimonial-orbit-stage:hover .testimonial-orbit-track,
+          .testimonial-orbit-stage:hover .testimonial-orbit-card-wrapper {
+            animation-play-state: paused;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .testimonial-orbit-track,
+            .testimonial-orbit-card-wrapper {
+              animation: none !important;
+            }
+          }
+        `}</style>
+
+        {/* Shared Hero Background with subtle ambient glow orbs & organic curves */}
         <HeroBackground />
 
-        <div className="container-page relative z-10 pt-4 md:pt-6 pb-2">
-          <div className="grid md:grid-cols-2 gap-10 items-center">
-            {/* Left Column: Text & Navigation */}
+        {/* ── Smooth Decorative Wave Transition at the Bottom ── */}
+        <div className="absolute -bottom-[2px] inset-x-0 w-full overflow-hidden pointer-events-none z-20 leading-none select-none">
+          <svg
+            viewBox="0 0 1440 120"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-full block"
+            preserveAspectRatio="none"
+            style={{ height: "70px", minHeight: "50px", maxHeight: "110px" }}
+          >
+            <defs>
+              {/* Subtle Pink Ribbon Accent Gradient */}
+              <linearGradient id="testimonialWaveStrokePink" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#FFAEC7" stopOpacity="0.8" />
+                <stop offset="30%" stopColor="#FF85AA" stopOpacity="0.9" />
+                <stop offset="70%" stopColor="#FFAEC7" stopOpacity="0.85" />
+                <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.6" />
+              </linearGradient>
+
+              {/* Subtle Depth Shadow */}
+              <filter id="testimonialWaveDepthGlow" x="-5%" y="-40%" width="110%" height="180%">
+                <feDropShadow dx="0" dy="-2" stdDeviation="4" floodColor="#C92556" floodOpacity="0.18" />
+              </filter>
+            </defs>
+
+            {/* Secondary Ambient Crest Line */}
+            <path
+              d="M0,52 C280,18 560,78 840,42 C1120,8 1320,58 1440,38 L1440,125 L0,125 Z"
+              fill="#FFFFFF"
+              fillOpacity="0.3"
+            />
+
+            {/* Main Pure White Transition Wave */}
+            <path
+              d="M0,65 C260,28 540,88 820,50 C1100,16 1300,66 1440,48 L1440,125 L0,125 Z"
+              fill="#FFFFFF"
+              stroke="url(#testimonialWaveStrokePink)"
+              strokeWidth="1.8"
+              filter="url(#testimonialWaveDepthGlow)"
+            />
+          </svg>
+        </div>
+
+        <div className="container-page relative z-10 pt-1 md:pt-2 pb-4 w-full">
+          <div className="grid md:grid-cols-12 gap-8 lg:gap-10 items-center">
+            {/* Left Column: Text & Navigation (5/6 cols) */}
             <motion.div
               variants={staggerContainer}
               initial="hidden"
               animate="show"
-              className="z-10 flex flex-col justify-center"
+              className="md:col-span-6 lg:col-span-5 z-10 flex flex-col justify-center"
             >
               <motion.div
                 variants={fadeUpVariant}
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.05, y: -2 }}
+                whileHover={shouldReduceMotion ? undefined : { scale: 1.04, y: -1 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="inline-flex items-center gap-2 rounded-full bg-white/80 backdrop-blur-md border border-[#f06a99] px-4 py-1.5 text-xs font-extrabold tracking-widest text-[#D94D78] uppercase mb-6 w-max shadow-sm cursor-default"
+                className="inline-flex items-center gap-2 rounded-full bg-white/85 backdrop-blur-md border border-[#f06a99] px-4 py-1.5 text-xs font-extrabold tracking-widest text-[#D94D78] uppercase mb-3 w-max shadow-xs cursor-default"
               >
                 <Sparkles className="w-3.5 h-3.5 text-[#D94D78]" />
                 Family Stories
@@ -86,7 +166,7 @@ function Testimonials() {
 
               <motion.h1
                 variants={fadeUpVariant}
-                className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.12] mb-4 tracking-tight text-[#14213D]"
+                className="font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-[1.12] mb-2.5 tracking-tight text-[#14213D]"
               >
                 Care our patients take the time{" "}
                 <span className="text-[#D94D78] underline decoration-[#FF87B3] decoration-wavy decoration-1 underline-offset-8">
@@ -96,12 +176,12 @@ function Testimonials() {
 
               <motion.div
                 variants={fadeUpVariant}
-                className="w-14 h-1.5 bg-gradient-to-r from-[#FF87B3] to-[#D94D78] rounded-full mb-6"
+                className="w-14 h-1.5 bg-gradient-to-r from-[#FF87B3] to-[#D94D78] rounded-full mb-3"
               />
 
               <motion.p
                 variants={fadeUpVariant}
-                className="text-slate-700 text-sm md:text-base leading-relaxed mb-8 max-w-md font-medium"
+                className="text-slate-700 text-xs sm:text-sm md:text-base leading-relaxed mb-5 max-w-md font-medium"
               >
                 A few of the many heartfelt stories and kind words shared with us by the families we
                 care for every day.
@@ -110,7 +190,7 @@ function Testimonials() {
               {/* Breadcrumbs */}
               <motion.nav
                 variants={fadeUpVariant}
-                className="flex items-center gap-2 text-xs text-slate-600 font-medium"
+                className="flex items-center gap-2 text-xs text-slate-600 font-medium mt-2"
               >
                 <Link to="/" className="hover:text-[#D94D78] transition-colors">
                   Home
@@ -122,149 +202,219 @@ function Testimonials() {
               </motion.nav>
             </motion.div>
 
-            {/* Right Column: Family drawing & story bubbles */}
+            {/* Right Column: Center Fixed Image with 5 Clockwise Orbiting Feedback Cards (6/7 cols) */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, delay: 0.15 }}
-              className="relative w-full h-[420px] max-w-[480px] overflow-visible hidden md:block mx-auto"
+              className="md:col-span-6 lg:col-span-7 relative w-full h-[360px] sm:h-[460px] md:h-[500px] lg:h-[540px] xl:h-[560px] flex items-center justify-center select-none mt-4 md:mt-0 testimonial-orbit-stage scale-[0.76] xs:scale-[0.86] sm:scale-100"
             >
+              {/* Subtle Ambient Decorative Guide Ring behind the center */}
               <div
-                className="absolute top-1/2 left-[55%] -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] rounded-full border border-white/20 pointer-events-none z-0"
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[370px] md:w-[430px] lg:w-[470px] h-[300px] sm:h-[370px] md:h-[430px] lg:h-[470px] rounded-full border border-white/35 pointer-events-none z-0"
                 aria-hidden="true"
               />
 
-              <motion.div
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.04 }}
-                transition={{ duration: 0.6 }}
-                className="absolute top-1/2 left-[55%] -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] rounded-full overflow-hidden border-8 border-white shadow-2xl z-10 group"
-              >
+              {/* ── Fixed Center Doctor & Family Consultation Photo ── */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[160px] sm:w-[210px] md:w-[230px] lg:w-[250px] h-[160px] sm:h-[210px] md:h-[230px] lg:h-[250px] rounded-full overflow-hidden border-4 sm:border-[6px] border-white shadow-[0_16px_36px_rgba(200,40,90,0.18)] z-10 group pointer-events-auto bg-slate-900">
                 <img
                   src={welcomeFamilyCare}
-                  alt="Family care illustrations"
+                  alt="SreeDevi Hospital compassionate patient consultation"
                   className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-500"
                 />
-              </motion.div>
+              </div>
 
-              {/* Bubble 1 */}
-              <motion.div
-                animate={shouldReduceMotion ? undefined : { y: [0, -6, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.05, y: -4 }}
-                className="absolute top-[6%] left-[0%] bg-white rounded-2xl border border-[#FF87B3] p-4 shadow-xl text-[#14213D] max-w-[250px] z-20 transition-all cursor-default"
-              >
-                <div className="flex gap-2.5 items-center mb-2">
-                  <div className="w-8 h-8 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[10px] font-extrabold text-[#D94D78] shadow-2xs">
-                    RS
-                  </div>
-                  <div>
-                    <div className="text-[10px] font-extrabold text-[#14213D]">
-                      Rohit &amp; Sneha
+              {/* ── Rotating Orbit Track Container (26s Smooth Clockwise Circle with 5 Cards) ── */}
+              <div className="absolute top-1/2 left-1/2 w-[320px] sm:w-[390px] md:w-[450px] lg:w-[490px] xl:w-[510px] h-[320px] sm:h-[390px] md:h-[450px] lg:h-[490px] xl:h-[510px] pointer-events-none z-20 testimonial-orbit-track">
+                
+                {/* ── Card 1: Arun Prakash (Top / Angle -90°) ── */}
+                <div
+                  className="absolute"
+                  style={{ top: "0%", left: "50%" }}
+                >
+                  <div className="testimonial-orbit-card-wrapper pointer-events-auto">
+                    <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-[#FF87B3]/60 p-2.5 sm:p-3 lg:p-3.5 shadow-[0_8px_24px_rgba(200,40,90,0.14)] text-[#14213D] w-[170px] sm:w-[195px] md:w-[215px] lg:w-[225px] transition-all hover:scale-105 hover:shadow-lg cursor-default">
+                      <div className="flex gap-2 items-center mb-1 sm:mb-1.5">
+                        <div className="w-6.5 h-6.5 sm:w-7 sm:h-7 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[9px] sm:text-[10px] font-extrabold text-[#D94D78] shadow-2xs shrink-0">
+                          AP
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-[9.5px] sm:text-[10.5px] font-extrabold text-[#14213D] leading-tight truncate">
+                            Arun Prakash
+                          </div>
+                          <div className="text-[7.5px] sm:text-[8.5px] text-slate-500 font-semibold">Patient</div>
+                        </div>
+                        <div className="ml-auto flex text-amber-400 gap-0.5 shrink-0">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Star key={i} className="w-2 sm:w-2.5 h-2 sm:h-2.5 fill-current" />
+                          ))}
+                        </div>
+                      </div>
+                      <p className="text-[8.5px] sm:text-[9.5px] text-slate-600 leading-relaxed italic font-medium">
+                        "From the moment we walked in, we felt at ease. The care and support were exceptional."
+                      </p>
                     </div>
-                    <div className="text-[8px] text-slate-500 font-semibold">IVF Parents</div>
-                  </div>
-                  <div className="ml-auto flex text-amber-400 gap-0.5">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} className="w-2.5 h-2.5 fill-current" />
-                    ))}
                   </div>
                 </div>
-                <p className="text-[10px] text-slate-600 leading-relaxed italic font-medium">
-                  "Our journey to parenthood was made possible by the expertise and compassion of
-                  the team."
-                </p>
-              </motion.div>
 
-              {/* Bubble 2 */}
-              <motion.div
-                animate={shouldReduceMotion ? undefined : { y: [0, 7, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.05, y: 4 }}
-                className="absolute top-[44%] -left-[10%] bg-white rounded-2xl border border-[#FF87B3] p-4 shadow-xl text-[#14213D] max-w-[240px] z-20 transition-all cursor-default"
-              >
-                <div className="flex gap-2.5 items-center mb-2">
-                  <div className="w-8 h-8 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[10px] font-extrabold text-[#D94D78] shadow-2xs">
-                    AP
-                  </div>
-                  <div>
-                    <div className="text-[10px] font-extrabold text-[#14213D]">Arun Prakash</div>
-                    <div className="text-[8px] text-slate-500 font-semibold">Patient</div>
-                  </div>
-                  <div className="ml-auto flex text-amber-400 gap-0.5">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} className="w-2.5 h-2.5 fill-current" />
-                    ))}
+                {/* ── Card 2: Rohit & Sneha (Upper-Right / Angle -18°) ── */}
+                <div
+                  className="absolute"
+                  style={{ top: "34.5%", left: "97.5%" }}
+                >
+                  <div className="testimonial-orbit-card-wrapper pointer-events-auto">
+                    <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-[#FF87B3]/60 p-2.5 sm:p-3 lg:p-3.5 shadow-[0_8px_24px_rgba(200,40,90,0.14)] text-[#14213D] w-[170px] sm:w-[195px] md:w-[215px] lg:w-[225px] transition-all hover:scale-105 hover:shadow-lg cursor-default">
+                      <div className="flex gap-2 items-center mb-1 sm:mb-1.5">
+                        <div className="w-6.5 h-6.5 sm:w-7 sm:h-7 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[9px] sm:text-[10px] font-extrabold text-[#D94D78] shadow-2xs shrink-0">
+                          RS
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-[9.5px] sm:text-[10.5px] font-extrabold text-[#14213D] leading-tight truncate">
+                            Rohit &amp; Sneha
+                          </div>
+                          <div className="text-[7.5px] sm:text-[8.5px] text-slate-500 font-semibold">IVF Parents</div>
+                        </div>
+                        <div className="ml-auto flex text-amber-400 gap-0.5 shrink-0">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Star key={i} className="w-2 sm:w-2.5 h-2 sm:h-2.5 fill-current" />
+                          ))}
+                        </div>
+                      </div>
+                      <p className="text-[8.5px] sm:text-[9.5px] text-slate-600 leading-relaxed italic font-medium">
+                        "Our journey to parenthood was made possible by the expertise and compassion of the team."
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <p className="text-[10px] text-slate-600 leading-relaxed italic font-medium">
-                  "From the moment we walked in, we felt at ease. The care and support were
-                  exceptional."
-                </p>
-              </motion.div>
 
-              {/* Bubble 3 */}
-              <motion.div
-                animate={shouldReduceMotion ? undefined : { y: [0, -7, 0] }}
-                transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.05, y: -4 }}
-                className="absolute bottom-[4%] right-[0%] bg-white rounded-2xl border border-[#FF87B3] p-4 shadow-xl text-[#14213D] max-w-[255px] z-20 transition-all cursor-default"
-              >
-                <div className="flex gap-2.5 items-center mb-2">
-                  <div className="w-8 h-8 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[10px] font-extrabold text-[#D94D78] shadow-2xs">
-                    MK
-                  </div>
-                  <div>
-                    <div className="text-[10px] font-extrabold text-[#14213D]">Meena Krishnan</div>
-                    <div className="text-[8px] text-slate-500 font-semibold">Patient</div>
-                  </div>
-                  <div className="ml-auto flex text-amber-400 gap-0.5">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} className="w-2.5 h-2.5 fill-current" />
-                    ))}
+                {/* ── Card 3: Meena Krishnan (Lower-Right / Angle 54°) ── */}
+                <div
+                  className="absolute"
+                  style={{ top: "90.5%", left: "79.4%" }}
+                >
+                  <div className="testimonial-orbit-card-wrapper pointer-events-auto">
+                    <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-[#FF87B3]/60 p-2.5 sm:p-3 lg:p-3.5 shadow-[0_8px_24px_rgba(200,40,90,0.14)] text-[#14213D] w-[170px] sm:w-[195px] md:w-[215px] lg:w-[225px] transition-all hover:scale-105 hover:shadow-lg cursor-default">
+                      <div className="flex gap-2 items-center mb-1 sm:mb-1.5">
+                        <div className="w-6.5 h-6.5 sm:w-7 sm:h-7 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[9px] sm:text-[10px] font-extrabold text-[#D94D78] shadow-2xs shrink-0">
+                          MK
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-[9.5px] sm:text-[10.5px] font-extrabold text-[#14213D] leading-tight truncate">
+                            Meena Krishnan
+                          </div>
+                          <div className="text-[7.5px] sm:text-[8.5px] text-slate-500 font-semibold">Patient</div>
+                        </div>
+                        <div className="ml-auto flex text-amber-400 gap-0.5 shrink-0">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Star key={i} className="w-2 sm:w-2.5 h-2 sm:h-2.5 fill-current" />
+                          ))}
+                        </div>
+                      </div>
+                      <p className="text-[8.5px] sm:text-[9.5px] text-slate-600 leading-relaxed italic font-medium">
+                        "The doctors and staff are incredible. They go above and beyond for their patients."
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <p className="text-[10px] text-slate-600 leading-relaxed italic font-medium">
-                  "The doctors and staff are incredible. They go above and beyond for their
-                  patients."
-                </p>
-              </motion.div>
+
+                {/* ── Card 4: Kavitha Sundar (Lower-Left / Angle 126°) ── */}
+                <div
+                  className="absolute"
+                  style={{ top: "90.5%", left: "20.6%" }}
+                >
+                  <div className="testimonial-orbit-card-wrapper pointer-events-auto">
+                    <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-[#FF87B3]/60 p-2.5 sm:p-3 lg:p-3.5 shadow-[0_8px_24px_rgba(200,40,90,0.14)] text-[#14213D] w-[170px] sm:w-[195px] md:w-[215px] lg:w-[225px] transition-all hover:scale-105 hover:shadow-lg cursor-default">
+                      <div className="flex gap-2 items-center mb-1 sm:mb-1.5">
+                        <div className="w-6.5 h-6.5 sm:w-7 sm:h-7 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[9px] sm:text-[10px] font-extrabold text-[#D94D78] shadow-2xs shrink-0">
+                          KS
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-[9.5px] sm:text-[10.5px] font-extrabold text-[#14213D] leading-tight truncate">
+                            Kavitha Sundar
+                          </div>
+                          <div className="text-[7.5px] sm:text-[8.5px] text-slate-500 font-semibold">Fertility Patient</div>
+                        </div>
+                        <div className="ml-auto flex text-amber-400 gap-0.5 shrink-0">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Star key={i} className="w-2 sm:w-2.5 h-2 sm:h-2.5 fill-current" />
+                          ))}
+                        </div>
+                      </div>
+                      <p className="text-[8.5px] sm:text-[9.5px] text-slate-600 leading-relaxed italic font-medium">
+                        "We felt truly heard and supported. SreeDevi made our parenthood dream come true."
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ── Card 5: Dr. Priya Raman (Upper-Left / Angle 198°) ── */}
+                <div
+                  className="absolute"
+                  style={{ top: "34.5%", left: "2.5%" }}
+                >
+                  <div className="testimonial-orbit-card-wrapper pointer-events-auto">
+                    <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-[#FF87B3]/60 p-2.5 sm:p-3 lg:p-3.5 shadow-[0_8px_24px_rgba(200,40,90,0.14)] text-[#14213D] w-[170px] sm:w-[195px] md:w-[215px] lg:w-[225px] transition-all hover:scale-105 hover:shadow-lg cursor-default">
+                      <div className="flex gap-2 items-center mb-1 sm:mb-1.5">
+                        <div className="w-6.5 h-6.5 sm:w-7 sm:h-7 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[9px] sm:text-[10px] font-extrabold text-[#D94D78] shadow-2xs shrink-0">
+                          PR
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-[9.5px] sm:text-[10.5px] font-extrabold text-[#14213D] leading-tight truncate">
+                            Dr. Priya Raman
+                          </div>
+                          <div className="text-[7.5px] sm:text-[8.5px] text-slate-500 font-semibold">Maternity Care</div>
+                        </div>
+                        <div className="ml-auto flex text-amber-400 gap-0.5 shrink-0">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Star key={i} className="w-2 sm:w-2.5 h-2 sm:h-2.5 fill-current" />
+                          ))}
+                        </div>
+                      </div>
+                      <p className="text-[8.5px] sm:text-[9.5px] text-slate-600 leading-relaxed italic font-medium">
+                        "The maternity care was exceptional. The doctors made my delivery so calm and comforting."
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* ── 2. Ratings & Reviews Section ── */}
-      <section className="bg-gradient-to-b from-white via-[#FFF5F8]/40 to-white py-16 md:py-24 border-b border-slate-100 relative overflow-hidden">
+      <section className="bg-gradient-to-b from-white via-[#FFF5F8]/40 to-white pt-6 pb-8 md:pt-8 md:pb-12 border-b border-slate-100 relative overflow-hidden">
         <div className="container-page relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.5 }}
-            className="text-center mb-12 md:mb-16"
+            className="text-center mb-6 md:mb-8"
           >
-            <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4 shadow-2xs">
+            <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-3 shadow-2xs">
               Patient Reviews
             </span>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-3">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-2">
               Trust, shared one story at a time.
             </h2>
-            <div className="flex items-center justify-center gap-1.5 mt-3">
+            <div className="flex items-center justify-center gap-1.5 mt-2">
               <div className="w-12 h-1 bg-[#FF87B3] rounded-full" />
               <div className="w-1.5 h-1.5 bg-[#FF87B3] rounded-full" />
             </div>
           </motion.div>
 
-          <div className="grid gap-8 md:grid-cols-[1fr_2.5fr] items-start">
+          <div className="grid gap-8 lg:grid-cols-12 items-center">
             {/* Left Column: Rating breakdown card */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, type: "spring", stiffness: 60 }}
-              className="flex flex-col gap-4"
+              className="lg:col-span-4 flex flex-col gap-4"
             >
-              <div className="rounded-[32px] bg-gradient-to-br from-[#FFF5F8] via-[#FF87B3] to-[#f06a99] border border-[#FF87B3] p-7 md:p-8 text-[#14213D] shadow-xl flex flex-col justify-between min-h-[380px]">
+              <div className="rounded-[32px] bg-gradient-to-br from-[#FFF5F8] via-[#FF87B3] to-[#f06a99] border border-[#FF87B3] p-6 md:p-7 text-[#14213D] shadow-xl flex flex-col justify-between min-h-[300px]">
                 <div>
                   <div className="font-display text-6xl font-extrabold tracking-tight mb-2 text-[#14213D]">
                     4.6
@@ -324,116 +474,46 @@ function Testimonials() {
               </div>
             </motion.div>
 
-            {/* Right Column: 3 Testimonial Cards */}
+            {/* Right Column: Modern Patient Reviews Continuous Auto-Scrolling Track */}
             <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="show"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-60px" }}
-              className="grid gap-6 sm:grid-cols-3"
+              transition={{ duration: 0.6, delay: 0.1, type: "spring", stiffness: 60 }}
+              className="lg:col-span-8 min-w-0 overflow-hidden"
             >
-              {[
-                {
-                  quote:
-                    "Our IVF journey felt overwhelming at first, but the doctors and embryology team guided us with such care and clarity. Today, we're blessed with our little miracle.",
-                  initials: "A & R",
-                  name: "Fertility Care",
-                  city: "Hyderabad",
-                  rating: 5,
-                },
-                {
-                  quote:
-                    "From the moment we walked in, we felt safe and supported. The doctors explained everything patiently, and the birthing experience was smooth and beautiful.",
-                  initials: "S K",
-                  name: "Maternity Care",
-                  city: "Secunderabad",
-                  rating: 5,
-                },
-                {
-                  quote:
-                    "My father has been under the diabetes care program for over a year now. His sugar levels are stable, and he feels healthier than ever. Truly grateful for the consistent support.",
-                  initials: "M P",
-                  name: "Diabetes Care",
-                  city: "Hyderabad",
-                  rating: 5,
-                },
-              ].map((t, idx) => (
-                <motion.div
-                  key={idx}
-                  variants={fadeUpVariant}
-                  whileHover={
-                    shouldReduceMotion
-                      ? undefined
-                      : {
-                          y: -8,
-                          scale: 1.015,
-                          boxShadow: "0 22px 45px -10px rgba(255,135,179,0.40)",
-                        }
-                  }
-                  transition={{ type: "spring", stiffness: 280, damping: 20 }}
-                  className="rounded-3xl border border-[#FF87B3] bg-white p-7 hover:border-[#D94D78] shadow-xs transition-all duration-300 flex flex-col justify-between min-h-[340px] cursor-default group"
-                >
-                  <div>
-                    <Quote className="h-6 w-6 text-[#FF87B3] mb-4 group-hover:scale-110 transition-transform" />
-                    <blockquote className="text-xs md:text-sm leading-relaxed text-slate-650 italic font-medium">
-                      “{t.quote}”
-                    </blockquote>
-                  </div>
-
-                  <div className="mt-6 border-t border-pink-100 pt-4 flex flex-col items-center">
-                    <div className="flex items-center gap-3 w-full">
-                      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#FFF5F8] border border-[#FF87B3] text-xs font-extrabold text-[#D94D78] shadow-2xs group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300">
-                        {t.initials}
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="truncate font-display text-[13px] font-extrabold text-[#14213D] leading-tight group-hover:text-[#D94D78] transition-colors">
-                          {t.name}
-                        </div>
-                        <div className="text-[10px] text-slate-400 font-semibold mt-0.5">
-                          {t.city}
-                        </div>
-                      </div>
-                    </div>
-                    {/* Stars at bottom */}
-                    <div className="mt-4 flex text-amber-400 gap-0.5 self-start">
-                      {Array.from({ length: t.rating }).map((_, i) => (
-                        <Star key={i} className="h-3.5 w-3.5 fill-current" />
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+              <PatientReviewsAutoScroll />
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* ── 3. Share Your Story Section ── */}
-      <section className="bg-gradient-to-tr from-[#FFF5F8] via-[#fffcfd] to-white py-16 md:py-24 border-t border-slate-100 overflow-hidden relative">
+      <section className="bg-gradient-to-tr from-[#FFF5F8] via-[#fffcfd] to-white pt-8 pb-10 md:pt-12 md:pb-14 border-t border-slate-100 overflow-hidden relative">
         <div className="container-page relative z-10">
-          <div className="grid gap-10 md:grid-cols-[1fr_1.3fr] items-center">
+          <div className="grid gap-8 md:grid-cols-[1fr_1.3fr] lg:grid-cols-12 items-start">
             {/* Left Content Column */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, type: "spring", stiffness: 60 }}
-              className="flex flex-col justify-center"
+              className="lg:col-span-5 flex flex-col justify-start pt-2 md:pt-4"
             >
               <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4 w-max shadow-2xs">
                 Share Your Story
               </span>
 
-              <h2 className="text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-4">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-4">
                 Have a story to share?
               </h2>
 
-              <p className="text-slate-600 text-sm md:text-base leading-relaxed mb-6 max-w-sm font-medium">
+              <p className="text-slate-600 text-sm md:text-base leading-relaxed mb-4 max-w-sm font-medium">
                 If SreeDevi Hospital has been part of your family's journey, we would love to hear
                 from you. Your story inspires hope in others.
               </p>
 
-              <p className="text-slate-400 text-xs md:text-sm leading-relaxed mb-8 max-w-sm">
+              <p className="text-slate-400 text-xs md:text-sm leading-relaxed mb-6 max-w-sm">
                 We review every story and only share it with your explicit consent and privacy
                 preferences.
               </p>
@@ -447,9 +527,9 @@ function Testimonials() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, type: "spring", stiffness: 60 }}
-              className="flex justify-center md:justify-end"
+              className="lg:col-span-7 flex justify-center md:justify-end"
             >
-              <div className="w-full max-w-[520px] bg-white border border-[#FF87B3] rounded-[32px] p-8 md:p-10 shadow-xl relative overflow-hidden">
+              <div className="w-full max-w-[520px] bg-white border border-[#FF87B3] rounded-[32px] p-6 md:p-8 shadow-xl relative overflow-hidden">
                 {formSent ? (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
