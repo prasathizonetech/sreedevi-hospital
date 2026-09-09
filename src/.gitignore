@@ -7,15 +7,27 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-.tanstack
+# Dependencies
+node_modules/
+
+# Build files
+dist/
+
+# Vercel
+.vercel/
+
+# Environment files
+.env
+.env.*
+
+# Local files
 *.local
+.tanstack
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
 *.suo
 *.ntvs*
