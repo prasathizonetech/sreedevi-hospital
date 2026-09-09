@@ -81,11 +81,11 @@ function DoctorsPage() {
               By Department
             </div>
 
-            <h2 className="text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-3">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-3">
               Specialists across every department.
             </h2>
 
-            <p className="text-slate-600 text-sm md:text-base leading-relaxed max-w-xl mx-auto mb-5 font-medium">
+            <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed max-w-xl mx-auto mb-5 font-medium">
               Select a specialty below to view our experienced consultants, their consultation
               timings, and qualifications.
             </p>
@@ -102,7 +102,7 @@ function DoctorsPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="w-full max-w-6xl mx-auto mb-10 sm:mb-12"
+            className="w-full max-w-6xl mx-auto mb-8 sm:mb-12"
           >
             <div className="w-full p-1.5 sm:p-2 bg-[#FFF5F8] backdrop-blur-md rounded-2xl md:rounded-full border border-[#FF87B3] shadow-xs select-none">
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-1.5 sm:gap-2">
@@ -116,7 +116,7 @@ function DoctorsPage() {
                       onClick={() => setActiveFilter(tab.id)}
                       whileHover={shouldReduceMotion ? undefined : { scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className={`relative flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl md:rounded-full text-xs sm:text-[13px] md:text-sm font-bold transition-colors duration-200 select-none cursor-pointer text-center whitespace-nowrap ${
+                      className={`relative flex items-center justify-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-2 sm:py-2.5 rounded-xl md:rounded-full text-[11px] sm:text-[13px] md:text-sm font-bold transition-colors duration-200 select-none cursor-pointer text-center ${
                         isSelected ? "text-[#14213D]" : "text-[#14213D]/70 hover:text-[#D94D78]"
                       }`}
                     >
@@ -133,16 +133,16 @@ function DoctorsPage() {
                       {isSelected && (
                         <motion.div
                           layoutId="activeDoctorFilterUnderline"
-                          className="absolute bottom-1 left-4 right-4 h-[2px] bg-[#D94D78] rounded-full"
+                          className="absolute bottom-1 left-2 sm:left-4 right-2 sm:right-4 h-[2px] bg-[#D94D78] rounded-full"
                           transition={{ type: "spring", stiffness: 350, damping: 28 }}
                         />
                       )}
 
-                      <span className="relative z-10 flex items-center justify-center gap-1.5">
+                      <span className="relative z-10 flex items-center justify-center gap-1 sm:gap-1.5">
                         <Icon
-                          className={`w-4 h-4 shrink-0 ${isSelected ? "text-[#D94D78]" : "text-slate-500"}`}
+                          className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 ${isSelected ? "text-[#D94D78]" : "text-slate-500"}`}
                         />
-                        <span className="whitespace-nowrap">{tab.label}</span>
+                        <span className="truncate sm:whitespace-nowrap">{tab.label}</span>
                       </span>
                     </motion.button>
                   );
@@ -152,7 +152,7 @@ function DoctorsPage() {
           </motion.div>
 
           {/* ── 3. Doctor Cards Grid ── */}
-          <motion.div layout className="grid gap-7 sm:grid-cols-2 lg:grid-cols-4 items-stretch relative">
+          <motion.div layout className="grid gap-5 sm:gap-7 sm:grid-cols-2 lg:grid-cols-4 items-stretch relative">
             <AnimatePresence mode="popLayout">
               {filteredDoctors.map((d, index) => (
                 <div key={d.id} className="flex h-full w-full">

@@ -157,32 +157,32 @@ function FertilityCentre() {
           >
             <motion.div
               variants={fadeLeftVariant}
-              className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4 shadow-2xs"
+              className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-3 sm:mb-4 shadow-2xs"
             >
               Overview
             </motion.div>
 
             <motion.h2
               variants={fadeLeftVariant}
-              className="text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-4"
+              className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-3 sm:mb-4"
             >
               Fertility care that feels personal.
             </motion.h2>
 
             <motion.p
               variants={fadeLeftVariant}
-              className="text-slate-600 text-sm md:text-base leading-relaxed mb-8 max-w-xl font-medium"
+              className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed mb-6 sm:mb-8 max-w-xl font-medium"
             >
               Fertility care is deeply personal. We keep our consultations unhurried, our advice
               honest, and our door open. We empower you with clear explanations at every milestone.
             </motion.p>
 
             {/* 3 Grid Cards */}
-            <motion.div variants={staggerContainer} className="grid gap-4 grid-cols-3">
+            <motion.div variants={staggerContainer} className="grid gap-2.5 sm:gap-4 grid-cols-1 sm:grid-cols-3">
               {[
-                { icon: <Users className="w-5 h-5" />, t: "Personalised evaluation" },
-                { icon: <Calculator className="w-5 h-5" />, t: "Clear cost counselling" },
-                { icon: <Heart className="w-5 h-5" />, t: "Support at every step" },
+                { icon: <Users className="w-4.5 h-4.5 sm:w-5 sm:h-5" />, t: "Personalised evaluation" },
+                { icon: <Calculator className="w-4.5 h-4.5 sm:w-5 sm:h-5" />, t: "Clear cost counselling" },
+                { icon: <Heart className="w-4.5 h-4.5 sm:w-5 sm:h-5" />, t: "Support at every step" },
               ].map((r, i) => (
                 <motion.div
                   key={i}
@@ -197,12 +197,12 @@ function FertilityCentre() {
                         }
                   }
                   transition={{ type: "spring", stiffness: 280, damping: 20 }}
-                  className="rounded-2xl border border-[#FF87B3] bg-white p-4 md:p-5 flex flex-col items-center justify-center text-center shadow-xs hover:border-[#D94D78] transition-all duration-300 cursor-default group"
+                  className="rounded-2xl border border-[#FF87B3] bg-white p-3.5 sm:p-5 flex sm:flex-col items-center sm:justify-center text-left sm:text-center gap-3 sm:gap-0 shadow-xs hover:border-[#D94D78] transition-all duration-300 cursor-default group"
                 >
-                  <div className="w-11 h-11 rounded-full border border-[#FF87B3] bg-[#FFF5F8] flex items-center justify-center text-[#D94D78] mb-3 group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300 shadow-2xs">
+                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-[#FF87B3] bg-[#FFF5F8] flex items-center justify-center text-[#D94D78] sm:mb-3 shrink-0 group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300 shadow-2xs">
                     {r.icon}
                   </div>
-                  <div className="text-xs font-extrabold text-[#14213D] leading-snug group-hover:text-[#D94D78] transition-colors">
+                  <div className="text-xs sm:text-xs font-extrabold text-[#14213D] leading-snug group-hover:text-[#D94D78] transition-colors">
                     {r.t}
                   </div>
                 </motion.div>
@@ -214,11 +214,11 @@ function FertilityCentre() {
               <motion.div
                 whileHover={shouldReduceMotion ? undefined : { scale: 1.03, y: -1 }}
                 whileTap={{ scale: 0.97 }}
-                className="w-fit"
+                className="w-full sm:w-fit"
               >
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-2 rounded-full border-2 border-[#FF87B3] bg-white px-6 py-3 text-xs md:text-sm font-extrabold text-[#14213D] hover:bg-[#FFF5F8] transition-all shadow-xs cursor-pointer"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#FF87B3] bg-white px-6 py-3 text-xs md:text-sm font-extrabold text-[#14213D] hover:bg-[#FFF5F8] transition-all shadow-xs cursor-pointer w-full sm:w-auto"
                 >
                   Explore our approach
                   <ArrowRight className="w-4 h-4" />
@@ -242,10 +242,10 @@ function FertilityCentre() {
             <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4 shadow-2xs">
               Our Treatments
             </span>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-3">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-3">
               A clear path forward, together.
             </h2>
-            <p className="text-slate-600 text-sm md:text-base leading-relaxed max-w-2xl mx-auto font-medium">
+            <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed max-w-2xl mx-auto font-medium">
               Evidence-based treatments and personalised care, designed around your unique journey
               to parenthood.
             </p>
@@ -260,7 +260,7 @@ function FertilityCentre() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-60px" }}
-            className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+            className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3"
           >
             {treatmentsList.map((t) => (
               <motion.div
@@ -276,22 +276,22 @@ function FertilityCentre() {
                       }
                 }
                 transition={{ type: "spring", stiffness: 280, damping: 20 }}
-                className="flex flex-col justify-between rounded-3xl border border-[#FF87B3] bg-white p-7 md:p-8 shadow-xs hover:border-[#D94D78] transition-all duration-300 min-h-[220px] group cursor-default"
+                className="flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-[#FF87B3] bg-white p-5 sm:p-7 md:p-8 shadow-xs hover:border-[#D94D78] transition-all duration-300 min-h-[200px] sm:min-h-[220px] group cursor-default"
               >
                 <div>
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3.5 sm:gap-4">
                     <motion.div
                       whileHover={shouldReduceMotion ? undefined : { scale: 1.15, rotate: 6 }}
                       transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                      className="w-12 h-12 rounded-full border border-[#FF87B3] bg-[#FFF5F8] flex items-center justify-center text-[#D94D78] shrink-0 group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300 shadow-2xs"
+                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[#FF87B3] bg-[#FFF5F8] flex items-center justify-center text-[#D94D78] shrink-0 group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300 shadow-2xs"
                     >
-                      <t.icon className="w-5 h-5" />
+                      <t.icon className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
                     </motion.div>
                     <h3 className="font-display text-base md:text-lg font-extrabold text-[#14213D] leading-tight group-hover:text-[#D94D78] transition-colors">
                       {t.title}
                     </h3>
                   </div>
-                  <p className="mt-4 text-xs md:text-sm text-slate-600 leading-relaxed font-medium">
+                  <p className="mt-3 sm:mt-4 text-xs md:text-sm text-slate-600 leading-relaxed font-medium">
                     {t.desc}
                   </p>
                 </div>

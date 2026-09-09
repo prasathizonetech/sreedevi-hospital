@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence, useReducedMotion, type Variants } from "framer-motion";
 import {
   Stethoscope,
   ArrowRight,
@@ -33,8 +34,95 @@ const fadeUpVariant: Variants = {
   },
 };
 
+const statsItems = [
+  { icon: ShieldCheck, label: "Experienced", sub: "Doctors" },
+  { icon: Heart, label: "Personalized", sub: "Care" },
+  { icon: Users, label: "Family", sub: "Focused" },
+  { icon: Plus, label: "Advanced", sub: "Facilities" },
+];
+
+// ─── Letter-by-letter left-to-right animation (same as HomeHero) ───────────
+const AnimatedLetters = ({
+  text,
+  className,
+  delay = 0,
+}: {
+  text: string;
+  className: string;
+  delay?: number;
+}) => {
+  const words = text.split(" ");
+  return (
+    <motion.span
+      initial="hidden"
+      animate="show"
+      exit="exit"
+      variants={{
+        hidden: { opacity: 0 },
+        show: { opacity: 1, transition: { staggerChildren: 0.035, delayChildren: delay } },
+        exit: { opacity: 0, transition: { staggerChildren: 0.018, staggerDirection: -1 } },
+      }}
+      className={`inline-block ${className}`}
+    >
+      {words.map((word, wordIndex) => (
+        <span key={wordIndex} className="inline-block whitespace-nowrap">
+          {word.split("").map((char, charIndex) => (
+            <motion.span
+              key={charIndex}
+              variants={{
+                hidden: { opacity: 0 },
+                show: { opacity: 1 },
+                exit: { opacity: 0 },
+              }}
+              className="inline-block"
+            >
+              {char}
+            </motion.span>
+          ))}
+          {wordIndex < words.length - 1 && (
+            <span className="inline-block w-[0.25em]">&nbsp;</span>
+          )}
+        </span>
+      ))}
+    </motion.span>
+  );
+};
+
+// Three rotating headline phrase sets:
+// Phase 0: "Expert Care" / "Trusted Doctors for" / "Every Health Journey"
+// Phase 1: "Compassionate" / "Trusted Doctors" / "For Your Family"
+// Phase 2: "Advanced Skills" / "Trusted Doctors Who" / "Truly Care"
+const HEADLINE_PHASES = [
+  [
+    { text: "Expert Care",          pink: false },
+    { text: "Trusted Doctors for",   pink: true  },
+    { text: "Every Health Journey",  pink: false },
+  ],
+  [
+    { text: "Compassionate",         pink: false },
+    { text: "Trusted Doctors",       pink: true  },
+    { text: "For Your Family",       pink: false },
+  ],
+  [
+    { text: "Advanced Skills",       pink: false },
+    { text: "Trusted Doctors Who",   pink: true  },
+    { text: "Truly Care",            pink: false },
+  ],
+] as const;
+
 export function DoctorsHero() {
   const shouldReduceMotion = useReducedMotion();
+  const [phase, setPhase] = useState(0);
+
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+    const id = setInterval(() => {
+      setPhase((p) => (p + 1) % HEADLINE_PHASES.length);
+    }, 5000);
+    return () => clearInterval(id);
+  }, [shouldReduceMotion]);
+
+  const lines = HEADLINE_PHASES[phase];
 
   return (
     <section className="relative bg-gradient-to-br from-[#FFF5F8] via-[#FFEBF2] to-[#FF87B3] text-[#14213D] overflow-hidden pt-4 sm:pt-6 lg:pt-8 pb-0 flex flex-col justify-between">
@@ -55,14 +143,14 @@ export function DoctorsHero() {
       </svg>
 
       {/* ── 3D Sweeping Pink Ribbon & Bottom Wave Transition across Right Corner ── */}
-      <div className="absolute -bottom-[2px] inset-x-0 w-full overflow-hidden pointer-events-none z-20 leading-none select-none">
+      <div className="absolute -bottom-[2px] inset-x-0 w-full overflow-hidden pointer-events-none z-10 leading-none select-none">
         <svg
           viewBox="0 0 1440 120"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           className="w-full block"
           preserveAspectRatio="none"
-          style={{ height: "68px", minHeight: "48px", maxHeight: "95px" }}
+          style={{ height: "58px", minHeight: "38px", maxHeight: "82px" }}
         >
           <defs>
             {/* Top Light Ribbon Highlight Gradient */}
@@ -109,16 +197,16 @@ export function DoctorsHero() {
         </svg>
       </div>
 
-      {/* ── Main Content Grid ── */}
-      <div className="container-page relative z-10 pt-1 md:pt-2 pb-0 w-full">
-        <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-end">
+      {/* ── Main Content Container ── */}
+      <div className="container-page relative z-20 pt-1 md:pt-2 pb-0 w-full">
+        <div className="grid lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-10 items-end">
 
-          {/* ── Left Column: Typography, Actions & 4 Feature Badges ── */}
+          {/* ── Left Column: Typography, Actions & Bottom-Left Hero Stats Box ── */}
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             animate="show"
-            className="lg:col-span-6 xl:col-span-6 max-w-xl text-left z-10 flex flex-col justify-center pt-1 pb-12 sm:pb-16 lg:pb-20"
+            className="lg:col-span-7 xl:col-span-7 max-w-2xl text-left z-10 flex flex-col justify-center pt-1 pb-4 sm:pb-8 lg:pb-14"
           >
             {/* Eyebrow Badge */}
             <motion.div
@@ -131,20 +219,56 @@ export function DoctorsHero() {
               <span>MEET OUR DOCTORS</span>
             </motion.div>
 
-            {/* Main Headline */}
-            <motion.h1
+            {/* Main Headline – Rotating 3-line animated title */}
+            <motion.div
               variants={fadeUpVariant}
-              className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[46px] xl:text-[52px] font-extrabold leading-[1.12] mb-3.5 tracking-tight text-[#14213D]"
+              className="mb-4 sm:mb-6 min-h-[110px] sm:min-h-[145px] lg:min-h-[175px]"
             >
-              Compassionate Care, <br />
-              <span className="text-[#D94D78]">Trusted Doctors for</span> <br />
-              Every Family.
-            </motion.h1>
+              <h1
+                className="font-display text-xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-[44px] font-extrabold leading-[1.2] tracking-tight"
+              >
+                {/* Line 1 */}
+                <span className="block min-h-[1.2em] overflow-hidden">
+                  <AnimatePresence mode="wait">
+                    <AnimatedLetters
+                      key={`doc-l1-${phase}`}
+                      text={lines[0].text}
+                      className={lines[0].pink ? "text-[#D94D78] drop-shadow-[0_0_15px_rgba(255,135,179,0.6)]" : "text-[#14213D]"}
+                      delay={0}
+                    />
+                  </AnimatePresence>
+                </span>
+
+                {/* Line 2 */}
+                <span className="block min-h-[1.2em] overflow-hidden">
+                  <AnimatePresence mode="wait">
+                    <AnimatedLetters
+                      key={`doc-l2-${phase}`}
+                      text={lines[1].text}
+                      className={lines[1].pink ? "text-[#D94D78] drop-shadow-[0_0_15px_rgba(255,135,179,0.6)]" : "text-[#14213D]"}
+                      delay={0.3}
+                    />
+                  </AnimatePresence>
+                </span>
+
+                {/* Line 3 */}
+                <span className="block min-h-[1.2em] overflow-hidden">
+                  <AnimatePresence mode="wait">
+                    <AnimatedLetters
+                      key={`doc-l3-${phase}`}
+                      text={lines[2].text}
+                      className={lines[2].pink ? "text-[#D94D78] drop-shadow-[0_0_15px_rgba(255,135,179,0.6)]" : "text-[#14213D]"}
+                      delay={0.6}
+                    />
+                  </AnimatePresence>
+                </span>
+              </h1>
+            </motion.div>
 
             {/* Description Paragraph */}
             <motion.p
               variants={fadeUpVariant}
-              className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed mb-6 max-w-lg font-medium"
+              className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed mb-5 sm:mb-6 max-w-lg font-medium"
             >
               Consultants who take the time to listen, explain, and reassure. Dedicated to
               delivering trusted, compassionate, and ethical healthcare for every family.
@@ -153,12 +277,12 @@ export function DoctorsHero() {
             {/* Dual Action Buttons */}
             <motion.div
               variants={fadeUpVariant}
-              className="flex flex-wrap items-center gap-3.5 mb-7"
+              className="flex flex-wrap items-center gap-3 sm:gap-3.5"
             >
               {/* Primary Consultation Button */}
               <Link
                 to="/contact"
-                className="inline-flex items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-[#FF87B3] via-[#f06a99] to-[#D94D78] text-white px-7 py-3.5 text-xs sm:text-sm font-extrabold hover:shadow-lg hover:shadow-pink-900/20 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 cursor-pointer shadow-md"
+                className="inline-flex items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-[#FF87B3] via-[#f06a99] to-[#D94D78] text-white px-5 sm:px-7 py-3 sm:py-3.5 text-xs sm:text-sm font-extrabold hover:shadow-lg hover:shadow-pink-900/20 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 cursor-pointer shadow-md"
               >
                 <Calendar className="w-4 h-4 text-white" />
                 <span>Book Consultation</span>
@@ -172,39 +296,36 @@ export function DoctorsHero() {
                   const el = document.getElementById("specialists-section");
                   el?.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-white border border-[#FF87B3] text-[#D94D78] px-6 py-3.5 text-xs sm:text-sm font-extrabold hover:bg-[#FFF5F8] hover:border-[#D94D78] hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 cursor-pointer shadow-2xs"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-white border border-[#FF87B3] text-[#D94D78] px-5 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm font-extrabold hover:bg-[#FFF5F8] hover:border-[#D94D78] hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 cursor-pointer shadow-2xs"
               >
                 <Users className="w-4 h-4 text-[#D94D78]" />
                 <span>View Specialists</span>
               </button>
             </motion.div>
 
-            {/* ── 4 Feature Badges inside White Card Container ── */}
+            {/* ── Tablet, Laptop & Desktop: Hero Section Stats Box (Bottom-Left Corner) ── */}
             <motion.div
               variants={fadeUpVariant}
-              className="bg-white/95 backdrop-blur-md border border-[#FFCCD9] rounded-2xl sm:rounded-3xl shadow-[0_8px_28px_rgba(255,135,179,0.15)] p-3 sm:p-4 max-w-lg"
+              className="hidden sm:block mt-6 sm:mt-8 lg:mt-9 z-20 w-fit max-w-full"
             >
-              <div className="grid grid-cols-4 gap-1.5 sm:gap-3 items-center divide-x divide-pink-100">
-                {[
-                  { icon: ShieldCheck, label: "Experienced", sub: "Doctors" },
-                  { icon: Heart, label: "Personalized", sub: "Care" },
-                  { icon: Users, label: "Family", sub: "Focused" },
-                  { icon: Plus, label: "Advanced", sub: "Facilities" },
-                ].map((item, idx) => (
+              <div className="bg-white border border-[#FF87B3] rounded-full shadow-md shadow-pink-200/30 px-2.5 sm:px-3.5 md:px-4 lg:px-3 xl:px-5 2xl:px-6 py-2 sm:py-2.5 lg:py-2.5 xl:py-3.5 flex items-center divide-x divide-pink-100 max-w-full">
+                {statsItems.map((item, idx) => (
                   <div
                     key={idx}
-                    className={`flex flex-col items-center text-center group cursor-default ${
-                      idx !== 0 ? "pl-1.5 sm:pl-3" : ""
-                    }`}
+                    className={`flex items-center gap-1.5 sm:gap-2 md:gap-2.5 lg:gap-1.5 xl:gap-3 px-1.5 sm:px-2 md:px-3 lg:px-2 xl:px-4 ${
+                      idx === 0 ? "pl-0.5 sm:pl-1" : ""
+                    } ${idx === 3 ? "pr-1.5 sm:pr-2 xl:pr-3" : ""} group cursor-default shrink-0`}
                   >
-                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#FFF0F5] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] shadow-2xs mb-1.5 group-hover:scale-110 group-hover:bg-[#FFE5EE] group-hover:border-[#D94D78] transition-all duration-200">
-                      <item.icon className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#D94D78]" strokeWidth={2.2} />
+                    <div className="shrink-0 w-6.5 h-6.5 sm:w-7.5 sm:h-7.5 md:w-8 md:h-8 lg:w-7 lg:h-7 xl:w-9 xl:h-9 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] shadow-2xs group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300">
+                      <item.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-3.5 lg:h-3.5 xl:w-4.5 xl:h-4.5 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300" strokeWidth={2.2} />
                     </div>
-                    <div className="text-[10.5px] sm:text-xs font-extrabold text-[#14213D] leading-tight">
-                      {item.label}
-                    </div>
-                    <div className="text-[9.5px] sm:text-[10.5px] font-bold text-slate-500 leading-tight">
-                      {item.sub}
+                    <div className="text-left min-w-0">
+                      <div className="font-bold text-[#14213D] text-[10.5px] sm:text-[11.5px] md:text-xs lg:text-[11px] xl:text-[13.5px] 2xl:text-sm leading-tight whitespace-nowrap">
+                        {item.label}
+                      </div>
+                      <div className="text-[8.5px] sm:text-[9.5px] md:text-[10px] lg:text-[9px] xl:text-[11px] 2xl:text-xs text-slate-500 font-medium whitespace-nowrap">
+                        {item.sub}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -212,33 +333,68 @@ export function DoctorsHero() {
             </motion.div>
           </motion.div>
 
-          {/* ── Right Column: Doctors Trio Sitting Cleanly at the Bottom of Hero Section ── */}
+          {/* ── Right Column: Doctors Trio Sitting Cleanly on the Bottom Baseline ── */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-6 xl:col-span-6 relative flex items-end justify-center lg:justify-end self-end select-none mt-6 lg:mt-0 z-10 pb-0 mb-0 leading-none"
+            className="lg:col-span-5 xl:col-span-5 relative flex items-end justify-center lg:justify-end self-end select-none mt-6 sm:mt-8 lg:mt-0 z-20 pb-0 mb-0 leading-none w-full"
           >
-            {/* Vibrant Pink Circular Disc Backdrop Centered Behind Doctors */}
-            <div
-              className="absolute top-1/2 -translate-y-[45%] right-1/2 translate-x-1/2 lg:translate-x-0 lg:right-4 w-[340px] sm:w-[440px] md:w-[500px] lg:w-[540px] xl:w-[580px] h-[340px] sm:h-[440px] md:h-[500px] lg:h-[540px] xl:h-[580px] rounded-full bg-gradient-to-tr from-[#FA5F8B] via-[#FF7AA2] to-[#FF9EBC] shadow-[0_20px_50px_rgba(217,77,120,0.30)] border-4 sm:border-8 border-white/60 pointer-events-none z-0"
-              aria-hidden="true"
-            />
-
-            {/* ── Doctor Trio Image Cutout Sitting Directly on the Bottom Edge ── */}
-            <div className="relative z-10 w-full max-w-[460px] sm:max-w-[560px] md:max-w-[620px] lg:max-w-[680px] xl:max-w-[720px] flex items-end justify-center lg:justify-end">
-              <img
-                src={doctorsHeroTeam}
-                alt="Expert medical consultants and specialist doctors at SreeDevi Hospital"
-                className="w-full h-auto object-contain object-bottom align-bottom block drop-shadow-[0_18px_36px_rgba(130,20,55,0.25)] select-none -mb-1"
-                loading="eager"
-                fetchPriority="high"
-                draggable={false}
+            {/* Doctor Trio Visual Container */}
+            <div className="relative w-full max-w-[340px] xs:max-w-[400px] sm:max-w-[480px] md:max-w-[520px] lg:max-w-[480px] xl:max-w-[560px] 2xl:max-w-[620px] flex items-end justify-center mx-auto lg:mx-0 lg:ml-auto">
+              {/* Vibrant Pink Circular Disc Backdrop Centered Perfectly Behind Doctors */}
+              <div
+                className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-[52%] sm:-translate-y-[50%] w-[78%] xs:w-[82%] sm:w-[85%] md:w-[84%] lg:w-[86%] aspect-square rounded-full bg-gradient-to-tr from-[#FA5F8B] via-[#FF7AA2] to-[#FF9EBC] shadow-[0_20px_50px_rgba(217,77,120,0.35)] border-4 sm:border-8 border-white/70 pointer-events-none z-0"
+                aria-hidden="true"
               />
+
+              {/* Doctor Trio Image Cutout - 100% Full Body & Hands Visible */}
+              <div className="relative z-10 w-full flex items-end justify-center">
+                <img
+                  src={doctorsHeroTeam}
+                  alt="Expert medical consultants and specialist doctors at SreeDevi Hospital"
+                  className="w-full h-auto object-contain object-bottom align-bottom block drop-shadow-[0_18px_36px_rgba(130,20,55,0.22)] select-none"
+                  loading="eager"
+                  fetchPriority="high"
+                  draggable={false}
+                />
+              </div>
             </div>
           </motion.div>
 
         </div>
+
+        {/* ── Mobile Viewport (<640px): Hero Section Stats Box at the Bottom ── */}
+        <motion.div
+          variants={fadeUpVariant}
+          initial="hidden"
+          animate="show"
+          className="sm:hidden relative z-30 mt-6 mb-4 w-full max-w-[420px] mx-auto px-2"
+        >
+          <div className="bg-white border border-[#FF87B3] rounded-2xl shadow-md shadow-pink-200/30 p-3.5 w-full">
+            <div className="grid grid-cols-2 gap-y-3 gap-x-2">
+              {statsItems.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center gap-2 px-1 group cursor-default"
+                >
+                  <div className="shrink-0 w-8 h-8 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] shadow-2xs group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300">
+                    <item.icon className="w-4 h-4 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300" strokeWidth={2.2} />
+                  </div>
+                  <div className="text-left min-w-0">
+                    <div className="font-bold text-[#14213D] text-xs leading-tight whitespace-nowrap">
+                      {item.label}
+                    </div>
+                    <div className="text-[10px] text-slate-500 font-medium whitespace-nowrap">
+                      {item.sub}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
       </div>
     </section>
   );

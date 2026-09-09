@@ -58,7 +58,7 @@ export function CTASection() {
           initial="hidden"
           whileInView="show"
           viewport={viewport}
-          className="relative overflow-hidden rounded-3xl bg-white shadow-[0_8px_40px_rgba(255,135,179,0.30)] border border-[#FF87B3]/60 px-6 py-8 sm:px-10 sm:py-10 md:px-12 md:py-10"
+          className="relative overflow-hidden rounded-3xl bg-white shadow-[0_8px_40px_rgba(255,135,179,0.30)] border border-[#FF87B3]/60 px-5 py-7 sm:px-10 sm:py-10 md:px-12 md:py-10"
         >
           {/* Decorative pink blob */}
           <div className="absolute top-0 right-0 w-80 h-80 pointer-events-none opacity-60">
@@ -84,7 +84,7 @@ export function CTASection() {
               {/* Pill */}
               <motion.div
                 variants={fadeUp}
-                className="inline-flex items-center gap-2 rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-4 py-1.5 text-[11px] font-bold tracking-widest text-[#D94D78] uppercase mb-4"
+                className="inline-flex items-center gap-2 rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 sm:px-4 sm:py-1.5 text-[10px] sm:text-[11px] font-bold tracking-widest text-[#D94D78] uppercase mb-4"
               >
                 <Headphones className="w-3.5 h-3.5 text-[#D94D78]" />
                 Talk to a Specialist
@@ -93,7 +93,7 @@ export function CTASection() {
               {/* Heading */}
               <motion.h2
                 variants={fadeUp}
-                className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#14213D] leading-[1.1] mb-3"
+                className="font-display text-2xl sm:text-4xl md:text-5xl font-extrabold text-[#14213D] leading-[1.15] sm:leading-[1.1] mb-3"
               >
                 Every consultation
                 <br />

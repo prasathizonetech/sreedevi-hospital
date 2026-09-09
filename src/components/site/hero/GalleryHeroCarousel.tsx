@@ -2,9 +2,9 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Sparkles, Heart, ChevronRight, ChevronLeft } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import exterior from "@/assets/hospital-exterior.jpg";
-import reception from "@/assets/reception.jpg";
+import reception from "@/assets/gallery/gallery-reception.jpg";
 import delivery from "@/assets/delivery-room.jpg";
-import fertility from "@/assets/fertility-lab.jpg";
+import diagnostics from "@/assets/gallery/gallery-diagnostics.jpg";
 
 interface GalleryCarouselItem {
   id: string;
@@ -15,6 +15,7 @@ interface GalleryCarouselItem {
   badge: string;
   badgeColor: string;
   tag: string;
+  objectPosition?: string;
 }
 
 const GALLERY_CAROUSEL_ITEMS: GalleryCarouselItem[] = [
@@ -27,6 +28,7 @@ const GALLERY_CAROUSEL_ITEMS: GalleryCarouselItem[] = [
     badge: "Hospital Campus",
     badgeColor: "#FB5783",
     tag: "Hospital",
+    objectPosition: "object-center",
   },
   {
     id: "reception",
@@ -37,6 +39,7 @@ const GALLERY_CAROUSEL_ITEMS: GalleryCarouselItem[] = [
     badge: "Warm Hospitality",
     badgeColor: "#DE356A",
     tag: "Reception",
+    objectPosition: "object-[center_35%]",
   },
   {
     id: "delivery",
@@ -47,16 +50,18 @@ const GALLERY_CAROUSEL_ITEMS: GalleryCarouselItem[] = [
     badge: "Maternity Care",
     badgeColor: "#E6396B",
     tag: "Maternity",
+    objectPosition: "object-center",
   },
   {
     id: "lab",
-    title: "Advanced IVF & Diagnostic Lab",
+    title: "Advanced Diagnostic Lab",
     subtitle: "High-precision clinical laboratory & cleanroom",
-    image: fertility,
-    alt: "Clinical laboratory and embryology cleanroom",
+    image: diagnostics,
+    alt: "Clinical laboratory and diagnostic support",
     badge: "Advanced Tech",
     badgeColor: "#0284C7",
     tag: "Diagnostics",
+    objectPosition: "object-[center_35%]",
   },
 ];
 
@@ -121,7 +126,7 @@ export function GalleryHeroCarousel({ onSelectImage }: GalleryHeroCarouselProps)
     >
       {/* ── Cards 3D Perspective Stage ── */}
       <div
-        className="relative w-full max-w-[640px] xl:max-w-[680px] h-[350px] sm:h-[410px] md:h-[450px] lg:h-[480px] xl:h-[500px] flex items-center justify-center"
+        className="relative w-full max-w-[640px] xl:max-w-[680px] h-[300px] sm:h-[380px] md:h-[430px] lg:h-[470px] xl:h-[490px] flex items-center justify-center overflow-hidden sm:overflow-visible"
         style={{ perspective: "1200px" }}
       >
         {GALLERY_CAROUSEL_ITEMS.map((item, idx) => {
@@ -158,7 +163,7 @@ export function GalleryHeroCarousel({ onSelectImage }: GalleryHeroCarouselProps)
                   setActiveIndex(idx);
                 }
               }}
-              className={`absolute top-0 w-[270px] sm:w-[330px] md:w-[370px] lg:w-[400px] xl:w-[420px] h-[340px] sm:h-[400px] md:h-[440px] lg:h-[470px] xl:h-[490px] rounded-[32px] sm:rounded-[40px] lg:rounded-[44px] p-2.5 sm:p-3 transition-shadow duration-500 cursor-pointer ${
+              className={`absolute top-0 w-[230px] sm:w-[320px] md:w-[360px] lg:w-[400px] xl:w-[420px] h-[290px] sm:h-[370px] md:h-[420px] lg:h-[460px] xl:h-[480px] rounded-[24px] sm:rounded-[36px] lg:rounded-[44px] p-2 sm:p-3 transition-shadow duration-500 cursor-pointer ${
                 isActive
                   ? "border-2 sm:border-[3px] border-white bg-white/95 shadow-[0_16px_40px_rgba(200,40,90,0.20)]"
                   : isRight
@@ -173,7 +178,7 @@ export function GalleryHeroCarousel({ onSelectImage }: GalleryHeroCarouselProps)
                   alt={item.alt}
                   whileHover={shouldReduceMotion ? undefined : { scale: 1.04 }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
-                  className="w-full h-full object-cover object-center select-none"
+                  className={`w-full h-full object-cover select-none ${item.objectPosition || "object-center"}`}
                 />
 
                 {/* Top Subtle Pill Badge on Active Card */}

@@ -12,12 +12,14 @@ import {
   Quote,
   ChevronRight,
   Heart,
+  MessageSquare,
+  Zap,
 } from "lucide-react";
 import { hospital } from "@/data/hospital";
 import { departments } from "@/data/departments";
-import contactHeroSupport from "@/assets/contact/contact-hero-support.jpg";
-import { useState } from "react";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import contactHeroSupport from "@/assets/contact/contact-hero-support.webp";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence, useReducedMotion, type Variants } from "framer-motion";
 import { HeroBackground } from "@/components/site/hero/HeroBackground";
 
 export const Route = createFileRoute("/contact")({
@@ -57,6 +59,114 @@ const fadeUpVariant: Variants = {
     transition: { type: "spring", stiffness: 60, damping: 18 },
   },
 };
+
+// ─── Letter-by-letter left-to-right animation (matches HomeHero) ─────────────
+const AnimatedLetters = ({
+  text,
+  className,
+  delay = 0,
+}: {
+  text: string;
+  className: string;
+  delay?: number;
+}) => {
+  const words = text.split(" ");
+  return (
+    <motion.span
+      initial="hidden"
+      animate="show"
+      exit="exit"
+      variants={{
+        hidden: { opacity: 0 },
+        show: { opacity: 1, transition: { staggerChildren: 0.035, delayChildren: delay } },
+        exit: { opacity: 0, transition: { staggerChildren: 0.018, staggerDirection: -1 } },
+      }}
+      className={`inline-block ${className}`}
+    >
+      {words.map((word, wordIndex) => (
+        <span key={wordIndex} className="inline-block whitespace-nowrap">
+          {word.split("").map((char, charIndex) => (
+            <motion.span
+              key={charIndex}
+              variants={{
+                hidden: { opacity: 0 },
+                show: { opacity: 1 },
+                exit: { opacity: 0 },
+              }}
+              className="inline-block"
+            >
+              {char}
+            </motion.span>
+          ))}
+          {wordIndex < words.length - 1 && (
+            <span className="inline-block w-[0.25em]">&nbsp;</span>
+          )}
+        </span>
+      ))}
+    </motion.span>
+  );
+};
+
+// Two alternating headline phrase sets
+const CONTACT_PHRASES = [
+  [
+    { text: "We are always a",  pink: false },
+    { text: "phone call away",  pink: true  },
+  ],
+  [
+    { text: "Your questions",    pink: false },
+    { text: "our caring support", pink: true  },
+  ],
+] as const;
+
+// Sub-component: rotating headline inside the contact hero left column
+function ContactAnimatedHeadline() {
+  const shouldReduceMotion = useReducedMotion();
+  const [phase, setPhase] = useState(0);
+
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+    const id = setInterval(() => {
+      setPhase((p) => (p + 1) % CONTACT_PHRASES.length);
+    }, 5000);
+    return () => clearInterval(id);
+  }, [shouldReduceMotion]);
+
+  const lines = CONTACT_PHRASES[phase];
+
+  return (
+    <motion.div
+      variants={fadeUpVariant}
+      className="mb-4 sm:mb-6 min-h-[80px] sm:min-h-[105px] lg:min-h-[135px]"
+    >
+      <h1 className="font-display text-xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-[44px] font-extrabold leading-[1.2] tracking-tight text-[#14213D]">
+        {/* Line 1 */}
+        <span className="block min-h-[1.2em] overflow-hidden">
+          <AnimatePresence mode="wait">
+            <AnimatedLetters
+              key={`con-l1-${phase}`}
+              text={lines[0].text}
+              className={lines[0].pink ? "text-[#D94D78] drop-shadow-[0_0_15px_rgba(255,135,179,0.6)]" : "text-[#14213D]"}
+              delay={0}
+            />
+          </AnimatePresence>
+        </span>
+
+        {/* Line 2 */}
+        <span className="block min-h-[1.2em] overflow-hidden">
+          <AnimatePresence mode="wait">
+            <AnimatedLetters
+              key={`con-l2-${phase}`}
+              text={lines[1].text}
+              className={lines[1].pink ? "text-[#D94D78] drop-shadow-[0_0_15px_rgba(255,135,179,0.6)]" : "text-[#14213D]"}
+              delay={0.3}
+            />
+          </AnimatePresence>
+        </span>
+      </h1>
+    </motion.div>
+  );
+}
 
 function Contact() {
   const [sent, setSent] = useState(false);
@@ -131,21 +241,9 @@ function Contact() {
                 Contact Us
               </motion.div>
 
-              <motion.h1
-                variants={fadeUpVariant}
-                className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.12] mb-2.5 tracking-tight text-[#14213D]"
-              >
-                We are always{" "}
-                <span className="text-[#D94D78] underline decoration-[#FF87B3] decoration-wavy decoration-1 underline-offset-8">
-                  a phone call
-                </span>{" "}
-                away.
-              </motion.h1>
+              {/* Rotating animated headline */}
+              <ContactAnimatedHeadline />
 
-              <motion.div
-                variants={fadeUpVariant}
-                className="w-14 h-1.5 bg-gradient-to-r from-[#FF87B3] to-[#D94D78] rounded-full mb-3"
-              />
 
               <motion.p
                 variants={fadeUpVariant}
@@ -175,9 +273,9 @@ function Contact() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, delay: 0.15 }}
-              className="md:col-span-6 lg:col-span-7 relative flex items-center justify-center lg:justify-end select-none mt-6 md:mt-0"
+              className="md:col-span-6 lg:col-span-7 relative flex items-center justify-center lg:justify-end select-none mt-6 md:mt-0 overflow-hidden sm:overflow-visible"
             >
-              <div className="relative w-full max-w-[480px] sm:max-w-[540px] lg:max-w-[600px] xl:max-w-[640px] h-[380px] sm:h-[440px] md:h-[470px] lg:h-[500px] flex items-center justify-center lg:justify-end">
+              <div className="relative w-full max-w-[340px] sm:max-w-[540px] lg:max-w-[600px] xl:max-w-[640px] h-[300px] sm:h-[440px] md:h-[470px] lg:h-[500px] flex items-center justify-center lg:justify-end">
                 
                 {/* Ambient Glow Aura behind the frame */}
                 <div
@@ -213,17 +311,17 @@ function Contact() {
                   animate={shouldReduceMotion ? undefined : { y: [0, -6, 0] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                   whileHover={shouldReduceMotion ? undefined : { scale: 1.15 }}
-                  className="absolute top-[8%] left-[4%] sm:left-[2%] md:left-[0%] z-30"
+                  className="absolute top-[8%] left-[2%] sm:left-[2%] md:left-[0%] z-30"
                 >
                   <a
                     href={`tel:${hospital.mobile}`}
                     aria-label="Call Hospital"
-                    className="group flex items-center gap-2 p-1.5 sm:p-2 pr-3 sm:pr-4 rounded-full bg-[#E6396E] text-white shadow-[0_10px_25px_rgba(230,57,110,0.38)] border-2 sm:border-[3px] border-white transition-all cursor-pointer hover:shadow-xl hover:shadow-pink-900/20"
+                    className="group flex items-center gap-1.5 sm:gap-2 p-1.5 sm:p-2 pr-2.5 sm:pr-4 rounded-full bg-[#E6396E] text-white shadow-[0_10px_25px_rgba(230,57,110,0.38)] border-2 sm:border-[3px] border-white transition-all cursor-pointer hover:shadow-xl hover:shadow-pink-900/20"
                   >
-                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/20 flex items-center justify-center">
+                    <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-white/20 flex items-center justify-center">
                       <svg
                         viewBox="0 0 24 24"
-                        className="w-4.5 h-4.5 sm:w-5 sm:h-5 fill-white text-white"
+                        className="w-4 h-4 sm:w-5 sm:h-5 fill-white text-white"
                         fill="currentColor"
                       >
                         <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.25 1.02l-2.2 2.2z" />
@@ -240,17 +338,17 @@ function Contact() {
                   animate={shouldReduceMotion ? undefined : { y: [0, 6, 0] }}
                   transition={{ duration: 4.6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
                   whileHover={shouldReduceMotion ? undefined : { scale: 1.15 }}
-                  className="absolute top-[46%] -left-[3%] sm:-left-[5%] md:-left-[7%] z-30"
+                  className="absolute top-[46%] left-[0%] sm:-left-[5%] md:-left-[7%] z-30"
                 >
                   <a
                     href={`mailto:${hospital.email}`}
                     aria-label="Email Hospital"
-                    className="group flex items-center gap-2 p-1.5 sm:p-2 pr-3 sm:pr-4 rounded-full bg-white text-[#E6396E] shadow-[0_10px_25px_rgba(200,40,90,0.18)] border-2 sm:border-[3px] border-white transition-all cursor-pointer hover:border-[#FF87B3] hover:shadow-xl"
+                    className="group flex items-center gap-1.5 sm:gap-2 p-1.5 sm:p-2 pr-2.5 sm:pr-4 rounded-full bg-white text-[#E6396E] shadow-[0_10px_25px_rgba(200,40,90,0.18)] border-2 sm:border-[3px] border-white transition-all cursor-pointer hover:border-[#FF87B3] hover:shadow-xl"
                   >
-                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#FFF5F8] border border-[#FF87B3]/40 flex items-center justify-center">
+                    <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#FFF5F8] border border-[#FF87B3]/40 flex items-center justify-center">
                       <svg
                         viewBox="0 0 24 24"
-                        className="w-4.5 h-4.5 sm:w-5 sm:h-5 stroke-[#E6396E] fill-none"
+                        className="w-4 h-4 sm:w-5 sm:h-5 stroke-[#E6396E] fill-none"
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -275,12 +373,12 @@ function Contact() {
                   <a
                     href="#contact-info"
                     aria-label="Hospital Location"
-                    className="group flex items-center gap-2 p-1.5 sm:p-2 pr-3 sm:pr-4 rounded-full bg-white text-[#E6396E] shadow-[0_10px_25px_rgba(200,40,90,0.18)] border-2 sm:border-[3px] border-white transition-all cursor-pointer hover:border-[#FF87B3] hover:shadow-xl"
+                    className="group flex items-center gap-1.5 sm:gap-2 p-1.5 sm:p-2 pr-2.5 sm:pr-4 rounded-full bg-white text-[#E6396E] shadow-[0_10px_25px_rgba(200,40,90,0.18)] border-2 sm:border-[3px] border-white transition-all cursor-pointer hover:border-[#FF87B3] hover:shadow-xl"
                   >
-                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#FFF5F8] border border-[#FF87B3]/40 flex items-center justify-center">
+                    <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#FFF5F8] border border-[#FF87B3]/40 flex items-center justify-center">
                       <svg
                         viewBox="0 0 24 24"
-                        className="w-4.5 h-4.5 sm:w-5 sm:h-5 fill-[#E6396E]"
+                        className="w-4 h-4 sm:w-5 sm:h-5 fill-[#E6396E]"
                       >
                         <path
                           fillRule="evenodd"
@@ -296,7 +394,7 @@ function Contact() {
                 </motion.div>
 
                 {/* ── Main Reception Support Photo in Grand Sweeping Curved Arch Frame ── */}
-                <div className="relative z-20 w-[300px] sm:w-[400px] md:w-[460px] lg:w-[520px] xl:w-[560px] h-[320px] sm:h-[400px] md:h-[440px] lg:h-[470px] rounded-l-[180px] sm:rounded-l-[240px] md:rounded-l-[280px] lg:rounded-l-[320px] rounded-r-[36px] sm:rounded-r-[48px] border-[6px] sm:border-[8px] lg:border-[10px] border-white shadow-[0_24px_60px_rgba(200,40,90,0.24)] overflow-hidden group bg-slate-900">
+                <div className="relative z-20 w-[260px] sm:w-[400px] md:w-[460px] lg:w-[520px] xl:w-[560px] h-[270px] sm:h-[400px] md:h-[440px] lg:h-[470px] rounded-l-[140px] sm:rounded-l-[240px] md:rounded-l-[280px] lg:rounded-l-[320px] rounded-r-[28px] sm:rounded-r-[48px] border-[5px] sm:border-[8px] lg:border-[10px] border-white shadow-[0_24px_60px_rgba(200,40,90,0.24)] overflow-hidden group bg-slate-900">
                   <motion.img
                     src={contactHeroSupport}
                     alt="SreeDevi Hospital friendly patient support and care coordination"
@@ -316,16 +414,16 @@ function Contact() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.35, duration: 0.5 }}
                   whileHover={shouldReduceMotion ? undefined : { scale: 1.04, y: -2 }}
-                  className="absolute -bottom-3 sm:-bottom-4 right-3 sm:right-6 md:right-4 z-30 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl border border-[#FF87B3] px-4 py-2.5 sm:px-5 sm:py-3 shadow-[0_14px_36px_rgba(200,40,90,0.20)] text-[#14213D] flex items-center gap-3 cursor-default"
+                  className="absolute -bottom-2 sm:-bottom-4 right-1 sm:right-6 md:right-4 z-30 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl border border-[#FF87B3] px-3 py-2 sm:px-5 sm:py-3 shadow-[0_14px_36px_rgba(200,40,90,0.20)] text-[#14213D] flex items-center gap-2 sm:gap-3 cursor-default scale-[0.9] sm:scale-100"
                 >
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] shrink-0 shadow-2xs">
-                    <Heart className="w-4 h-4 sm:w-5 sm:h-5 fill-[#D94D78] text-[#D94D78] animate-pulse" />
+                  <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] shrink-0 shadow-2xs">
+                    <Heart className="w-3.5 h-3.5 sm:w-5 sm:h-5 fill-[#D94D78] text-[#D94D78] animate-pulse" />
                   </div>
                   <div>
-                    <div className="text-[11px] sm:text-[13px] font-extrabold text-[#14213D] leading-tight">
+                    <div className="text-[10px] sm:text-[13px] font-extrabold text-[#14213D] leading-tight">
                       We are here to help you
                     </div>
-                    <div className="text-[9px] sm:text-[10px] text-[#D94D78] font-bold mt-0.5 flex items-center gap-1.5">
+                    <div className="text-[8px] sm:text-[10px] text-[#D94D78] font-bold mt-0.5 flex items-center gap-1">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping inline-block" />
                       24/7 Patient Care &amp; Support
                     </div>
@@ -335,28 +433,66 @@ function Contact() {
               </div>
             </motion.div>
           </div>
+
+          {/* ── Contact Hero Stats Bar (4 Metrics) ── */}
+          <div className="mt-8 sm:mt-10">
+            <motion.div
+              variants={fadeUpVariant}
+              initial="hidden"
+              animate="show"
+              className="bg-white border border-[#FF87B3] rounded-2xl sm:rounded-full shadow-md shadow-pink-200/30 px-3.5 py-3 sm:px-6 sm:py-3.5 w-full sm:w-fit max-w-full mx-auto lg:mx-0"
+            >
+              <div className="grid grid-cols-2 sm:flex sm:flex-nowrap sm:items-center sm:divide-x divide-pink-100 gap-y-3 gap-x-2 sm:gap-0">
+                {[
+                  { icon: Clock, value: "24/7", label: "Patient Support" },
+                  { icon: MessageSquare, value: "10+", label: "Contact Channels" },
+                  { icon: Zap, value: "Fast", label: "Response Time" },
+                  { icon: Heart, value: "100%", label: "Dedicated Care" },
+                ].map((stat, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex items-center gap-2 sm:gap-2.5 px-2 sm:px-3.5 md:px-5 ${
+                      idx === 0 ? "sm:pl-1" : ""
+                    } ${idx === 3 ? "sm:pr-1" : ""} group cursor-default`}
+                  >
+                    <div className="shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] shadow-2xs group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300">
+                      <stat.icon className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300" />
+                    </div>
+                    <div className="text-left min-w-0">
+                      <div className="font-bold text-[#14213D] text-xs sm:text-sm md:text-base leading-tight whitespace-nowrap">
+                        {stat.value}
+                      </div>
+                      <div className="text-[10px] sm:text-xs text-slate-500 font-medium whitespace-nowrap">
+                        {stat.label}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
       {/* ── 2. Main Content Section ── */}
-      <section className="container-page pt-6 pb-6 md:pt-8 md:pb-8">
-        <div className="grid gap-10 lg:grid-cols-2 items-start">
+      <section id="contact-info" className="container-page pt-6 pb-6 md:pt-8 md:pb-8">
+        <div className="grid gap-8 lg:gap-10 lg:grid-cols-2 items-start">
           {/* Left Column: Details Cards & Map */}
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-60px" }}
-            className="space-y-4"
+            className="space-y-3.5 sm:space-y-4"
           >
             <motion.div variants={fadeUpVariant} className="mb-4 md:mb-5">
               <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-3 w-max shadow-2xs">
                 Contact Details
               </span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-2">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-2">
                 We’re here to help
               </h2>
-              <p className="text-slate-600 text-sm leading-relaxed max-w-md font-medium">
+              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed max-w-md font-medium">
                 Have a question or need assistance? Our team is ready to assist you with the best
                 care and support.
               </p>
@@ -389,34 +525,34 @@ function Contact() {
                       }
                 }
                 transition={{ type: "spring", stiffness: 280, damping: 20 }}
-                className="flex items-center justify-between rounded-3xl border border-[#FF87B3] bg-white p-5 shadow-xs hover:border-[#D94D78] transition-all duration-300 cursor-default group"
+                className="flex items-center justify-between rounded-2xl sm:rounded-3xl border border-[#FF87B3] bg-white p-4 sm:p-5 shadow-xs hover:border-[#D94D78] transition-all duration-300 cursor-default group"
               >
-                <div className="flex gap-4 items-center">
-                  <div className="w-11 h-11 rounded-full border border-[#FF87B3] bg-[#FFF5F8] flex items-center justify-center text-[#D94D78] shrink-0 group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300 shadow-2xs">
-                    <c.icon className="w-5 h-5" />
+                <div className="flex gap-3 sm:gap-4 items-center">
+                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-[#FF87B3] bg-[#FFF5F8] flex items-center justify-center text-[#D94D78] shrink-0 group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300 shadow-2xs">
+                    <c.icon className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
                   </div>
                   <div className="min-w-0">
-                    <div className="font-display font-extrabold text-[#14213D] text-[15px] md:text-base leading-snug group-hover:text-[#D94D78] transition-colors">
+                    <div className="font-display font-extrabold text-[#14213D] text-[14px] sm:text-[15px] md:text-base leading-snug group-hover:text-[#D94D78] transition-colors">
                       {c.t}
                     </div>
-                    <div className="mt-1 text-xs md:text-sm text-slate-600 break-words leading-relaxed font-medium">
+                    <div className="mt-0.5 sm:mt-1 text-xs md:text-sm text-slate-600 break-words leading-relaxed font-medium">
                       {c.d}
                     </div>
                   </div>
                 </div>
-                <ChevronRight className="w-4 h-4 text-[#D94D78] shrink-0 ml-4 group-hover:translate-x-1 transition-transform" />
+                <ChevronRight className="w-4 h-4 text-[#D94D78] shrink-0 ml-2 sm:ml-4 group-hover:translate-x-1 transition-transform" />
               </motion.div>
             ))}
 
             {/* Embedded Google Map */}
             <motion.div
               variants={fadeUpVariant}
-              className="overflow-hidden rounded-3xl border border-[#FF87B3] shadow-md mt-6"
+              className="overflow-hidden rounded-2xl sm:rounded-3xl border border-[#FF87B3] shadow-md mt-6"
             >
               <iframe
                 title="Map to SreeDevi Hospital"
                 src="https://www.google.com/maps?q=Gandhi+Road+Srirangam+Tiruchirappalli&output=embed"
-                className="h-64 w-full border-0"
+                className="h-56 sm:h-64 w-full border-0"
                 loading="lazy"
               />
             </motion.div>
@@ -428,9 +564,9 @@ function Contact() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.6, type: "spring", stiffness: 60 }}
-            className="flex justify-center lg:justify-end"
+            className="flex justify-center lg:justify-end w-full"
           >
-            <div className="w-full max-w-[550px] bg-white border border-[#FF87B3] rounded-[32px] p-6 md:p-8 shadow-xl relative overflow-hidden">
+            <div className="w-full max-w-[550px] bg-white border border-[#FF87B3] rounded-2xl sm:rounded-[32px] p-5 sm:p-6 md:p-8 shadow-xl relative overflow-hidden">
               <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4 w-max shadow-2xs">
                 Enquiry
               </span>

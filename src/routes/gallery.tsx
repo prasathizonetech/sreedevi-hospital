@@ -19,17 +19,24 @@ import {
   FlaskConical,
   ChevronRight,
 } from "lucide-react";
-import exterior from "@/assets/hospital-exterior.jpg";
+import exterior from "@/assets/hospital-exterior.webp";
 import reception from "@/assets/reception.jpg";
 import delivery from "@/assets/delivery-room.jpg";
 import lab from "@/assets/lab.jpg";
 import fertility from "@/assets/fertility-lab.jpg";
-import family from "@/assets/family-care.jpg";
+import family from "@/assets/family-care.webp";
 import hero from "@/assets/hero-maternity.jpg";
-import ultrasound from "@/assets/hero-doctor-mother.jpg";
-import general from "@/assets/departments/general-medicine.jpg";
-import { useState } from "react";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import ultrasound from "@/assets/hero-doctor-mother.webp";
+import general from "@/assets/departments/general-medicine.webp";
+import galleryReception from "@/assets/gallery/gallery-reception.webp";
+import galleryFertilityLab from "@/assets/gallery/gallery-fertility-lab.webp";
+import galleryUltrasound from "@/assets/gallery/gallery-ultrasound.webp";
+import galleryConsultation from "@/assets/gallery/gallery-consultation.webp";
+import galleryDiagnostics from "@/assets/gallery/gallery-diagnostics.webp";
+import galleryCare from "@/assets/gallery/gallery-care.webp";
+import galleryMoments from "@/assets/gallery/gallery-moments.webp";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence, useReducedMotion, type Variants } from "framer-motion";
 import { GalleryLightbox, type LightboxImage } from "@/components/site/GalleryLightbox";
 import { MagneticButton } from "@/components/site/MagneticButton";
 import { HeroBackground } from "@/components/site/hero/HeroBackground";
@@ -73,6 +80,114 @@ const fadeUpVariant: Variants = {
   },
 };
 
+// ─── Letter-by-letter left-to-right animation (matches HomeHero) ─────────────
+const AnimatedLetters = ({
+  text,
+  className,
+  delay = 0,
+}: {
+  text: string;
+  className: string;
+  delay?: number;
+}) => {
+  const words = text.split(" ");
+  return (
+    <motion.span
+      initial="hidden"
+      animate="show"
+      exit="exit"
+      variants={{
+        hidden: { opacity: 0 },
+        show: { opacity: 1, transition: { staggerChildren: 0.035, delayChildren: delay } },
+        exit: { opacity: 0, transition: { staggerChildren: 0.018, staggerDirection: -1 } },
+      }}
+      className={`inline-block ${className}`}
+    >
+      {words.map((word, wordIndex) => (
+        <span key={wordIndex} className="inline-block whitespace-nowrap">
+          {word.split("").map((char, charIndex) => (
+            <motion.span
+              key={charIndex}
+              variants={{
+                hidden: { opacity: 0 },
+                show: { opacity: 1 },
+                exit: { opacity: 0 },
+              }}
+              className="inline-block"
+            >
+              {char}
+            </motion.span>
+          ))}
+          {wordIndex < words.length - 1 && (
+            <span className="inline-block w-[0.25em]">&nbsp;</span>
+          )}
+        </span>
+      ))}
+    </motion.span>
+  );
+};
+
+// Two alternating headline phrase sets
+const GALLERY_PHRASES = [
+  {
+    line1: { text: "A hospital designed", pink: false },
+    line2: { text: "around your comfort", pink: true  },
+  },
+  {
+    line1: { text: "Moments of care",      pink: false },
+    line2: { text: "captured for you",     pink: true  },
+  },
+] as const;
+
+// Sub-component: rotating headline inside the gallery hero left column
+function GalleryAnimatedHeadline() {
+  const shouldReduceMotion = useReducedMotion();
+  const [phase, setPhase] = useState(0);
+
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+    const id = setInterval(() => {
+      setPhase((p) => (p + 1) % GALLERY_PHRASES.length);
+    }, 5000);
+    return () => clearInterval(id);
+  }, [shouldReduceMotion]);
+
+  const current = GALLERY_PHRASES[phase];
+
+  return (
+    <motion.div
+      variants={fadeUpVariant}
+      className="mb-4 sm:mb-6 min-h-[80px] sm:min-h-[105px] lg:min-h-[135px]"
+    >
+      <h1 className="font-display text-xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-[44px] font-extrabold leading-[1.2] tracking-tight text-[#14213D]">
+        {/* Line 1 */}
+        <span className="block min-h-[1.2em] overflow-hidden">
+          <AnimatePresence mode="wait">
+            <AnimatedLetters
+              key={`gal-l1-${phase}`}
+              text={current.line1.text}
+              className={current.line1.pink ? "text-[#D94D78] drop-shadow-[0_0_15px_rgba(255,135,179,0.6)]" : "text-[#14213D]"}
+              delay={0}
+            />
+          </AnimatePresence>
+        </span>
+
+        {/* Line 2 */}
+        <span className="block min-h-[1.2em] overflow-hidden">
+          <AnimatePresence mode="wait">
+            <AnimatedLetters
+              key={`gal-l2-${phase}`}
+              text={current.line2.text}
+              className={current.line2.pink ? "text-[#D94D78] drop-shadow-[0_0_15px_rgba(255,135,179,0.6)]" : "text-[#14213D]"}
+              delay={0.3}
+            />
+          </AnimatePresence>
+        </span>
+      </h1>
+    </motion.div>
+  );
+}
+
 const scaleInVariant: Variants = {
   hidden: { opacity: 0, scale: 0.94 },
   show: {
@@ -88,50 +203,64 @@ const galleryItems = [
     tag: "Hospital",
     title: "Hospital Building Exterior Dusk Facade",
     icon: Building,
+    objectPosition: "object-center",
   },
   {
-    img: reception,
+    img: galleryReception,
     tag: "Reception",
     title: "Comfortable OPD Reception & Patient Waiting Lounge",
     icon: Users,
+    objectPosition: "object-[center_35%]",
   },
   {
     img: delivery,
     tag: "Maternity",
     title: "Safe & Modern Labour Suite for Childbirth",
     icon: Baby,
+    objectPosition: "object-center",
   },
   {
-    img: lab,
+    img: galleryDiagnostics,
     tag: "Diagnostics",
     title: "In-house Clinical Laboratory & Diagnostic Support",
     icon: FlaskConical,
+    objectPosition: "object-[center_35%]",
   },
   {
-    img: fertility,
+    img: galleryFertilityLab,
     tag: "Fertility",
     title: "Advanced Assisted Reproductive IVF & Embryology Unit",
     icon: TestTube,
+    objectPosition: "object-[center_30%]",
   },
   {
-    img: ultrasound,
+    img: galleryUltrasound,
     tag: "Ultrasound",
     title: "High-Resolution 3D/4D Foetal Ultrasound Suite",
     icon: Waves,
+    objectPosition: "object-[center_30%]",
   },
   {
-    img: general,
+    img: galleryConsultation,
     tag: "Consulting",
     title: "Spacious General Medicine Consultation Cabin",
     icon: HeartPulse,
+    objectPosition: "object-[center_20%]",
   },
   {
-    img: hero,
+    img: galleryMoments,
     tag: "Care",
     title: "Dedicated Maternity & Nursing Care Team",
     icon: HeartHandshake,
+    objectPosition: "object-[center_25%]",
   },
-  { img: family, tag: "Moments", title: "Moments of Joy & Healthy New Beginnings", icon: Heart },
+  {
+    img: galleryCare,
+    tag: "Moments",
+    title: "Moments of Joy & Healthy New Beginnings",
+    icon: Heart,
+    objectPosition: "object-[center_25%]",
+  },
 ];
 
 function Gallery() {
@@ -216,20 +345,9 @@ function Gallery() {
                 Gallery
               </motion.div>
 
-              <motion.h1
-                variants={fadeUpVariant}
-                className="font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-[1.12] mb-2.5 tracking-tight text-[#14213D]"
-              >
-                A quiet tour of{" "}
-                <span className="text-[#D94D78] underline decoration-[#FF87B3] decoration-wavy decoration-1 underline-offset-8">
-                  our hospital.
-                </span>
-              </motion.h1>
+              {/* Rotating animated headline */}
+              <GalleryAnimatedHeadline />
 
-              <motion.div
-                variants={fadeUpVariant}
-                className="w-14 h-1.5 bg-gradient-to-r from-[#FF87B3] to-[#D94D78] rounded-full mb-3"
-              />
 
               <motion.p
                 variants={fadeUpVariant}
@@ -269,47 +387,53 @@ function Gallery() {
                 </MagneticButton>
               </motion.div>
 
-              {/* Horizontal Stats/Trust card */}
+              {/* Desktop Only: Horizontal Stats/Trust card (>= md) */}
               <motion.div
                 variants={fadeUpVariant}
-                whileHover={
-                  shouldReduceMotion
-                    ? undefined
-                    : { y: -2, boxShadow: "0 10px 25px rgba(255,135,179,0.25)" }
-                }
-                className="bg-white/85 backdrop-blur-md border border-[#FF87B3] rounded-2xl p-3 sm:p-3.5 grid grid-cols-4 gap-2 sm:gap-3 max-w-[460px] shadow-xs transition-all"
+                className="hidden md:block bg-white border border-[#FF87B3] rounded-full shadow-md shadow-pink-200/30 px-3.5 py-3 sm:px-6 sm:py-3.5 w-fit max-w-full mx-auto lg:mx-0"
               >
-                <div className="flex flex-col items-center text-center">
-                  <Shield className="w-4 h-4 text-[#D94D78] mb-1" />
-                  <span className="text-[10px] font-extrabold text-[#14213D] leading-tight uppercase">
-                    Trusted Care
-                  </span>
-                  <span className="text-[9px] text-slate-500 font-semibold mt-0.5">Since 1998</span>
-                </div>
-                <div className="flex flex-col items-center text-center border-l border-pink-200">
-                  <Users className="w-4 h-4 text-[#D94D78] mb-1" />
-                  <span className="text-[10px] font-extrabold text-[#14213D] leading-tight uppercase">
-                    Expert
-                  </span>
-                  <span className="text-[9px] text-slate-500 font-semibold mt-0.5">
-                    Specialists
-                  </span>
-                </div>
-                <div className="flex flex-col items-center text-center border-l border-pink-200">
-                  <Heart className="w-4 h-4 text-[#D94D78] mb-1" />
-                  <span className="text-[10px] font-extrabold text-[#14213D] leading-tight uppercase">
-                    Patient First
-                  </span>
-                  <span className="text-[9px] text-slate-500 font-semibold mt-0.5">Always</span>
-                </div>
-                <div className="flex flex-col items-center text-center border-l border-pink-200">
-                  <Star className="w-4 h-4 text-[#D94D78] mb-1" />
-                  <span className="text-[10px] font-extrabold text-[#14213D] leading-tight uppercase">
-                    Modern Tech
-                  </span>
-                  <span className="text-[9px] text-slate-500 font-semibold mt-0.5">
-                    Better Results
-                  </span>
+                <div className="flex flex-nowrap items-center divide-x divide-pink-100 gap-0">
+                  <div className="flex items-center gap-2 sm:gap-2.5 px-2 sm:px-3.5 md:px-5 sm:pl-1 group cursor-default">
+                    <div className="shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] shadow-2xs group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300">
+                      <Shield className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300" />
+                    </div>
+                    <div className="text-left min-w-0">
+                      <div className="font-bold text-[#14213D] text-xs sm:text-sm md:text-base leading-tight whitespace-nowrap">
+                        Trusted Care
+                      </div>
+                      <div className="text-[10px] sm:text-xs text-slate-500 font-medium whitespace-nowrap">
+                        Since 1998
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 sm:gap-2.5 px-2 sm:px-3.5 md:px-5 group cursor-default">
+                    <div className="shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] shadow-2xs group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300">
+                      <Users className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300" />
+                    </div>
+                    <div className="text-left min-w-0">
+                      <div className="font-bold text-[#14213D] text-xs sm:text-sm md:text-base leading-tight whitespace-nowrap">
+                        Expert
+                      </div>
+                      <div className="text-[10px] sm:text-xs text-slate-500 font-medium whitespace-nowrap">
+                        Specialists
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 sm:gap-2.5 px-2 sm:px-3.5 md:px-5 sm:pr-1 group cursor-default">
+                    <div className="shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] shadow-2xs group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300">
+                      <Heart className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300" />
+                    </div>
+                    <div className="text-left min-w-0">
+                      <div className="font-bold text-[#14213D] text-xs sm:text-sm md:text-base leading-tight whitespace-nowrap">
+                        Patient First
+                      </div>
+                      <div className="text-[10px] sm:text-xs text-slate-500 font-medium whitespace-nowrap">
+                        Always
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
 
@@ -328,7 +452,7 @@ function Gallery() {
               </motion.nav>
             </motion.div>
 
-            {/* Right Column: 3D Layered Carousel System (5/6 cols) */}
+            {/* Right Column / Mobile In-Flow: 3D Layered Carousel System (Appears above stats on mobile) */}
             <motion.div
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -338,6 +462,60 @@ function Gallery() {
               <GalleryHeroCarousel onSelectImage={(img) => setSelectedImage(img)} />
             </motion.div>
           </div>
+
+          {/* Mobile Only: Stats Box Positioned BELOW the Image Carousel (< md) */}
+          <motion.div
+            variants={fadeUpVariant}
+            initial="hidden"
+            animate="show"
+            className="md:hidden relative z-20 mt-6 w-full max-w-sm mx-auto"
+          >
+            <div className="bg-white border border-[#FF87B3] rounded-2xl shadow-md shadow-pink-200/30 p-3.5 w-full">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-y-3.5 gap-x-2.5">
+                <div className="flex items-center gap-2.5 px-1 group cursor-default min-w-0">
+                  <div className="shrink-0 w-8 h-8 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] shadow-2xs group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300">
+                    <Shield className="w-4 h-4 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300" />
+                  </div>
+                  <div className="text-left min-w-0 flex-1">
+                    <div className="font-extrabold text-[#14213D] text-xs sm:text-sm leading-tight whitespace-nowrap">
+                      Trusted Care
+                    </div>
+                    <div className="text-[10px] sm:text-xs text-slate-500 font-medium whitespace-nowrap truncate">
+                      Since 1998
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2.5 px-1 group cursor-default min-w-0">
+                  <div className="shrink-0 w-8 h-8 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] shadow-2xs group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300">
+                    <Users className="w-4 h-4 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300" />
+                  </div>
+                  <div className="text-left min-w-0 flex-1">
+                    <div className="font-extrabold text-[#14213D] text-xs sm:text-sm leading-tight whitespace-nowrap">
+                      Expert
+                    </div>
+                    <div className="text-[10px] sm:text-xs text-slate-500 font-medium whitespace-nowrap truncate">
+                      Specialists
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2.5 px-1 group cursor-default min-w-0">
+                  <div className="shrink-0 w-8 h-8 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] shadow-2xs group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300">
+                    <Heart className="w-4 h-4 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300" />
+                  </div>
+                  <div className="text-left min-w-0 flex-1">
+                    <div className="font-extrabold text-[#14213D] text-xs sm:text-sm leading-tight whitespace-nowrap">
+                      Patient First
+                    </div>
+                    <div className="text-[10px] sm:text-xs text-slate-500 font-medium whitespace-nowrap truncate">
+                      Always
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -357,10 +535,10 @@ function Gallery() {
             <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4 shadow-2xs">
               Facility &amp; Moments
             </span>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-3">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-3">
               Inside SreeDevi Hospital.
             </h2>
-            <p className="text-slate-600 text-sm md:text-base leading-relaxed max-w-2xl mx-auto font-medium">
+            <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed max-w-2xl mx-auto font-medium">
               A closer look at the spaces, people and everyday moments behind our care. Click any
               photo for a full view.
             </p>
@@ -375,7 +553,7 @@ function Gallery() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-60px" }}
-            className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+            className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3"
           >
             {galleryItems.map((c, idx) => (
               <motion.div
@@ -392,14 +570,15 @@ function Gallery() {
                       }
                 }
                 transition={{ type: "spring", stiffness: 280, damping: 20 }}
-                className="group relative overflow-hidden rounded-3xl border border-[#FF87B3] bg-white aspect-[4/3] shadow-xs hover:border-[#D94D78] transition-all duration-300 cursor-pointer"
+                className="group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-[#FF87B3] bg-white aspect-[4/3] shadow-xs hover:border-[#D94D78] transition-all duration-300 cursor-pointer"
               >
                 <motion.img
                   src={c.img}
                   alt={c.title}
-                  whileHover={shouldReduceMotion ? undefined : { scale: 1.07 }}
+                  whileHover={shouldReduceMotion ? undefined : { scale: 1.05 }}
                   transition={{ duration: 0.65, ease: "easeOut" }}
-                  className="w-full h-full object-cover transform-gpu"
+                  className={`w-full h-full object-cover transform-gpu ${c.objectPosition || "object-center"}`}
+                  loading="lazy"
                 />
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
@@ -408,9 +587,9 @@ function Gallery() {
                   </div>
                 </div>
 
-                <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-md border border-[#FF87B3] px-4 py-2 rounded-full shadow-md z-10 flex items-center gap-2 group-hover:bg-white transition-colors">
-                  <c.icon className="w-4 h-4 text-[#D94D78]" />
-                  <span className="text-xs font-extrabold text-[#14213D] tracking-wide">
+                <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 bg-white/95 backdrop-blur-md border border-[#FF87B3] px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-md z-10 flex items-center gap-2 group-hover:bg-white transition-colors">
+                  <c.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D94D78]" />
+                  <span className="text-[11px] sm:text-xs font-extrabold text-[#14213D] tracking-wide">
                     {c.tag}
                   </span>
                 </div>
@@ -436,10 +615,10 @@ function Gallery() {
             <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4 shadow-2xs">
               Video Tour
             </span>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-3">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-3">
               Take a look around.
             </h2>
-            <p className="text-slate-600 text-sm md:text-base leading-relaxed max-w-2xl mx-auto font-medium">
+            <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed max-w-2xl mx-auto font-medium">
               An inside look at our departments, facilities and care environment.
             </p>
             <div className="flex items-center justify-center gap-1.5 mt-3">

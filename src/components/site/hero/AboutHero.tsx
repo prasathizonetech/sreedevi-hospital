@@ -14,10 +14,10 @@ import {
 } from "lucide-react";
 
 // Image imports for hero rotating carousel
-import heroImg1 from "@/assets/about/about-hero-1.jpg";
-import heroImg2 from "@/assets/about/about-hero-2.jpg";
-import heroImg3 from "@/assets/about/about-hero-3.jpg";
-import heroImg4 from "@/assets/about/about-hero-4.png";
+import heroImg1 from "@/assets/about/about-hero-1.webp";
+import heroImg2 from "@/assets/about/about-hero-2.webp";
+import heroImg3 from "@/assets/about/about-hero-3.webp";
+import heroImg4 from "@/assets/about/about-hero-4.webp";
 
 const HERO_IMAGES = [
   {
@@ -42,27 +42,108 @@ const HERO_IMAGES = [
   },
 ];
 
-const HEADLINES = [
-  {
-    id: "headline-1",
-    content: (
-      <>
-        Compassionate Care <br />
-        for Every Stage of <br />
-        <span className="text-[#DE356A] inline-block">Family Life.</span>
-      </>
-    ),
-  },
-  {
-    id: "headline-2",
-    content: (
-      <>
-        Caring for Your Journey, <br />
-        <span className="text-[#DE356A] inline-block">Every Step of the Way.</span>
-      </>
-    ),
-  },
-];
+// ─── Letter-by-letter left-to-right animation (matches HomeHero) ─────────────
+const AnimatedLetters = ({
+  text,
+  className,
+  delay = 0,
+}: {
+  text: string;
+  className: string;
+  delay?: number;
+}) => {
+  const words = text.split(" ");
+  return (
+    <motion.span
+      initial="hidden"
+      animate="show"
+      exit="exit"
+      variants={{
+        hidden: { opacity: 0 },
+        show: { opacity: 1, transition: { staggerChildren: 0.035, delayChildren: delay } },
+        exit: { opacity: 0, transition: { staggerChildren: 0.018, staggerDirection: -1 } },
+      }}
+      className={`inline-block ${className}`}
+    >
+      {words.map((word, wordIndex) => (
+        <span key={wordIndex} className="inline-block whitespace-nowrap">
+          {word.split("").map((char, charIndex) => (
+            <motion.span
+              key={charIndex}
+              variants={{
+                hidden: { opacity: 0 },
+                show: { opacity: 1 },
+                exit: { opacity: 0 },
+              }}
+              className="inline-block"
+            >
+              {char}
+            </motion.span>
+          ))}
+          {wordIndex < words.length - 1 && (
+            <span className="inline-block w-[0.25em]">&nbsp;</span>
+          )}
+        </span>
+      ))}
+    </motion.span>
+  );
+};
+
+const ABOUT_PHRASES = [
+  [
+    { text: "Compassionate care for",       pink: false },
+    { text: "every stage of family life",   pink: true  },
+  ],
+  [
+    { text: "Caring for your journey",      pink: false },
+    { text: "every step of the way",        pink: true  },
+  ],
+] as const;
+
+function AboutAnimatedHeadline() {
+  const shouldReduceMotion = useReducedMotion();
+  const [phase, setPhase] = useState(0);
+
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+    const id = setInterval(() => {
+      setPhase((p) => (p + 1) % ABOUT_PHRASES.length);
+    }, 5000);
+    return () => clearInterval(id);
+  }, [shouldReduceMotion]);
+
+  const lines = ABOUT_PHRASES[phase];
+
+  return (
+    <div className="mb-4 sm:mb-6 min-h-[80px] sm:min-h-[105px] lg:min-h-[135px]">
+      <h1 className="font-display text-xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-[44px] font-extrabold leading-[1.2] tracking-tight text-[#14213D]">
+        {/* Line 1 */}
+        <span className="block min-h-[1.2em] overflow-hidden">
+          <AnimatePresence mode="wait">
+            <AnimatedLetters
+              key={`abt-l1-${phase}`}
+              text={lines[0].text}
+              className={lines[0].pink ? "text-[#D94D78] drop-shadow-[0_0_15px_rgba(255,135,179,0.6)]" : "text-[#14213D]"}
+              delay={0}
+            />
+          </AnimatePresence>
+        </span>
+
+        {/* Line 2 */}
+        <span className="block min-h-[1.2em] overflow-hidden">
+          <AnimatePresence mode="wait">
+            <AnimatedLetters
+              key={`abt-l2-${phase}`}
+              text={lines[1].text}
+              className={lines[1].pink ? "text-[#D94D78] drop-shadow-[0_0_15px_rgba(255,135,179,0.6)]" : "text-[#14213D]"}
+              delay={0.3}
+            />
+          </AnimatePresence>
+        </span>
+      </h1>
+    </div>
+  );
+}
 
 const STATS = [
   {
@@ -117,7 +198,6 @@ function StarBadge() {
 
 export function AboutHero() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [headlineIndex, setHeadlineIndex] = useState(0);
   const shouldReduceMotion = useReducedMotion();
 
   // Automatic slideshow changing every 5.5 seconds
@@ -127,15 +207,6 @@ export function AboutHero() {
     }, 5500);
 
     return () => clearInterval(imageTimer);
-  }, []);
-
-  // Text transition timer: changes headline every 5 seconds with left-to-right flow
-  useEffect(() => {
-    const textTimer = setInterval(() => {
-      setHeadlineIndex((prev) => (prev + 1) % HEADLINES.length);
-    }, 5000);
-
-    return () => clearInterval(textTimer);
   }, []);
 
   // Preload all 4 images on mount to ensure instant, butter-smooth transitions
@@ -194,58 +265,10 @@ export function AboutHero() {
               <span>ABOUT SREEDEVI HOSPITAL</span>
             </motion.div>
 
-            {/* ── Animated Headline in Title Case & Geometric Bold Style ── */}
-            {/* Layout-locked height container ensures zero layout jumps when changing text */}
-            <div className="relative min-h-[140px] sm:min-h-[155px] md:min-h-[185px] lg:min-h-[205px] xl:min-h-[225px] flex items-start mb-3">
-              <AnimatePresence mode="wait">
-                <motion.h1
-                  key={HEADLINES[headlineIndex].id}
-                  initial={
-                    shouldReduceMotion
-                      ? { opacity: 0 }
-                      : { opacity: 0, x: -35, filter: "blur(4px)" }
-                  }
-                  animate={
-                    shouldReduceMotion
-                      ? { opacity: 1 }
-                      : {
-                          opacity: 1,
-                          x: 0,
-                          filter: "blur(0px)",
-                          transition: {
-                            duration: 0.85,
-                            ease: [0.16, 1, 0.3, 1], // Smooth luxury ease-out
-                          },
-                        }
-                  }
-                  exit={
-                    shouldReduceMotion
-                      ? { opacity: 0 }
-                      : {
-                          opacity: 0,
-                          x: 35,
-                          filter: "blur(4px)",
-                          transition: {
-                            duration: 0.6,
-                            ease: [0.7, 0, 0.84, 0], // Smooth left-to-right flow slide-out
-                          },
-                        }
-                  }
-                  className="font-display font-bold xl:font-extrabold text-[36px] sm:text-[40px] md:text-[46px] lg:text-[50px] xl:text-[56px] leading-[45px] sm:leading-[50px] md:leading-[58px] lg:leading-[64px] xl:leading-[70px] tracking-tight text-[#14213D]"
-                  style={{ fontFamily: "'Poppins', 'Plus Jakarta Sans', sans-serif", fontWeight: 800 }}
-                >
-                  {HEADLINES[headlineIndex].content}
-                </motion.h1>
-              </AnimatePresence>
-            </div>
+            {/* ── Animated Headline matching HomeHero ── */}
+            <AboutAnimatedHeadline />
 
             {/* Pink Accent Line */}
-            <motion.div
-              initial={{ opacity: 0, scaleX: 0 }}
-              animate={{ opacity: 1, scaleX: 1 }}
-              transition={{ duration: 0.5, delay: 0.25, ease: "easeOut" }}
-              className="w-14 h-1 bg-[#DE356A] rounded-full mb-6 origin-left"
-            />
 
             {/* Paragraph Description */}
             <motion.p
@@ -356,6 +379,9 @@ export function AboutHero() {
                           <motion.img
                             src={item.src}
                             alt={item.alt}
+                            loading={index === 0 ? "eager" : "lazy"}
+                            fetchPriority={index === 0 ? "high" : "low"}
+                            decoding="async"
                             initial={{ scale: 1.0 }}
                             animate={{
                               scale: shouldReduceMotion ? 1.0 : 1.07,
@@ -390,7 +416,7 @@ export function AboutHero() {
                     repeat: Infinity,
                     ease: "easeInOut",
                   }}
-                  className="absolute -top-5 -left-5 sm:-top-6 sm:-left-6 z-30 pointer-events-auto cursor-default"
+                  className="absolute -top-3 -left-3 sm:-top-5 sm:-left-5 z-30 pointer-events-auto cursor-default"
                 >
                   <QuoteBadge />
                 </motion.div>
@@ -411,7 +437,7 @@ export function AboutHero() {
                     ease: "easeInOut",
                     delay: 0.5,
                   }}
-                  className="absolute -bottom-5 -right-5 sm:-bottom-6 sm:-right-6 z-30 pointer-events-auto cursor-default"
+                  className="absolute -bottom-3 -right-3 sm:-bottom-5 sm:-right-5 z-30 pointer-events-auto cursor-default"
                 >
                   <StarBadge />
                 </motion.div>
@@ -444,26 +470,26 @@ export function AboutHero() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.35, ease: "easeOut" }}
-          className="mt-8 sm:mt-10 bg-white/95 backdrop-blur-md border border-[#FFCCD9] rounded-2xl sm:rounded-full shadow-[0_8px_28px_rgba(255,135,179,0.15)] px-3.5 py-2.5 sm:px-5 sm:py-3 md:px-6 md:py-3 w-fit max-w-full"
+          className="mt-8 sm:mt-10 bg-white border border-[#FF87B3] rounded-2xl sm:rounded-full shadow-md shadow-pink-200/30 px-3.5 py-3 sm:px-6 sm:py-3.5 w-full sm:w-fit max-w-full mx-auto lg:mx-0"
         >
-          <div className="grid grid-cols-2 sm:flex sm:flex-nowrap items-center sm:divide-x divide-pink-100/90 gap-y-2.5 sm:gap-y-0">
+          <div className="grid grid-cols-2 sm:flex sm:flex-nowrap sm:items-center sm:divide-x divide-pink-100 gap-y-3 gap-x-2 sm:gap-0">
             {STATS.map(({ icon: Icon, value, label }, index) => (
               <div
                 key={label}
-                className={`flex items-center gap-2 sm:gap-2.5 px-1.5 sm:px-3.5 md:px-4 ${
+                className={`flex items-center gap-2 sm:gap-2.5 px-2 sm:px-3.5 md:px-5 ${
                   index === 0 ? "sm:pl-1" : ""
-                } ${index === STATS.length - 1 ? "sm:pr-1" : ""}`}
+                } ${index === STATS.length - 1 ? "sm:pr-1" : ""} group cursor-default`}
               >
                 {/* Soft Pink Icon Circle Badge */}
-                <div className="shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-[#FFF0F5] border border-[#FFCCD9] flex items-center justify-center text-[#DE356A] shadow-2xs">
-                  <Icon className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+                <div className="shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] shadow-2xs group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300">
+                  <Icon className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300" />
                 </div>
                 {/* Value and Label */}
                 <div className="text-left min-w-0">
-                  <div className="font-extrabold text-[#14213D] text-sm sm:text-base md:text-[17px] leading-tight whitespace-nowrap">
+                  <div className="font-bold text-[#14213D] text-xs sm:text-sm md:text-base leading-tight whitespace-nowrap">
                     {value}
                   </div>
-                  <div className="text-[9.5px] sm:text-[10.5px] md:text-[11.5px] text-slate-500 font-medium whitespace-nowrap truncate">
+                  <div className="text-[10px] sm:text-xs text-slate-500 font-medium whitespace-nowrap">
                     {label}
                   </div>
                 </div>

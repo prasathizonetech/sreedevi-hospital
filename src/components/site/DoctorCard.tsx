@@ -54,7 +54,7 @@ export function DoctorCard({ doctor, layout = true, index = 0, className = "" }:
             }
       }
       transition={{ type: "spring", stiffness: 280, damping: 22 }}
-      className={`group relative flex flex-col justify-between h-full w-full overflow-hidden rounded-[28px] sm:rounded-[32px] bg-white border border-[#FCE7F0] shadow-[0_4px_24px_rgba(244,63,94,0.06)] p-6 cursor-default transition-all duration-300 ${className}`}
+      className={`group relative flex flex-col justify-between h-full w-full overflow-hidden rounded-[24px] sm:rounded-[32px] bg-white border border-[#FCE7F0] shadow-[0_4px_24px_rgba(244,63,94,0.06)] p-4 sm:p-6 cursor-default transition-all duration-300 ${className}`}
     >
       <div className="flex flex-col h-full justify-between">
         {/* ── 1. Top Row: Left Icon + 3x3 Dots, Right Number Badge ── */}

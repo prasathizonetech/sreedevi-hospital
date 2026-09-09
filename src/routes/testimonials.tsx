@@ -10,10 +10,13 @@ import {
   Send,
   ShieldCheck,
   ChevronRight,
+  Users,
+  Heart,
+  Clock,
 } from "lucide-react";
 import welcomeFamilyCare from "@/assets/family-care.jpg";
-import { useState } from "react";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence, useReducedMotion, type Variants } from "framer-motion";
 import { HeroBackground } from "@/components/site/hero/HeroBackground";
 import { PatientReviewsAutoScroll } from "@/components/site/PatientReviewsAutoScroll";
 
@@ -55,6 +58,122 @@ const fadeUpVariant: Variants = {
   },
 };
 
+// ─── Letter-by-letter left-to-right animation (matches HomeHero) ─────────────
+const AnimatedLetters = ({
+  text,
+  className,
+  delay = 0,
+}: {
+  text: string;
+  className: string;
+  delay?: number;
+}) => {
+  const words = text.split(" ");
+  return (
+    <motion.span
+      initial="hidden"
+      animate="show"
+      exit="exit"
+      variants={{
+        hidden: { opacity: 0 },
+        show: { opacity: 1, transition: { staggerChildren: 0.035, delayChildren: delay } },
+        exit: { opacity: 0, transition: { staggerChildren: 0.018, staggerDirection: -1 } },
+      }}
+      className={`inline-block ${className}`}
+    >
+      {words.map((word, wordIndex) => (
+        <span key={wordIndex} className="inline-block whitespace-nowrap">
+          {word.split("").map((char, charIndex) => (
+            <motion.span
+              key={charIndex}
+              variants={{
+                hidden: { opacity: 0 },
+                show: { opacity: 1 },
+                exit: { opacity: 0 },
+              }}
+              className="inline-block"
+            >
+              {char}
+            </motion.span>
+          ))}
+          {wordIndex < words.length - 1 && (
+            <span className="inline-block w-[0.25em]">&nbsp;</span>
+          )}
+        </span>
+      ))}
+    </motion.span>
+  );
+};
+
+// Two alternating 2-line headline phrase sets
+const TESTIMONIAL_PHRASES = [
+  {
+    line1Prefix: "Care ",
+    line1Highlight: "our patients",
+    line2: "take the time to write about",
+  },
+  {
+    line1Prefix: "Real stories ",
+    line1Highlight: "real journeys",
+    line2: "real hope",
+  },
+] as const;
+
+// Sub-component: rotating headline inside the testimonials hero left column
+function TestimonialsAnimatedHeadline() {
+  const shouldReduceMotion = useReducedMotion();
+  const [phase, setPhase] = useState(0);
+
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+    const id = setInterval(() => {
+      setPhase((p) => (p + 1) % TESTIMONIAL_PHRASES.length);
+    }, 5000);
+    return () => clearInterval(id);
+  }, [shouldReduceMotion]);
+
+  const current = TESTIMONIAL_PHRASES[phase];
+
+  return (
+    <motion.div
+      variants={fadeUpVariant}
+      className="mb-4 sm:mb-6 min-h-[80px] sm:min-h-[105px] lg:min-h-[135px]"
+    >
+      <h1 className="font-display text-xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-[44px] font-extrabold leading-[1.2] tracking-tight text-[#14213D]">
+        {/* Line 1 */}
+        <span className="block min-h-[1.2em] overflow-hidden">
+          <AnimatePresence mode="wait">
+            <span key={`test-l1-${phase}`} className="inline-block">
+              <AnimatedLetters
+                text={current.line1Prefix}
+                className="text-[#14213D]"
+                delay={0}
+              />
+              <AnimatedLetters
+                text={current.line1Highlight}
+                className="text-[#D94D78] drop-shadow-[0_0_15px_rgba(255,135,179,0.6)]"
+                delay={0.15}
+              />
+            </span>
+          </AnimatePresence>
+        </span>
+
+        {/* Line 2 */}
+        <span className="block min-h-[1.2em] overflow-hidden">
+          <AnimatePresence mode="wait">
+            <AnimatedLetters
+              key={`test-l2-${phase}`}
+              text={current.line2}
+              className="text-[#14213D]"
+              delay={0.3}
+            />
+          </AnimatePresence>
+        </span>
+      </h1>
+    </motion.div>
+  );
+}
+
 function Testimonials() {
   const [formSent, setFormSent] = useState(false);
   const shouldReduceMotion = useReducedMotion();
@@ -62,7 +181,7 @@ function Testimonials() {
   return (
     <>
       {/* ── 1. Custom Hero Section ── */}
-      <section className="relative bg-gradient-to-br from-[#FFF5F8] via-[#FF87B3] to-[#f06a99] text-[#14213D] overflow-hidden pt-6 pb-16 sm:pt-8 sm:pb-20 lg:pt-10 lg:pb-24 flex flex-col justify-between">
+      <section className="relative bg-gradient-to-br from-[#FFF5F8] via-[#FF87B3] to-[#f06a99] text-[#14213D] overflow-hidden pt-6 pb-10 sm:pt-8 sm:pb-14 lg:pt-8 lg:pb-16">
         {/* Scoped CSS for smooth, continuous 26s clockwise circular orbit & counter-rotation */}
         <style>{`
           @keyframes testimonialOrbitClockwise {
@@ -145,14 +264,14 @@ function Testimonials() {
           </svg>
         </div>
 
-        <div className="container-page relative z-10 pt-1 md:pt-2 pb-4 w-full">
-          <div className="grid md:grid-cols-12 gap-8 lg:gap-10 items-center">
+        <div className="container-page relative z-10 pt-1 md:pt-2 pb-2 w-full">
+          <div className="grid lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-10 items-start">
             {/* Left Column: Text & Navigation (5/6 cols) */}
             <motion.div
               variants={staggerContainer}
               initial="hidden"
               animate="show"
-              className="md:col-span-6 lg:col-span-5 z-10 flex flex-col justify-center"
+              className="lg:col-span-6 max-w-2xl z-10 flex flex-col justify-start"
             >
               <motion.div
                 variants={fadeUpVariant}
@@ -164,20 +283,9 @@ function Testimonials() {
                 Family Stories
               </motion.div>
 
-              <motion.h1
-                variants={fadeUpVariant}
-                className="font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-[1.12] mb-2.5 tracking-tight text-[#14213D]"
-              >
-                Care our patients take the time{" "}
-                <span className="text-[#D94D78] underline decoration-[#FF87B3] decoration-wavy decoration-1 underline-offset-8">
-                  to write about.
-                </span>
-              </motion.h1>
+              {/* Rotating animated headline */}
+              <TestimonialsAnimatedHeadline />
 
-              <motion.div
-                variants={fadeUpVariant}
-                className="w-14 h-1.5 bg-gradient-to-r from-[#FF87B3] to-[#D94D78] rounded-full mb-3"
-              />
 
               <motion.p
                 variants={fadeUpVariant}
@@ -207,7 +315,7 @@ function Testimonials() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, delay: 0.15 }}
-              className="md:col-span-6 lg:col-span-7 relative w-full h-[360px] sm:h-[460px] md:h-[500px] lg:h-[540px] xl:h-[560px] flex items-center justify-center select-none mt-4 md:mt-0 testimonial-orbit-stage scale-[0.76] xs:scale-[0.86] sm:scale-100"
+              className="lg:col-span-6 relative w-full h-[300px] sm:h-[460px] md:h-[500px] lg:h-[540px] xl:h-[560px] flex items-center justify-center select-none mt-6 lg:mt-0 self-start testimonial-orbit-stage scale-[0.65] sm:scale-[0.85] md:scale-100 origin-center overflow-visible"
             >
               {/* Subtle Ambient Decorative Guide Ring behind the center */}
               <div
@@ -216,7 +324,7 @@ function Testimonials() {
               />
 
               {/* ── Fixed Center Doctor & Family Consultation Photo ── */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[160px] sm:w-[210px] md:w-[230px] lg:w-[250px] h-[160px] sm:h-[210px] md:h-[230px] lg:h-[250px] rounded-full overflow-hidden border-4 sm:border-[6px] border-white shadow-[0_16px_36px_rgba(200,40,90,0.18)] z-10 group pointer-events-auto bg-slate-900">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150px] sm:w-[210px] md:w-[230px] lg:w-[250px] h-[150px] sm:h-[210px] md:h-[230px] lg:h-[250px] rounded-full overflow-hidden border-4 sm:border-[6px] border-white shadow-[0_16px_36px_rgba(200,40,90,0.18)] z-10 group pointer-events-auto bg-slate-900">
                 <img
                   src={welcomeFamilyCare}
                   alt="SreeDevi Hospital compassionate patient consultation"
@@ -233,7 +341,7 @@ function Testimonials() {
                   style={{ top: "0%", left: "50%" }}
                 >
                   <div className="testimonial-orbit-card-wrapper pointer-events-auto">
-                    <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-[#FF87B3]/60 p-2.5 sm:p-3 lg:p-3.5 shadow-[0_8px_24px_rgba(200,40,90,0.14)] text-[#14213D] w-[170px] sm:w-[195px] md:w-[215px] lg:w-[225px] transition-all hover:scale-105 hover:shadow-lg cursor-default">
+                    <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-[#FF87B3]/60 p-2.5 sm:p-3 lg:p-3.5 shadow-[0_8px_24px_rgba(200,40,90,0.14)] text-[#14213D] w-[155px] sm:w-[195px] md:w-[215px] lg:w-[225px] transition-all hover:scale-105 hover:shadow-lg cursor-default">
                       <div className="flex gap-2 items-center mb-1 sm:mb-1.5">
                         <div className="w-6.5 h-6.5 sm:w-7 sm:h-7 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[9px] sm:text-[10px] font-extrabold text-[#D94D78] shadow-2xs shrink-0">
                           AP
@@ -263,7 +371,7 @@ function Testimonials() {
                   style={{ top: "34.5%", left: "97.5%" }}
                 >
                   <div className="testimonial-orbit-card-wrapper pointer-events-auto">
-                    <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-[#FF87B3]/60 p-2.5 sm:p-3 lg:p-3.5 shadow-[0_8px_24px_rgba(200,40,90,0.14)] text-[#14213D] w-[170px] sm:w-[195px] md:w-[215px] lg:w-[225px] transition-all hover:scale-105 hover:shadow-lg cursor-default">
+                    <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-[#FF87B3]/60 p-2.5 sm:p-3 lg:p-3.5 shadow-[0_8px_24px_rgba(200,40,90,0.14)] text-[#14213D] w-[155px] sm:w-[195px] md:w-[215px] lg:w-[225px] transition-all hover:scale-105 hover:shadow-lg cursor-default">
                       <div className="flex gap-2 items-center mb-1 sm:mb-1.5">
                         <div className="w-6.5 h-6.5 sm:w-7 sm:h-7 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[9px] sm:text-[10px] font-extrabold text-[#D94D78] shadow-2xs shrink-0">
                           RS
@@ -293,7 +401,7 @@ function Testimonials() {
                   style={{ top: "90.5%", left: "79.4%" }}
                 >
                   <div className="testimonial-orbit-card-wrapper pointer-events-auto">
-                    <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-[#FF87B3]/60 p-2.5 sm:p-3 lg:p-3.5 shadow-[0_8px_24px_rgba(200,40,90,0.14)] text-[#14213D] w-[170px] sm:w-[195px] md:w-[215px] lg:w-[225px] transition-all hover:scale-105 hover:shadow-lg cursor-default">
+                    <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-[#FF87B3]/60 p-2.5 sm:p-3 lg:p-3.5 shadow-[0_8px_24px_rgba(200,40,90,0.14)] text-[#14213D] w-[155px] sm:w-[195px] md:w-[215px] lg:w-[225px] transition-all hover:scale-105 hover:shadow-lg cursor-default">
                       <div className="flex gap-2 items-center mb-1 sm:mb-1.5">
                         <div className="w-6.5 h-6.5 sm:w-7 sm:h-7 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[9px] sm:text-[10px] font-extrabold text-[#D94D78] shadow-2xs shrink-0">
                           MK
@@ -323,7 +431,7 @@ function Testimonials() {
                   style={{ top: "90.5%", left: "20.6%" }}
                 >
                   <div className="testimonial-orbit-card-wrapper pointer-events-auto">
-                    <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-[#FF87B3]/60 p-2.5 sm:p-3 lg:p-3.5 shadow-[0_8px_24px_rgba(200,40,90,0.14)] text-[#14213D] w-[170px] sm:w-[195px] md:w-[215px] lg:w-[225px] transition-all hover:scale-105 hover:shadow-lg cursor-default">
+                    <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-[#FF87B3]/60 p-2.5 sm:p-3 lg:p-3.5 shadow-[0_8px_24px_rgba(200,40,90,0.14)] text-[#14213D] w-[155px] sm:w-[195px] md:w-[215px] lg:w-[225px] transition-all hover:scale-105 hover:shadow-lg cursor-default">
                       <div className="flex gap-2 items-center mb-1 sm:mb-1.5">
                         <div className="w-6.5 h-6.5 sm:w-7 sm:h-7 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[9px] sm:text-[10px] font-extrabold text-[#D94D78] shadow-2xs shrink-0">
                           KS
@@ -353,7 +461,7 @@ function Testimonials() {
                   style={{ top: "34.5%", left: "2.5%" }}
                 >
                   <div className="testimonial-orbit-card-wrapper pointer-events-auto">
-                    <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-[#FF87B3]/60 p-2.5 sm:p-3 lg:p-3.5 shadow-[0_8px_24px_rgba(200,40,90,0.14)] text-[#14213D] w-[170px] sm:w-[195px] md:w-[215px] lg:w-[225px] transition-all hover:scale-105 hover:shadow-lg cursor-default">
+                    <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-[#FF87B3]/60 p-2.5 sm:p-3 lg:p-3.5 shadow-[0_8px_24px_rgba(200,40,90,0.14)] text-[#14213D] w-[155px] sm:w-[195px] md:w-[215px] lg:w-[225px] transition-all hover:scale-105 hover:shadow-lg cursor-default">
                       <div className="flex gap-2 items-center mb-1 sm:mb-1.5">
                         <div className="w-6.5 h-6.5 sm:w-7 sm:h-7 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[9px] sm:text-[10px] font-extrabold text-[#D94D78] shadow-2xs shrink-0">
                           PR
@@ -380,6 +488,44 @@ function Testimonials() {
               </div>
             </motion.div>
           </div>
+
+          {/* ── Testimonials Hero Stats Bar (4 Metrics) ── */}
+          <div className="mt-8 sm:mt-10">
+            <motion.div
+              variants={fadeUpVariant}
+              initial="hidden"
+              animate="show"
+              className="bg-white border border-[#FF87B3] rounded-2xl sm:rounded-full shadow-md shadow-pink-200/30 px-3.5 py-3 sm:px-6 sm:py-3.5 w-full sm:w-fit max-w-full mx-auto lg:mx-0"
+            >
+              <div className="grid grid-cols-2 sm:flex sm:flex-nowrap sm:items-center sm:divide-x divide-pink-100 gap-y-3 gap-x-2 sm:gap-0">
+                {[
+                  { icon: Users, value: "1,000+", label: "Happy Patients" },
+                  { icon: Star, value: "4.9/5", label: "Patient Rating" },
+                  { icon: Heart, value: "95%+", label: "Patient Satisfaction" },
+                  { icon: Clock, value: "24/7", label: "Caring Support" },
+                ].map((stat, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex items-center gap-2 sm:gap-2.5 px-2 sm:px-3.5 md:px-5 ${
+                      idx === 0 ? "sm:pl-1" : ""
+                    } ${idx === 3 ? "sm:pr-1" : ""} group cursor-default`}
+                  >
+                    <div className="shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] shadow-2xs group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300">
+                      <stat.icon className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300" />
+                    </div>
+                    <div className="text-left min-w-0">
+                      <div className="font-bold text-[#14213D] text-xs sm:text-sm md:text-base leading-tight whitespace-nowrap">
+                        {stat.value}
+                      </div>
+                      <div className="text-[10px] sm:text-xs text-slate-500 font-medium whitespace-nowrap">
+                        {stat.label}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -396,7 +542,7 @@ function Testimonials() {
             <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-3 shadow-2xs">
               Patient Reviews
             </span>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-2">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-2">
               Trust, shared one story at a time.
             </h2>
             <div className="flex items-center justify-center gap-1.5 mt-2">
@@ -414,9 +560,9 @@ function Testimonials() {
               transition={{ duration: 0.6, type: "spring", stiffness: 60 }}
               className="lg:col-span-4 flex flex-col gap-4"
             >
-              <div className="rounded-[32px] bg-gradient-to-br from-[#FFF5F8] via-[#FF87B3] to-[#f06a99] border border-[#FF87B3] p-6 md:p-7 text-[#14213D] shadow-xl flex flex-col justify-between min-h-[300px]">
+              <div className="rounded-2xl sm:rounded-[32px] bg-gradient-to-br from-[#FFF5F8] via-[#FF87B3] to-[#f06a99] border border-[#FF87B3] p-5 sm:p-7 text-[#14213D] shadow-xl flex flex-col justify-between min-h-[280px] sm:min-h-[300px]">
                 <div>
-                  <div className="font-display text-6xl font-extrabold tracking-tight mb-2 text-[#14213D]">
+                  <div className="font-display text-5xl sm:text-6xl font-extrabold tracking-tight mb-2 text-[#14213D]">
                     4.6
                   </div>
                   <div className="flex gap-1 text-amber-500 mb-2">
@@ -437,7 +583,7 @@ function Testimonials() {
                   </div>
                 </div>
 
-                <div className="mt-8 space-y-3.5">
+                <div className="mt-6 sm:mt-8 space-y-3 sm:space-y-3.5">
                   {[
                     { stars: 5, pct: 68 },
                     { stars: 4, pct: 22 },
@@ -468,7 +614,7 @@ function Testimonials() {
               </div>
 
               {/* Shared with permission badge */}
-              <div className="inline-flex items-center gap-1.5 bg-[#FFF5F8] border border-[#FF87B3] px-4 py-2 rounded-full text-xs font-bold text-[#D94D78] w-max shadow-2xs">
+              <div className="inline-flex items-center gap-1.5 bg-[#FFF5F8] border border-[#FF87B3] px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs font-bold text-[#D94D78] w-max shadow-2xs">
                 <Check className="w-3.5 h-3.5 text-[#D94D78]" strokeWidth={3.5} />
                 Shared with permission
               </div>
@@ -504,11 +650,11 @@ function Testimonials() {
                 Share Your Story
               </span>
 
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-4">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-3 sm:mb-4">
                 Have a story to share?
               </h2>
 
-              <p className="text-slate-600 text-sm md:text-base leading-relaxed mb-4 max-w-sm font-medium">
+              <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed mb-4 max-w-sm font-medium">
                 If SreeDevi Hospital has been part of your family's journey, we would love to hear
                 from you. Your story inspires hope in others.
               </p>
@@ -529,7 +675,7 @@ function Testimonials() {
               transition={{ duration: 0.6, type: "spring", stiffness: 60 }}
               className="lg:col-span-7 flex justify-center md:justify-end"
             >
-              <div className="w-full max-w-[520px] bg-white border border-[#FF87B3] rounded-[32px] p-6 md:p-8 shadow-xl relative overflow-hidden">
+              <div className="w-full max-w-[520px] bg-white border border-[#FF87B3] rounded-2xl sm:rounded-[32px] p-5 sm:p-6 md:p-8 shadow-xl relative overflow-hidden">
                 {formSent ? (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}

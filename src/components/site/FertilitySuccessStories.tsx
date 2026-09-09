@@ -50,26 +50,50 @@ export const SUCCESS_STORIES: SuccessStoryItem[] = [
 
 export function FertilitySuccessStories() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
   const shouldReduceMotion = useReducedMotion();
   const totalStories = SUCCESS_STORIES.length;
 
-  // Auto-advance carousel smoothly from right to left every 4.5 seconds
+  // Auto-advance carousel smoothly every 3 seconds
+  // Pause automatically when tab/window is hidden to save resources
   useEffect(() => {
     if (isPaused || shouldReduceMotion) return;
 
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % totalStories);
-    }, 4500);
+    let timer: ReturnType<typeof setInterval> | null = null;
 
-    return () => clearInterval(timer);
+    const startTimer = () => {
+      timer = setInterval(() => {
+        setDirection(1);
+        setCurrentIndex((prev) => (prev + 1) % totalStories);
+      }, 3000);
+    };
+
+    const stopTimer = () => {
+      if (timer) clearInterval(timer);
+    };
+
+    const handleVisibility = () => {
+      if (document.hidden) stopTimer();
+      else startTimer();
+    };
+
+    if (!document.hidden) startTimer();
+    document.addEventListener("visibilitychange", handleVisibility, { passive: true });
+
+    return () => {
+      stopTimer();
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
   }, [isPaused, shouldReduceMotion, totalStories]);
 
   const handlePrev = () => {
+    setDirection(-1);
     setCurrentIndex((prev) => (prev - 1 + totalStories) % totalStories);
   };
 
   const handleNext = () => {
+    setDirection(1);
     setCurrentIndex((prev) => (prev + 1) % totalStories);
   };
 
@@ -134,13 +158,13 @@ export function FertilitySuccessStories() {
             </motion.div>
           </motion.div>
 
-          {/* ── Right Column: Cards with Pulsing Soft Pink Circular Backdrop (8 cols) ── */}
+          {/* ── Right Column: Cards with 3D Carousel Transition & Pulsing Backdrop (8 cols) ── */}
           <div
             className="lg:col-span-8 relative flex flex-col items-center justify-center"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
-            {/* ── Soft Pink Concentric Pulsing Circular Backdrop (Refined Compact Size) ── */}
+            {/* ── Soft Pink Concentric Pulsing Circular Backdrop ── */}
             <div
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0 flex items-center justify-center select-none"
               aria-hidden="true"
@@ -214,19 +238,48 @@ export function FertilitySuccessStories() {
                 <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
               </button>
 
-              {/* Story Cards Track */}
-              <div className="w-full overflow-hidden px-1 py-4">
-                <AnimatePresence mode="popLayout" initial={false}>
+              {/* Story Cards Track with 3D perspective transition */}
+              <div
+                className="w-full overflow-hidden px-1 py-4"
+                style={{ perspective: 1200 }}
+              >
+                <AnimatePresence mode="popLayout" initial={false} custom={direction}>
                   <motion.div
                     key={currentIndex}
-                    initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, x: 50 }}
-                    animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, x: 0 }}
-                    exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, x: -50 }}
-                    transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 items-stretch"
+                    custom={direction}
+                    variants={{
+                      enter: (dir: number) => ({
+                        opacity: 0,
+                        x: dir > 0 ? 80 : -80,
+                        rotateY: dir > 0 ? 18 : -18,
+                        scale: 0.94,
+                      }),
+                      center: {
+                        opacity: 1,
+                        x: 0,
+                        rotateY: 0,
+                        scale: 1,
+                      },
+                      exit: (dir: number) => ({
+                        opacity: 0,
+                        x: dir > 0 ? -80 : 80,
+                        rotateY: dir > 0 ? -18 : 18,
+                        scale: 0.94,
+                      }),
+                    }}
+                    initial={shouldReduceMotion ? { opacity: 0 } : "enter"}
+                    animate={shouldReduceMotion ? { opacity: 1 } : "center"}
+                    exit={shouldReduceMotion ? { opacity: 0 } : "exit"}
+                    transition={{
+                      duration: 0.65,
+                      ease: [0.25, 1, 0.5, 1],
+                    }}
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 items-stretch transform-gpu"
                   >
                     {visibleCards.map((story, idx) => {
                       const isCenter = idx === 1;
+                      const responsiveClass =
+                        idx === 0 ? "flex" : idx === 1 ? "hidden sm:flex" : "hidden lg:flex";
 
                       return (
                         <motion.div
@@ -235,27 +288,28 @@ export function FertilitySuccessStories() {
                             shouldReduceMotion
                               ? undefined
                               : {
-                                  y: -6,
-                                  scale: 1.02,
-                                  boxShadow: "0 22px 45px -10px rgba(255,135,179,0.38)",
+                                  y: -8,
+                                  scale: 1.03,
+                                  rotateY: isCenter ? 0 : idx === 0 ? 3 : -3,
+                                  boxShadow: "0 24px 50px -10px rgba(255,135,179,0.42)",
                                 }
                           }
                           transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                          className={`bg-white rounded-[26px] sm:rounded-[30px] border border-[#FF87B3]/40 p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 cursor-default ${
+                          className={`${responsiveClass} bg-white rounded-[24px] sm:rounded-[30px] border border-[#FF87B3]/40 p-5 sm:p-7 flex-col justify-between transition-all duration-300 cursor-default transform-gpu ${
                             isCenter
-                              ? "shadow-[0_16px_38px_-8px_rgba(255,135,179,0.32)] border-[#FF87B3] lg:-translate-y-2"
+                              ? "shadow-[0_18px_42px_-8px_rgba(255,135,179,0.35)] border-[#FF87B3] lg:-translate-y-2"
                               : "shadow-[0_10px_28px_-6px_rgba(255,135,179,0.20)]"
                           }`}
                         >
                           <div>
                             {/* Top Heart Badge */}
-                            <div className="w-12 h-12 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center mb-4 mx-auto shadow-2xs">
+                            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center mb-3 sm:mb-4 mx-auto shadow-2xs">
                               <Heart className="w-4 h-4 text-[#D94D78] fill-[#FF87B3]" />
                             </div>
 
                             {/* Pink Quote Mark */}
                             <span
-                              className="text-3xl font-serif text-[#FF87B3] opacity-65 leading-none select-none block mb-1.5 text-center"
+                              className="text-2xl sm:text-3xl font-serif text-[#FF87B3] opacity-65 leading-none select-none block mb-1 sm:mb-1.5 text-center"
                               aria-hidden="true"
                             >
                               “
@@ -268,9 +322,9 @@ export function FertilitySuccessStories() {
                           </div>
 
                           {/* Bottom Author Section */}
-                          <div className="text-center mt-5">
-                            <div className="w-px h-5 bg-pink-100 mx-auto mb-3" />
-                            <div className="w-10 h-10 rounded-full border border-[#FF87B3] bg-[#FFF5F8] flex items-center justify-center font-display text-[12px] font-extrabold text-[#14213D] mx-auto mb-1.5 shadow-2xs">
+                          <div className="text-center mt-4 sm:mt-5">
+                            <div className="w-px h-4 sm:h-5 bg-pink-100 mx-auto mb-2 sm:mb-3" />
+                            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#FF87B3] bg-[#FFF5F8] flex items-center justify-center font-display text-[11px] sm:text-[12px] font-extrabold text-[#14213D] mx-auto mb-1.5 shadow-2xs">
                               {story.author}
                             </div>
                             <div className="text-[10px] sm:text-[11px] text-slate-400 font-semibold leading-none">
@@ -304,7 +358,10 @@ export function FertilitySuccessStories() {
                   <button
                     key={dotIdx}
                     type="button"
-                    onClick={() => setCurrentIndex(dotIdx)}
+                    onClick={() => {
+                      setDirection(dotIdx > currentIndex ? 1 : -1);
+                      setCurrentIndex(dotIdx);
+                    }}
                     aria-label={`Go to slide ${dotIdx + 1}`}
                     className={`transition-all duration-300 rounded-full cursor-pointer ${
                       isActive

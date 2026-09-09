@@ -27,5 +27,15 @@ export default defineConfig({
     // wrangler/.output/.vinxi folders, ready to upload to any static host.
     outDir: "dist",
     emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "vendor-react": ["react", "react-dom"],
+          "vendor-framer": ["framer-motion"],
+          "vendor-tanstack": ["@tanstack/react-router", "@tanstack/react-query"],
+          "vendor-icons": ["lucide-react"],
+        },
+      },
+    },
   },
 });

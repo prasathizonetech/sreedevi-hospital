@@ -104,10 +104,23 @@
 @layer base {
   * {
     border-color: var(--color-border);
+    box-sizing: border-box;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  *::-webkit-scrollbar,
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
   }
   html {
     scroll-behavior: smooth;
     overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
   body {
     background-color: var(--color-background);
@@ -117,6 +130,15 @@
     overflow-x: clip;
     min-width: 320px;
     touch-action: manipulation;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  img,
+  svg,
+  video,
+  canvas {
+    max-width: 100%;
+    height: auto;
   }
   h1,
   h2,
@@ -127,6 +149,92 @@
     font-family: var(--font-display);
     letter-spacing: -0.02em;
   }
+
+  /* ─── Global Cursor & Selection Behavior ─── */
+  /* Default arrow cursor across all layout and typography elements */
+  *,
+  *::before,
+  *::after {
+    cursor: default;
+  }
+
+  /* Prevent insertion caret on static content while preserving clean layout */
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  label,
+  li,
+  dt,
+  dd,
+  td,
+  th {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* Interactive clickable elements retain pointer cursor */
+  a,
+  a *,
+  button,
+  button *,
+  [role="button"],
+  [role="button"] *,
+  select,
+  summary,
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  input[type="checkbox"],
+  input[type="radio"],
+  input[type="file"],
+  input[type="color"] {
+    cursor: pointer !important;
+  }
+
+  /* Show text (I-beam) cursor and text selection ONLY when user hovers over or focuses an input box or textarea */
+  input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="color"]):not([type="range"]):not([type="hidden"]),
+  textarea,
+  [contenteditable="true"],
+  [contenteditable=""] {
+    cursor: text !important;
+    user-select: text !important;
+    -webkit-user-select: text !important;
+  }
+}
+
+/* Ensure global cursor rules have absolute top priority across the entire site */
+html,
+body {
+  cursor: default !important;
+}
+
+*:not(a):not(button):not([role="button"]):not(select):not(input):not(textarea):not([contenteditable="true"]):not(label:has(input)) {
+  cursor: default;
+}
+
+a,
+a *,
+button,
+button *,
+[role="button"],
+[role="button"] *,
+select,
+summary {
+  cursor: pointer !important;
+}
+
+input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="color"]):not([type="range"]):not([type="hidden"]),
+textarea,
+[contenteditable="true"] {
+  cursor: text !important;
+  user-select: text !important;
+  -webkit-user-select: text !important;
 }
 
 @utility container-page {
@@ -135,8 +243,20 @@
   padding-inline: 1rem;
   max-width: 88rem;
 
+  @media (min-width: 375px) {
+    padding-inline: 1.25rem;
+  }
+
   @media (min-width: 768px) {
-    padding-inline: 1.5rem;
+    padding-inline: 1.75rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding-inline: 2rem;
+  }
+
+  @media (min-width: 1280px) {
+    padding-inline: 2.5rem;
   }
 }
 
@@ -218,3 +338,36 @@
   }
 }
 
+/* ─── Global Invisible Scrollbar ─── */
+html,
+body,
+#root {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* ─── Performance: image rendering ─── */
+img {
+  image-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Performance: promote animated/hover elements to their own layer ─── */
+.transform-gpu {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* ─── Smooth scrolling — disabled for reduced-motion users ─── */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}

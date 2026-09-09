@@ -24,28 +24,100 @@ import { FAQSection } from "@/components/site/FAQSection";
 import { departments } from "@/data/departments";
 import { motion, AnimatePresence, useReducedMotion, type Variants } from "framer-motion";
 
-const DEPARTMENT_HEADLINES = [
-  {
-    id: "dept-head-1",
-    content: (
-      <>
-        Comprehensive Care, <br />
-        Quietly Organised <br />
-        <span className="text-[#DE356A]">Around You.</span>
-      </>
-    ),
-  },
-  {
-    id: "dept-head-2",
-    content: (
-      <>
-        Better Healthcare, <br />
-        Beautifully Organised <br />
-        <span className="text-[#DE356A]">for You.</span>
-      </>
-    ),
-  },
-];
+// ─── Letter-by-letter left-to-right animation (matches HomeHero) ─────────────
+const AnimatedLetters = ({
+  text,
+  className,
+  delay = 0,
+}: {
+  text: string;
+  className: string;
+  delay?: number;
+}) => {
+  return (
+    <motion.span
+      initial="hidden"
+      animate="show"
+      exit="exit"
+      variants={{
+        hidden: { opacity: 0 },
+        show: { opacity: 1, transition: { staggerChildren: 0.04, delayChildren: delay } },
+        exit: { opacity: 0, transition: { staggerChildren: 0.02, staggerDirection: -1 } },
+      }}
+      className={`inline-block ${className}`}
+    >
+      {text.split("").map((char, i) => (
+        <motion.span
+          key={i}
+          variants={{
+            hidden: { opacity: 0 },
+            show: { opacity: 1 },
+            exit: { opacity: 0 },
+          }}
+          className={char === " " ? "inline-block w-[0.25em]" : "inline-block"}
+        >
+          {char}
+        </motion.span>
+      ))}
+    </motion.span>
+  );
+};
+
+const DEPARTMENT_PHRASES = [
+  [
+    { text: "Better healthcare",              pink: false },
+    { text: "beautifully organised for you",  pink: true  },
+  ],
+  [
+    { text: "Complete medical care for",      pink: false },
+    { text: "every stage of life",            pink: true  },
+  ],
+] as const;
+
+function DepartmentsAnimatedHeadline() {
+  const shouldReduceMotion = useReducedMotion();
+  const [phase, setPhase] = useState(0);
+
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+    const id = setInterval(() => {
+      setPhase((p) => (p + 1) % DEPARTMENT_PHRASES.length);
+    }, 5000);
+    return () => clearInterval(id);
+  }, [shouldReduceMotion]);
+
+  const lines = DEPARTMENT_PHRASES[phase];
+
+  return (
+    <div className="mb-4 sm:mb-6 min-h-[80px] sm:min-h-[105px] lg:min-h-[135px]">
+      <h1 className="font-display text-xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-[44px] font-extrabold leading-[1.2] tracking-tight text-[#14213D]">
+        {/* Line 1 */}
+        <span className="block min-h-[1.2em] overflow-hidden">
+          <AnimatePresence mode="wait">
+            <AnimatedLetters
+              key={`dept-l1-${phase}`}
+              text={lines[0].text}
+              className={lines[0].pink ? "text-[#D94D78] drop-shadow-[0_0_15px_rgba(255,135,179,0.6)]" : "text-[#14213D]"}
+              delay={0}
+            />
+          </AnimatePresence>
+        </span>
+
+        {/* Line 2 */}
+        <span className="block min-h-[1.2em] overflow-hidden">
+          <AnimatePresence mode="wait">
+            <AnimatedLetters
+              key={`dept-l2-${phase}`}
+              text={lines[1].text}
+              className={lines[1].pink ? "text-[#D94D78] drop-shadow-[0_0_15px_rgba(255,135,179,0.6)]" : "text-[#14213D]"}
+              delay={0.3}
+            />
+          </AnimatePresence>
+        </span>
+      </h1>
+    </div>
+  );
+}
 
 const serviceCategories = [
   {
@@ -155,16 +227,7 @@ const fadeUpVariant: Variants = {
 };
 
 function DepartmentsPage() {
-  const [headlineIndex, setHeadlineIndex] = useState(0);
   const shouldReduceMotion = useReducedMotion();
-
-  // Rotate headline every 5 seconds with smooth left-to-right flow
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setHeadlineIndex((prev) => (prev + 1) % DEPARTMENT_HEADLINES.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
 
   return (
     <>
@@ -193,70 +256,27 @@ function DepartmentsPage() {
                 <span>DEPARTMENTS &amp; SPECIALITIES</span>
               </motion.div>
 
-              {/* ── Animated Headline in Title Case & Elegant Serif Style (No Glow/Shadow) ── */}
-              <div className="relative min-h-[130px] sm:min-h-[145px] md:min-h-[165px] lg:min-h-[180px] xl:min-h-[195px] flex items-start mb-2">
-                <AnimatePresence mode="wait">
-                  <motion.h1
-                    key={DEPARTMENT_HEADLINES[headlineIndex].id}
-                    initial={
-                      shouldReduceMotion
-                        ? { opacity: 0 }
-                        : { opacity: 0, x: -35 }
-                    }
-                    animate={
-                      shouldReduceMotion
-                        ? { opacity: 1 }
-                        : {
-                            opacity: 1,
-                            x: 0,
-                            transition: {
-                              duration: 0.85,
-                              ease: [0.16, 1, 0.3, 1], // Smooth luxury ease-out
-                            },
-                          }
-                    }
-                    exit={
-                      shouldReduceMotion
-                        ? { opacity: 0 }
-                        : {
-                            opacity: 0,
-                            x: 35,
-                            transition: {
-                              duration: 0.6,
-                              ease: [0.7, 0, 0.84, 0], // Smooth left-to-right flow slide-out
-                            },
-                          }
-                    }
-                    className="font-display font-extrabold text-[32px] sm:text-[40px] md:text-[46px] lg:text-[50px] xl:text-[54px] leading-[1.14] tracking-tight text-[#14213D]"
-                  >
-                    {DEPARTMENT_HEADLINES[headlineIndex].content}
-                  </motion.h1>
-                </AnimatePresence>
-              </div>
+              {/* ── Animated Headline matching HomeHero ── */}
+              <DepartmentsAnimatedHeadline />
 
-              {/* Pink Accent Line */}
-              <motion.div
-                variants={fadeUpVariant}
-                className="w-14 h-1.5 bg-[#DE356A] rounded-full mb-6"
-              />
 
               {/* Description Paragraph */}
               <motion.p
                 variants={fadeUpVariant}
-                className="text-slate-700 text-sm md:text-base leading-relaxed mb-8 max-w-xl font-medium"
+                className="text-slate-700 text-sm md:text-base leading-relaxed mb-6 sm:mb-8 max-w-xl font-medium"
               >
                 From fertility and maternity to everyday family medicine, our specialists and
                 advanced facilities work together to support you at every stage of life.
               </motion.p>
 
               {/* Action Button */}
-              <motion.div variants={fadeUpVariant} className="mb-8">
+              <motion.div variants={fadeUpVariant} className="mb-6 sm:mb-8">
                 <button
                   onClick={() => {
                     const el = document.getElementById("departments-list");
                     el?.scrollIntoView({ behavior: "smooth" });
                   }}
-                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#FF5C8A] to-[#DE356A] text-white px-7 py-3.5 text-sm font-bold shadow-md shadow-pink-500/25 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 cursor-pointer"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#FF5C8A] to-[#DE356A] text-white px-6 sm:px-7 py-3 sm:py-3.5 text-sm font-bold shadow-md shadow-pink-500/25 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 cursor-pointer w-full sm:w-auto"
                 >
                   <span>Explore All Departments</span>
                   <ChevronRight className="w-4 h-4 text-white" />
@@ -266,36 +286,36 @@ function DepartmentsPage() {
               {/* ── 3 Stats White Card Container ── */}
               <motion.div
                 variants={fadeUpVariant}
-                className="bg-white/95 backdrop-blur-md border border-[#FFCCD9] rounded-2xl sm:rounded-full shadow-[0_8px_28px_rgba(255,135,179,0.15)] px-3.5 py-2.5 sm:px-5 sm:py-3 md:px-6 md:py-3 w-fit max-w-full"
+                className="bg-white border border-[#FF87B3] rounded-2xl sm:rounded-full shadow-md shadow-pink-200/30 px-3.5 py-3 sm:px-6 sm:py-3.5 w-full sm:w-fit max-w-full mx-auto lg:mx-0"
               >
-                <div className="flex flex-wrap sm:flex-nowrap items-center sm:divide-x divide-pink-100 gap-3 sm:gap-0">
-                  <div className="flex items-center gap-2.5 sm:gap-3 px-1 sm:px-4 sm:pl-1">
-                    <div className="shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#FFF0F5] border border-[#FF87B3] flex items-center justify-center text-[#DE356A] shadow-2xs">
-                      <Users className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-[#DE356A]" />
+                <div className="grid grid-cols-3 sm:flex sm:flex-nowrap sm:items-center sm:divide-x divide-pink-100 gap-2 sm:gap-0">
+                  <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-2.5 px-1.5 sm:px-3.5 md:px-5 sm:pl-1 text-center sm:text-left group cursor-default">
+                    <div className="shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] shadow-2xs group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300">
+                      <Users className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300" />
                     </div>
-                    <div className="text-left min-w-0">
-                      <div className="text-base sm:text-lg font-extrabold text-[#14213D] leading-tight">20+</div>
-                      <div className="text-[11px] sm:text-xs text-slate-500 font-semibold whitespace-nowrap">Specialities</div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2.5 sm:gap-3 px-1 sm:px-4">
-                    <div className="shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#FFF0F5] border border-[#FF87B3] flex items-center justify-center text-[#DE356A] shadow-2xs">
-                      <ShieldCheck className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-[#DE356A]" />
-                    </div>
-                    <div className="text-left min-w-0">
-                      <div className="text-base sm:text-lg font-extrabold text-[#14213D] leading-tight">50+</div>
-                      <div className="text-[11px] sm:text-xs text-slate-500 font-semibold whitespace-nowrap">Expert Doctors</div>
+                    <div className="min-w-0">
+                      <div className="text-xs sm:text-sm md:text-base font-extrabold text-[#14213D] leading-tight whitespace-nowrap">20+</div>
+                      <div className="text-[9.5px] sm:text-xs text-slate-500 font-medium whitespace-nowrap">Specialities</div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2.5 sm:gap-3 px-1 sm:px-4 sm:pr-1">
-                    <div className="shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#FFF0F5] border border-[#FF87B3] flex items-center justify-center text-[#DE356A] shadow-2xs">
-                      <Heart className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-[#DE356A]" />
+                  <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-2.5 px-1.5 sm:px-3.5 md:px-5 text-center sm:text-left group cursor-default">
+                    <div className="shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] shadow-2xs group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300">
+                      <ShieldCheck className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300" />
                     </div>
-                    <div className="text-left min-w-0">
-                      <div className="text-base sm:text-lg font-extrabold text-[#14213D] leading-tight">1L+</div>
-                      <div className="text-[11px] sm:text-xs text-slate-500 font-semibold whitespace-nowrap">Lives Touched</div>
+                    <div className="min-w-0">
+                      <div className="text-xs sm:text-sm md:text-base font-extrabold text-[#14213D] leading-tight whitespace-nowrap">50+</div>
+                      <div className="text-[9.5px] sm:text-xs text-slate-500 font-medium whitespace-nowrap">Expert Doctors</div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-2.5 px-1.5 sm:px-3.5 md:px-5 sm:pr-1 text-center sm:text-left group cursor-default">
+                    <div className="shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] shadow-2xs group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300">
+                      <Heart className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300" />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-xs sm:text-sm md:text-base font-extrabold text-[#14213D] leading-tight whitespace-nowrap">1L+</div>
+                      <div className="text-[9.5px] sm:text-xs text-slate-500 font-medium whitespace-nowrap">Lives Touched</div>
                     </div>
                   </div>
                 </div>
@@ -322,12 +342,12 @@ function DepartmentsPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.5 }}
-          className="text-center max-w-3xl mx-auto mb-12"
+          className="text-center max-w-3xl mx-auto mb-8 sm:mb-12"
         >
-          <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4 shadow-2xs">
+          <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-3 sm:mb-4 shadow-2xs">
             Specialities
           </span>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-3">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-3">
             Clinical Excellence across every discipline.
           </h2>
           <div className="flex items-center justify-center gap-1.5 mt-2">
@@ -419,10 +439,10 @@ function DepartmentsPage() {
             <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-3 shadow-2xs">
               Services
             </span>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-2">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-2">
               Comprehensive services under one roof.
             </h2>
-            <p className="text-slate-600 text-sm md:text-base leading-relaxed max-w-2xl mx-auto font-medium">
+            <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed max-w-2xl mx-auto font-medium">
               From advanced technology to compassionate care, our services are designed to support
               every stage of your health journey.
             </p>

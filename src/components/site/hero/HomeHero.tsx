@@ -10,7 +10,7 @@ import {
   useInView,
 } from "framer-motion";
 import { ArrowRight, Award, Users, Heart, Clock, Dna, Droplets } from "lucide-react";
-import heroImage from "../../../assets/fertility-hero-image.png";
+import heroImage from "../../../assets/fertility-hero-image.webp";
 
 // Count-up component — animates a number from 0 to target when in view
 function CountUp({ target, suffix = "" }: { target: number; suffix?: string }) {
@@ -75,6 +75,7 @@ const AnimatedLetters = ({
   className: string;
   delay?: number;
 }) => {
+  const words = text.split(" ");
   return (
     <motion.span
       initial="hidden"
@@ -82,23 +83,30 @@ const AnimatedLetters = ({
       exit="exit"
       variants={{
         hidden: { opacity: 0 },
-        show: { opacity: 1, transition: { staggerChildren: 0.04, delayChildren: delay } },
-        exit: { opacity: 0, transition: { staggerChildren: 0.02, staggerDirection: -1 } },
+        show: { opacity: 1, transition: { staggerChildren: 0.035, delayChildren: delay } },
+        exit: { opacity: 0, transition: { staggerChildren: 0.018, staggerDirection: -1 } },
       }}
       className={`inline-block ${className}`}
     >
-      {text.split("").map((char, i) => (
-        <motion.span
-          key={i}
-          variants={{
-            hidden: { opacity: 0 },
-            show: { opacity: 1 },
-            exit: { opacity: 0 },
-          }}
-          className={char === " " ? "inline-block w-[0.25em]" : "inline-block"}
-        >
-          {char}
-        </motion.span>
+      {words.map((word, wordIndex) => (
+        <span key={wordIndex} className="inline-block whitespace-nowrap">
+          {word.split("").map((char, charIndex) => (
+            <motion.span
+              key={charIndex}
+              variants={{
+                hidden: { opacity: 0 },
+                show: { opacity: 1 },
+                exit: { opacity: 0 },
+              }}
+              className="inline-block"
+            >
+              {char}
+            </motion.span>
+          ))}
+          {wordIndex < words.length - 1 && (
+            <span className="inline-block w-[0.25em]">&nbsp;</span>
+          )}
+        </span>
       ))}
     </motion.span>
   );
@@ -128,7 +136,7 @@ export function HomeHero() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full overflow-hidden bg-gradient-to-b from-[#FFF5F8] via-[#fffcfd] to-white pt-10 pb-10 lg:pt-14 lg:pb-14 font-sans"
+      className="relative w-full overflow-hidden bg-gradient-to-b from-[#FFF5F8] via-[#fffcfd] to-white pt-6 pb-8 sm:pt-10 sm:pb-10 lg:pt-14 lg:pb-14 font-sans"
     >
       {/* Background Decorative Elements with Parallax */}
       <motion.div
@@ -168,7 +176,7 @@ export function HomeHero() {
         </motion.div>
       </div>
 
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 flex flex-col lg:flex-row items-center gap-12 lg:gap-8">
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 flex flex-col lg:flex-row items-center gap-8 lg:gap-8">
         {/* Left Side: Content */}
         <motion.div
           variants={staggerContainer}
@@ -179,9 +187,9 @@ export function HomeHero() {
           {/* Eyebrow Badge */}
           <motion.div
             variants={fadeUpVariant}
-            className="mb-6 flex justify-center lg:justify-start"
+            className="mb-4 sm:mb-6 flex justify-center lg:justify-start"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FF87B3]/25 backdrop-blur-sm border border-[#FF87B3] shadow-sm hover:shadow-md transition-shadow">
+            <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-[#FF87B3]/25 backdrop-blur-sm border border-[#FF87B3] shadow-sm hover:shadow-md transition-shadow">
               <span className="flex h-2 w-2 rounded-full bg-[#D94D78] animate-pulse" />
               <span className="text-[#D94D78] font-bold text-[10px] sm:text-xs tracking-widest uppercase">
                 Sreedevi Test Tube Baby Centre
@@ -190,13 +198,13 @@ export function HomeHero() {
           </motion.div>
 
           {/* Animated Main Headline with 5s Toggle */}
-          <div className="mb-6 lg:h-[160px]">
+          <div className="mb-4 sm:mb-6 min-h-[80px] sm:min-h-[105px] lg:min-h-[135px]">
             <motion.h1
-              className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#14213D] leading-[1.2] font-display"
+              className="text-xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-[44px] font-extrabold tracking-tight text-[#14213D] leading-[1.2] font-display"
               style={{ perspective: 1000 }}
             >
               {/* Line 1 */}
-              <motion.span variants={fadeUpVariant} className="block pb-1 h-[1.2em]">
+              <motion.span variants={fadeUpVariant} className="block pb-0.5 sm:pb-1 min-h-[1.2em]">
                 <AnimatePresence mode="wait">
                   {isAlternate ? (
                     <AnimatedLetters
@@ -217,7 +225,7 @@ export function HomeHero() {
               </motion.span>
 
               {/* Line 2 */}
-              <motion.span variants={fadeUpVariant} className="block pb-1 h-[1.2em]">
+              <motion.span variants={fadeUpVariant} className="block pb-0.5 sm:pb-1 min-h-[1.2em]">
                 <AnimatePresence mode="wait">
                   {isAlternate ? (
                     <AnimatedLetters
@@ -238,7 +246,7 @@ export function HomeHero() {
               </motion.span>
 
               {/* Line 3 */}
-              <motion.span variants={fadeUpVariant} className="block pb-1 h-[1.2em]">
+              <motion.span variants={fadeUpVariant} className="block pb-0.5 sm:pb-1 min-h-[1.2em]">
                 <AnimatePresence mode="wait">
                   {isAlternate ? (
                     <AnimatedLetters
@@ -262,7 +270,7 @@ export function HomeHero() {
 
           <motion.p
             variants={fadeUpVariant}
-            className="text-slate-600 text-lg sm:text-xl max-w-2xl mx-auto lg:mx-0 mb-10 leading-relaxed font-medium"
+            className="text-slate-600 text-sm sm:text-lg lg:text-xl max-w-2xl mx-auto lg:mx-0 mb-6 sm:mb-8 leading-relaxed font-medium"
           >
             Compassionate care. Advanced technology. Personalized fertility solutions tailored to
             your dreams of a happy family.
@@ -270,71 +278,28 @@ export function HomeHero() {
 
           <motion.div
             variants={fadeUpVariant}
-            className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start"
           >
             <Link
               to="/fertility-centre"
-              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF87B3] via-[#ff9ec2] to-[#D94D78] border border-[#e86595] px-8 py-4 text-base font-extrabold text-[#14213D] shadow-lg shadow-pink-400/30 transition-all hover:scale-[1.03] active:scale-[0.98] hover:shadow-pink-400/50 cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF87B3] via-[#ff9ec2] to-[#D94D78] border border-[#e86595] px-6 sm:px-8 py-3.5 sm:py-4 text-sm sm:text-base font-extrabold text-[#14213D] shadow-lg shadow-pink-400/30 transition-all hover:scale-[1.03] active:scale-[0.98] hover:shadow-pink-400/50 cursor-pointer"
             >
               Explore Treatments
-              <ArrowRight className="w-5 h-5" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </Link>
-          </motion.div>
-
-          {/* Hero Stats Bar */}
-          <motion.div
-            variants={fadeUpVariant}
-            className="mt-10 sm:mt-12 bg-white/95 backdrop-blur-md border border-[#FF87B3] rounded-2xl sm:rounded-3xl shadow-md shadow-pink-200/30 p-4 sm:px-6 sm:py-4 w-full max-w-xl mx-auto lg:mx-0"
-          >
-            <div className="grid grid-cols-2 sm:flex sm:items-center sm:divide-x divide-pink-100 gap-y-3 sm:gap-y-0">
-              {(
-                [
-                  { Icon: Award, numeric: 28, suffix: "+", label: "Years of Experience" },
-                  { Icon: Users, numeric: 5000, suffix: "+", label: "Happy Families" },
-                  { Icon: Heart, numeric: 95, suffix: "%", label: "Success Rate" },
-                  { Icon: Clock, numeric: null, static: "24×7", label: "Emergency" },
-                ] as const
-              ).map(({ Icon, label, ...rest }, index) => (
-                <motion.div
-                  key={label}
-                  whileHover={{ y: -2 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  className={`flex items-center gap-2.5 sm:gap-3 px-2 sm:px-4 md:px-5 ${
-                    index === 0 ? "sm:pl-0" : ""
-                  } ${index === 3 ? "sm:pr-0" : ""} group cursor-default`}
-                >
-                  <div className="shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center group-hover:bg-[#FF87B3] transition-colors duration-300">
-                    <Icon className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300" />
-                  </div>
-                  <div className="text-left min-w-0">
-                    <div className="font-bold text-[#14213D] text-xs sm:text-sm leading-tight whitespace-nowrap">
-                      {"numeric" in rest && rest.numeric !== null ? (
-                        <CountUp
-                          target={rest.numeric}
-                          suffix={"suffix" in rest ? rest.suffix : ""}
-                        />
-                      ) : "static" in rest ? (
-                        rest.static
-                      ) : null}
-                    </div>
-                    <div className="text-[10.5px] sm:text-xs text-slate-500 whitespace-nowrap truncate">{label}</div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
           </motion.div>
         </motion.div>
 
         {/* Right Side: Image with smooth blending mask and seamless bottom transition */}
         <div
-          className="w-full lg:w-1/2 relative mt-12 lg:mt-0 flex justify-end pointer-events-none lg:-mr-8 xl:-mr-24 z-10"
+          className="w-full lg:w-1/2 relative mt-8 lg:mt-0 flex justify-center lg:justify-end pointer-events-none lg:-mr-4 xl:-mr-12 z-10"
           style={{ perspective: 1000 }}
         >
           <motion.div
-            initial={{ opacity: 0, x: 100, rotateY: 15 }}
+            initial={{ opacity: 0, x: 50, rotateY: 10 }}
             animate={{ opacity: 1, x: 0, rotateY: 0 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-            className="relative w-full max-w-[1000px] flex items-center justify-end lg:scale-[1.05]"
+            transition={{ duration: 1.0, ease: "easeOut" }}
+            className="relative w-full max-w-[580px] lg:max-w-[700px] flex items-center justify-center lg:justify-end"
             style={{
               maskImage:
                 "linear-gradient(to bottom, black 0%, black 82%, rgba(0,0,0,0.85) 90%, rgba(0,0,0,0.4) 96%, transparent 100%)",
@@ -348,7 +313,10 @@ export function HomeHero() {
               transition={{ duration: 0.5 }}
               src={heroImage}
               alt="Happy family"
-              className="w-full h-auto object-contain object-right mix-blend-multiply pointer-events-auto drop-shadow-xl"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+              className="w-full h-auto object-contain object-center lg:object-right mix-blend-multiply pointer-events-auto drop-shadow-xl"
               style={{
                 maskImage:
                   "linear-gradient(to right, transparent 0%, black 15%, black 100%), linear-gradient(to bottom, black 0%, black 84%, rgba(0,0,0,0.7) 93%, transparent 100%)",
@@ -364,6 +332,53 @@ export function HomeHero() {
             />
           </motion.div>
         </div>
+      </div>
+
+      {/* Hero Stats Bar: Positioned at bottom of container with full width for seamless white capsule */}
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 mt-8 sm:mt-10">
+        <motion.div
+          variants={fadeUpVariant}
+          initial="hidden"
+          animate="show"
+          className="bg-white border border-[#FF87B3] rounded-2xl sm:rounded-full shadow-md shadow-pink-200/30 px-3.5 py-3 sm:px-6 sm:py-3.5 w-full sm:w-fit max-w-full mx-auto lg:mx-0"
+        >
+          <div className="grid grid-cols-2 sm:flex sm:flex-nowrap sm:items-center sm:divide-x divide-pink-100 gap-y-3 gap-x-2 sm:gap-0">
+            {(
+              [
+                { Icon: Award, numeric: 28, suffix: "+", label: "Years of Experience" },
+                { Icon: Users, numeric: 5000, suffix: "+", label: "Happy Families" },
+                { Icon: Heart, numeric: 95, suffix: "%", label: "Success Rate" },
+                { Icon: Clock, numeric: null, static: "24×7", label: "Emergency" },
+              ] as const
+            ).map(({ Icon, label, ...rest }, index) => (
+              <motion.div
+                key={label}
+                whileHover={{ y: -2 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className={`flex items-center gap-2 sm:gap-2.5 px-2 sm:px-3.5 md:px-5 ${
+                  index === 0 ? "sm:pl-1" : ""
+                } ${index === 3 ? "sm:pr-1" : ""} group cursor-default`}
+              >
+                <div className="shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center group-hover:bg-[#FF87B3] transition-colors duration-300">
+                  <Icon className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300" />
+                </div>
+                <div className="text-left min-w-0">
+                  <div className="font-bold text-[#14213D] text-xs sm:text-sm md:text-base leading-tight whitespace-nowrap">
+                    {"numeric" in rest && rest.numeric !== null ? (
+                      <CountUp
+                        target={rest.numeric}
+                        suffix={"suffix" in rest ? rest.suffix : ""}
+                      />
+                    ) : "static" in rest ? (
+                      rest.static
+                    ) : null}
+                  </div>
+                  <div className="text-[10px] sm:text-xs text-slate-500 font-medium whitespace-nowrap">{label}</div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

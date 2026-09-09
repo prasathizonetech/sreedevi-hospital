@@ -13,21 +13,21 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import ivfLabImg from "@/assets/features/ivf_lab.jpg";
-import welcomeCardBg from "@/assets/welcome-card-bg.jpg";
-import welcomeCareCutout from "@/assets/welcome-family-care-cutout.png";
-import obstetricsImg from "@/assets/departments/obstetrics.jpg";
+import ivfLabImg from "@/assets/features/ivf_lab.webp";
+import welcomeCardBg from "@/assets/welcome-card-bg.webp";
+import welcomeCareCutout from "@/assets/welcome-family-care-cutout.webp";
+import obstetricsImg from "@/assets/departments/obstetrics.webp";
 import gynaecologyImg from "@/assets/features/expertise.jpg";
-import infertilityImg from "@/assets/departments/infertility.jpg";
-import generalMedicineImg from "@/assets/departments/general-medicine.jpg";
-import generalSurgeryImg from "@/assets/departments/general-surgery.jpg";
-import orthopaedicImg from "@/assets/departments/orthopaedic.jpg";
-import obstetricsArt from "@/assets/departments/obstetrics-illustration-2x.png";
-import gynaecologyArt from "@/assets/departments/gynaecology-illustration-2x.png";
-import infertilityArt from "@/assets/departments/infertility-illustration-2x.png";
-import generalMedicineArt from "@/assets/departments/general-medicine-illustration-2x.png";
-import generalSurgeryArt from "@/assets/departments/general-surgery-illustration-2x.png";
-import orthopaedicArt from "@/assets/departments/orthopaedic-illustration-2x.png";
+import infertilityImg from "@/assets/departments/infertility.webp";
+import generalMedicineImg from "@/assets/departments/general-medicine.webp";
+import generalSurgeryImg from "@/assets/departments/general-surgery.webp";
+import orthopaedicImg from "@/assets/departments/orthopaedic.webp";
+import obstetricsArt from "@/assets/departments/obstetrics-illustration-2x.webp";
+import gynaecologyArt from "@/assets/departments/gynaecology-illustration-2x.webp";
+import infertilityArt from "@/assets/departments/infertility-illustration-2x.webp";
+import generalMedicineArt from "@/assets/departments/general-medicine-illustration-2x.webp";
+import generalSurgeryArt from "@/assets/departments/general-surgery-illustration-2x.webp";
+import orthopaedicArt from "@/assets/departments/orthopaedic-illustration-2x.webp";
 import { departments } from "@/data/departments";
 import { doctors } from "@/data/doctors";
 import { testimonials } from "@/data/testimonials";
@@ -116,7 +116,7 @@ function Welcome() {
           <motion.div
             whileHover={{ scale: 1.02, y: -4 }}
             transition={{ type: "spring", stiffness: 200, damping: 25 }}
-            className="relative z-10 w-full max-w-[540px] rounded-[36px] overflow-hidden drop-shadow-[0_20px_40px_rgba(255,135,179,0.30)] border border-[#FF87B3] bg-white"
+            className="relative z-10 w-full max-w-[540px] rounded-[24px] sm:rounded-[36px] overflow-hidden drop-shadow-[0_20px_40px_rgba(255,135,179,0.30)] border border-[#FF87B3] bg-white"
           >
             {/* Attached Background Card Image */}
             <img
@@ -143,21 +143,21 @@ function Welcome() {
         >
           <motion.div
             variants={fadeUp}
-            className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-[11px] font-bold tracking-widest text-[#D94D78] uppercase mb-6"
+            className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-[11px] font-bold tracking-widest text-[#D94D78] uppercase mb-4 sm:mb-6"
           >
             Welcome
           </motion.div>
 
           <motion.h2
             variants={fadeUp}
-            className="text-4xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight mb-6"
+            className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight mb-4 sm:mb-6 leading-tight"
           >
             Caring for families since 1998.
           </motion.h2>
 
           <motion.p
             variants={fadeUp}
-            className="text-lg text-slate-600 leading-relaxed mb-10 font-medium"
+            className="text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed mb-8 sm:mb-10 font-medium"
           >
             SreeDevi Hospital &amp; Fertility Centre is a trusted healthcare institution in the
             heart of Srirangam, providing comprehensive medical services with special focus on
@@ -165,22 +165,22 @@ function Welcome() {
             specialist departments.
           </motion.p>
 
-          <motion.div variants={staggerContainer(0.08)} className="grid gap-4 sm:grid-cols-2 mb-10">
+          <motion.div variants={staggerContainer(0.08)} className="grid gap-3.5 sm:gap-4 sm:grid-cols-2 mb-8 sm:mb-10">
             {values.map((v, i) => (
               <motion.div
                 key={i}
                 variants={scaleIn}
                 whileHover={{ y: -4, boxShadow: "0 12px 32px rgba(255,135,179,0.35)" }}
                 transition={{ type: "spring", stiffness: 300, damping: 22 }}
-                className="bg-white rounded-2xl p-5 border border-[#FF87B3] shadow-[0_8px_30px_rgba(0,0,0,0.03)] cursor-default"
+                className="bg-white rounded-2xl p-4 sm:p-5 border border-[#FF87B3] shadow-[0_8px_30px_rgba(0,0,0,0.03)] cursor-default"
               >
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center shrink-0">
-                    <v.icon className="w-6 h-6 text-[#D94D78]" />
+                <div className="flex gap-3.5 sm:gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center shrink-0">
+                    <v.icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#D94D78]" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-[#14213D] mb-1">{v.title}</h3>
-                    <p className="text-sm text-slate-600 leading-snug">{v.desc}</p>
+                    <h3 className="font-bold text-[#14213D] text-sm sm:text-base mb-1">{v.title}</h3>
+                    <p className="text-xs sm:text-sm text-slate-600 leading-snug">{v.desc}</p>
                   </div>
                 </div>
               </motion.div>
@@ -190,7 +190,7 @@ function Welcome() {
           <motion.div variants={fadeUp}>
             <Link
               to="/about"
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#FF87B3] via-[#ff9ec2] to-[#D94D78] border border-[#e86595] px-8 py-4 text-sm font-extrabold text-[#14213D] shadow-lg shadow-pink-400/30 hover:shadow-pink-400/50 transition-all group cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#FF87B3] via-[#ff9ec2] to-[#D94D78] border border-[#e86595] px-6 sm:px-8 py-3.5 sm:py-4 text-sm font-extrabold text-[#14213D] shadow-lg shadow-pink-400/30 hover:shadow-pink-400/50 transition-all group cursor-pointer w-full sm:w-auto"
             >
               About the hospital
               <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -298,10 +298,10 @@ function SpecialitiesPreview() {
               our departments work together seamlessly around you.
             </motion.p>
           </div>
-          <motion.div variants={fadeUp} className="shrink-0">
+          <motion.div variants={fadeUp} className="shrink-0 w-full sm:w-auto">
             <Link
               to="/departments"
-              className="inline-flex items-center gap-3 rounded-full bg-white hover:bg-[#FFF5F8] border-2 border-[#FF87B3] pl-6 pr-3.5 py-2.5 text-sm font-extrabold text-[#14213D] hover:text-[#D94D78] shadow-xs hover:shadow-[0_10px_25px_rgba(255,135,179,0.25)] transition-all group cursor-pointer"
+              className="inline-flex items-center justify-between sm:justify-start gap-3 rounded-full bg-white hover:bg-[#FFF5F8] border-2 border-[#FF87B3] pl-6 pr-3.5 py-2.5 text-sm font-extrabold text-[#14213D] hover:text-[#D94D78] shadow-xs hover:shadow-[0_10px_25px_rgba(255,135,179,0.25)] transition-all group cursor-pointer w-full sm:w-auto"
             >
               View all departments
               <div className="w-7 h-7 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] group-hover:bg-[#D94D78] group-hover:text-white transition-all duration-300">
@@ -317,7 +317,7 @@ function SpecialitiesPreview() {
           initial="hidden"
           whileInView="show"
           viewport={viewport}
-          className="grid gap-6 md:gap-7 md:grid-cols-2 xl:grid-cols-3"
+          className="grid gap-5 sm:gap-6 md:gap-7 md:grid-cols-2 xl:grid-cols-3"
         >
           {departments.slice(0, 6).map((d, index) => {
             const num = String(index + 1).padStart(2, "0");
@@ -328,7 +328,7 @@ function SpecialitiesPreview() {
                 <TiltCard>
                   <Link
                     to={d.route}
-                    className="group relative overflow-hidden rounded-[28px] sm:rounded-[32px] border border-[#FCE7F0] bg-white shadow-[0_4px_24px_rgba(244,63,94,0.06)] hover:shadow-[0_16px_36px_rgba(244,63,94,0.13)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between p-6 sm:p-7 min-h-[290px] sm:min-h-[300px]"
+                    className="group relative overflow-hidden rounded-[24px] sm:rounded-[32px] border border-[#FCE7F0] bg-white shadow-[0_4px_24px_rgba(244,63,94,0.06)] hover:shadow-[0_16px_36px_rgba(244,63,94,0.13)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between p-5 sm:p-7 min-h-[280px] sm:min-h-[300px]"
                   >
                     {/* Top Row: Left Icon & Dots, Right Number Badge */}
                     <div className="flex items-start justify-between relative z-10">
@@ -342,14 +342,14 @@ function SpecialitiesPreview() {
                         </div>
 
                         {/* Circular Icon Badge */}
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#E11D48] to-[#F43F5E] text-white flex items-center justify-center shadow-md shadow-pink-500/20 group-hover:scale-110 transition-transform duration-300 relative z-10 mt-1 ml-1">
-                          <d.icon className="w-5 h-5 text-white" strokeWidth={2.2} />
+                        <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-tr from-[#E11D48] to-[#F43F5E] text-white flex items-center justify-center shadow-md shadow-pink-500/20 group-hover:scale-110 transition-transform duration-300 relative z-10 mt-1 ml-1">
+                          <d.icon className="w-4 h-4 sm:w-5 sm:h-5 text-white" strokeWidth={2.2} />
                         </div>
                       </div>
 
                       {/* Right: Number Badge (01, 02, etc.) */}
                       <div className="flex flex-col items-center">
-                        <span className="text-[#E11D48] font-bold text-sm sm:text-base tracking-tight leading-none px-2.5 py-1 rounded-full bg-[#FFF0F4]">
+                        <span className="text-[#E11D48] font-bold text-xs sm:text-sm tracking-tight leading-none px-2.5 py-1 rounded-full bg-[#FFF0F4]">
                           {num}
                         </span>
                         <span className="w-4 h-[2px] bg-[#E11D48] rounded-full mt-1" />
@@ -357,26 +357,26 @@ function SpecialitiesPreview() {
                     </div>
 
                     {/* Middle: Title with Short Pink Underline & Description */}
-                    <div className="mt-4 mb-2 relative z-10">
-                      <h3 className="text-xl sm:text-[22px] font-bold text-[#14213D] tracking-tight font-display">
+                    <div className="mt-4 mb-2 relative z-10 max-w-[62%] sm:max-w-[210px]">
+                      <h3 className="text-lg sm:text-[22px] font-bold text-[#14213D] tracking-tight font-display">
                         {d.name}
                       </h3>
-                      <div className="w-7 h-[2.5px] bg-[#E11D48] rounded-full mt-1.5 mb-2.5" />
-                      <p className="text-slate-600 text-[13.5px] sm:text-[14px] leading-relaxed font-normal max-w-[190px] sm:max-w-[210px]">
+                      <div className="w-7 h-[2.5px] bg-[#E11D48] rounded-full mt-1.5 mb-2 sm:mb-2.5" />
+                      <p className="text-slate-600 text-xs sm:text-[14px] leading-relaxed font-normal">
                         {d.short}
                       </p>
                     </div>
 
                     {/* Bottom: Explore Department CTA */}
-                    <div className="mt-4 relative z-10">
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E11D48] bg-white px-4 py-1.5 text-[12.5px] font-semibold text-[#E11D48] group-hover:bg-[#E11D48] group-hover:text-white transition-all duration-300 shadow-xs">
+                    <div className="mt-3 sm:mt-4 relative z-10">
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E11D48] bg-white px-3.5 sm:px-4 py-1.5 text-[11.5px] sm:text-[12.5px] font-semibold text-[#E11D48] group-hover:bg-[#E11D48] group-hover:text-white transition-all duration-300 shadow-xs">
                         Explore Department
                         <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
                       </span>
                     </div>
 
                     {/* Right-Side Line Art Illustration with Botanical Base */}
-                    <div className="absolute right-1 bottom-0 w-[50%] sm:w-[52%] h-[88%] pointer-events-none flex items-end justify-end overflow-hidden select-none z-0">
+                    <div className="absolute right-0 sm:right-1 bottom-0 w-[48%] sm:w-[52%] h-[82%] sm:h-[88%] pointer-events-none flex items-end justify-end overflow-hidden select-none z-0">
                       <img
                         src={illustrationSrc}
                         alt={d.name}
@@ -400,22 +400,21 @@ function FertilityHighlight() {
   return (
     <section className="pt-2 pb-6 lg:pt-3 lg:pb-8 bg-[#FFF5F8]">
       <div className="container-page max-w-7xl mx-auto">
-        <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] shadow-[0_8px_30px_rgba(255,135,179,0.30)] overflow-hidden flex flex-col md:flex-row border border-[#FF87B3]">
+        <div className="bg-white rounded-[1.75rem] md:rounded-[2.5rem] shadow-[0_8px_30px_rgba(255,135,179,0.30)] overflow-hidden flex flex-col md:flex-row border border-[#FF87B3]">
           {/* Left: Image */}
           <motion.div
             variants={fadeLeft}
             initial="hidden"
             whileInView="show"
             viewport={viewport}
-            className="w-full md:w-1/2 p-5 flex items-center justify-center bg-[#FFF5F8]/50 self-stretch overflow-hidden"
+            className="w-full md:w-1/2 p-3 sm:p-5 flex items-center justify-center bg-[#FFF5F8]/50 self-stretch overflow-hidden"
           >
             <motion.img
               src={ivfLabImg}
               alt="Fertility & IVF Centre"
               whileHover={{ scale: 1.04 }}
               transition={{ type: "spring", stiffness: 180, damping: 25 }}
-              className="w-full h-full object-cover object-center rounded-2xl"
-              style={{ minHeight: "380px", maxHeight: "520px" }}
+              className="w-full h-56 sm:h-72 md:h-full md:min-h-[380px] md:max-h-[520px] object-cover object-center rounded-2xl"
             />
           </motion.div>
 
@@ -425,7 +424,7 @@ function FertilityHighlight() {
             initial="hidden"
             whileInView="show"
             viewport={viewport}
-            className="w-full md:w-1/2 p-6 md:p-8 lg:p-10 flex flex-col justify-center"
+            className="w-full md:w-1/2 p-5 sm:p-8 lg:p-10 flex flex-col justify-center"
           >
             <motion.div
               variants={fadeUp}
@@ -453,15 +452,15 @@ function FertilityHighlight() {
               ].map((text, i) => (
                 <motion.li key={i} variants={fadeUp} className="flex items-start gap-3.5">
                   <span className="mt-2 w-2 h-2 rounded-full bg-[#FF87B3] border border-[#f06a99] shrink-0 shadow-sm" />
-                  <span className="text-slate-700 font-medium text-sm leading-relaxed">{text}</span>
+                  <span className="text-slate-700 font-medium text-xs sm:text-sm leading-relaxed">{text}</span>
                 </motion.li>
               ))}
             </motion.ul>
 
-            <motion.div variants={fadeUp} className="self-start">
+            <motion.div variants={fadeUp} className="self-stretch sm:self-start">
               <Link
                 to="/fertility-centre"
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#FF87B3] via-[#ff9ec2] to-[#D94D78] border border-[#e86595] px-8 py-4 text-sm font-extrabold text-[#14213D] shadow-lg shadow-pink-400/30 hover:shadow-pink-400/50 transition-all group cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#FF87B3] via-[#ff9ec2] to-[#D94D78] border border-[#e86595] px-6 sm:px-8 py-3.5 sm:py-4 text-sm font-extrabold text-[#14213D] shadow-lg shadow-pink-400/30 hover:shadow-pink-400/50 transition-all group cursor-pointer w-full sm:w-auto"
               >
                 Explore Fertility Centre
                 <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -517,10 +516,10 @@ function DoctorsPreview() {
               <br className="hidden md:block" /> general medicine, surgery and other specialities.
             </motion.p>
           </div>
-          <motion.div variants={fadeUp} className="shrink-0">
+          <motion.div variants={fadeUp} className="shrink-0 w-full sm:w-auto">
             <Link
               to="/doctors"
-              className="inline-flex items-center gap-3 rounded-full bg-white hover:bg-[#FFF5F8] border-2 border-[#FF87B3] pl-6 pr-3.5 py-2.5 text-sm font-extrabold text-[#14213D] hover:text-[#D94D78] shadow-xs hover:shadow-[0_10px_25px_rgba(255,135,179,0.25)] transition-all group cursor-pointer"
+              className="inline-flex items-center justify-between sm:justify-start gap-3 rounded-full bg-white hover:bg-[#FFF5F8] border-2 border-[#FF87B3] pl-6 pr-3.5 py-2.5 text-sm font-extrabold text-[#14213D] hover:text-[#D94D78] shadow-xs hover:shadow-[0_10px_25px_rgba(255,135,179,0.25)] transition-all group cursor-pointer w-full sm:w-auto"
             >
               All doctors
               <div className="w-7 h-7 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] group-hover:bg-[#D94D78] group-hover:text-white transition-all duration-300">
@@ -634,7 +633,7 @@ function TestimonialsPreview() {
             Care that families take the
             <br className="hidden md:block" /> time to write about.
           </motion.h2>
-          <motion.p variants={fadeUp} className="text-slate-600 font-medium max-w-xl mx-auto">
+          <motion.p variants={fadeUp} className="text-slate-600 font-medium max-w-xl mx-auto text-sm sm:text-base">
             A few notes from the mothers, fathers and patients we have had the privilege of caring
             for.
           </motion.p>
@@ -642,23 +641,23 @@ function TestimonialsPreview() {
           {/* Rating badge */}
           <motion.div
             variants={scaleIn}
-            className="inline-flex items-center gap-4 mt-6 bg-white border border-[#FF87B3] rounded-2xl px-6 py-4 shadow-[0_8px_30px_rgba(255,135,179,0.30)]"
+            className="inline-flex items-center gap-3 sm:gap-4 mt-6 bg-white border border-[#FF87B3] rounded-2xl px-4 sm:px-6 py-3.5 sm:py-4 shadow-[0_8px_30px_rgba(255,135,179,0.30)]"
           >
             <div className="text-left">
-              <div className="text-3xl font-extrabold text-[#14213D]">4.6</div>
-              <div className="text-xs text-slate-500 font-medium">out of 5</div>
+              <div className="text-2xl sm:text-3xl font-extrabold text-[#14213D]">4.6</div>
+              <div className="text-[11px] sm:text-xs text-slate-500 font-medium">out of 5</div>
             </div>
-            <div className="w-px h-10 bg-pink-100" />
+            <div className="w-px h-8 sm:h-10 bg-pink-100" />
             <div>
               <div className="flex gap-0.5 mb-1">
                 {[1, 2, 3, 4, 5].map((s) => (
                   <Star
                     key={s}
-                    className={`w-4 h-4 ${s <= 4 ? "text-amber-400 fill-current" : "text-amber-300 fill-current"}`}
+                    className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${s <= 4 ? "text-amber-400 fill-current" : "text-amber-300 fill-current"}`}
                   />
                 ))}
               </div>
-              <div className="text-xs text-slate-600 font-medium">Based on 92+ reviews</div>
+              <div className="text-[11px] sm:text-xs text-slate-600 font-medium">Based on 92+ reviews</div>
             </div>
           </motion.div>
         </motion.div>
@@ -671,7 +670,7 @@ function TestimonialsPreview() {
           transition={{ type: "spring", stiffness: 60, damping: 18 }}
           className="relative"
         >
-          <div className="overflow-hidden rounded-3xl">
+          <div className="overflow-hidden rounded-2xl sm:rounded-3xl">
             <AnimatePresence custom={direction} mode="wait">
               <motion.figure
                 key={t.id}
@@ -680,12 +679,12 @@ function TestimonialsPreview() {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                className="bg-white border border-[#FF87B3] rounded-3xl p-8 md:p-10 flex flex-col shadow-lg shadow-pink-200/30"
+                className="bg-white border border-[#FF87B3] rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 flex flex-col shadow-lg shadow-pink-200/30"
               >
                 {/* Top row */}
-                <div className="flex items-start justify-between mb-6">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#FF87B3] to-[#D94D78] flex items-center justify-center shadow-md text-white">
-                    <Quote className="w-5 h-5 fill-current" />
+                <div className="flex items-start justify-between mb-4 sm:mb-6">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-[#FF87B3] to-[#D94D78] flex items-center justify-center shadow-md text-white">
+                    <Quote className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
                   </div>
                   <span
                     className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${deptColors[t.department] || "bg-slate-100 text-slate-600"}`}
@@ -695,28 +694,30 @@ function TestimonialsPreview() {
                 </div>
 
                 {/* Quote */}
-                <blockquote className="text-[15px] md:text-base leading-relaxed text-slate-600 flex-1 mb-8 italic">
+                <blockquote className="text-sm sm:text-[15px] md:text-base leading-relaxed text-slate-600 flex-1 mb-6 sm:mb-8 italic">
                   "{t.quote}"
                 </blockquote>
 
                 {/* Author */}
-                <div className="flex items-center gap-4 pt-6 border-t border-pink-100">
-                  <div
-                    className={`w-12 h-12 rounded-full bg-gradient-to-br ${avatarColors[active % avatarColors.length]} flex items-center justify-center text-sm font-bold shadow-md shrink-0`}
-                  >
-                    {t.initials}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="font-bold text-[#14213D]">{t.name}</div>
-                    <div className="text-xs text-slate-500 font-medium">
-                      {t.city} · {t.date}
+                <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-3 sm:gap-4 pt-4 sm:pt-6 border-t border-pink-100">
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                    <div
+                      className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br ${avatarColors[active % avatarColors.length]} flex items-center justify-center text-xs sm:text-sm font-bold shadow-md shrink-0`}
+                    >
+                      {t.initials}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="font-bold text-sm sm:text-base text-[#14213D] truncate">{t.name}</div>
+                      <div className="text-[11px] sm:text-xs text-slate-500 font-medium">
+                        {t.city} · {t.date}
+                      </div>
                     </div>
                   </div>
                   <div className="flex gap-0.5 shrink-0">
                     {Array.from({ length: 5 }).map((_, s) => (
                       <Star
                         key={s}
-                        className={`w-4 h-4 ${s < t.rating ? "text-amber-400 fill-current" : "text-slate-200 fill-current"}`}
+                        className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${s < t.rating ? "text-amber-400 fill-current" : "text-slate-200 fill-current"}`}
                       />
                     ))}
                   </div>
@@ -743,7 +744,14 @@ function TestimonialsPreview() {
         </motion.div>
 
         {/* Dot navigation */}
-        <div className="flex justify-center gap-2 mt-5 sm:mt-6">
+        <div className="flex justify-center items-center gap-2 mt-5 sm:mt-6">
+          <button
+            onClick={prev}
+            aria-label="Previous testimonial mobile"
+            className="sm:hidden p-1.5 text-slate-500 hover:text-[#D94D78]"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
           {items.map((_, i) => (
             <button
               key={i}
@@ -756,6 +764,13 @@ function TestimonialsPreview() {
               }`}
             />
           ))}
+          <button
+            onClick={next}
+            aria-label="Next testimonial mobile"
+            className="sm:hidden p-1.5 text-slate-500 hover:text-[#D94D78]"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
         </div>
       </div>
     </section>

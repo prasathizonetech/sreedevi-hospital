@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import logoAsset from "@/assets/sd-hospital-logo.png";
 
@@ -15,128 +15,197 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
     height: number;
   }>({
     top: 12,
-    left: 24,
-    width: 56,
-    height: 56,
+    left: 16,
+    width: 44,
+    height: 44,
   });
 
-  const [centerSize, setCenterSize] = useState<number>(160);
+  // Responsive center size state
+  const [centerLogoSize, setCenterLogoSize] = useState<number>(140);
+  const [windowDimensions, setWindowDimensions] = useState<{ width: number; height: number }>({
+    width: typeof window !== "undefined" ? window.innerWidth : 1024,
+    height: typeof window !== "undefined" ? window.innerHeight : 768,
+  });
 
-  useEffect(() => {
-    // 1. Lock scrolling on body while splash is running
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+  // Robust measurement function for navbar target & screen dimensions
+  const measure = useCallback(() => {
+    if (typeof window === "undefined") return;
 
-    // 2. Measure navbar target logo and center dimensions
-    const measure = () => {
-      const isMobile = window.innerWidth < 1024;
-      const size = isMobile ? 130 : 160;
-      setCenterSize(size);
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    setWindowDimensions({ width: vw, height: vh });
 
-      const navEl = isMobile
-        ? document.getElementById("nav-logo-mobile")
-        : document.getElementById("nav-logo-desktop");
+    // Adaptive logo sizing based on screen size:
+    // Mobile (<640px): 110px - 125px
+    // Tablet (<1024px): 135px - 145px
+    // Laptop (<1440px): 160px
+    // Desktop (>=1440px): 175px
+    let dynamicSize = 160;
+    if (vw < 480) {
+      dynamicSize = Math.min(Math.max(Math.round(vw * 0.32), 108), 125);
+    } else if (vw < 768) {
+      dynamicSize = 135;
+    } else if (vw < 1024) {
+      dynamicSize = 145;
+    } else if (vw < 1440) {
+      dynamicSize = 160;
+    } else {
+      dynamicSize = 175;
+    }
+    setCenterLogoSize(dynamicSize);
 
-      if (navEl) {
-        const rect = navEl.getBoundingClientRect();
+    const isMobile = vw < 1024;
+    const targetElement = isMobile
+      ? document.getElementById("nav-logo-mobile")
+      : document.getElementById("nav-logo-desktop");
+
+    if (targetElement) {
+      const rect = targetElement.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
         setTargetRect({
           top: rect.top,
           left: rect.left,
-          width: rect.width || (isMobile ? 44 : 56),
-          height: rect.height || (isMobile ? 44 : 56),
+          width: rect.width,
+          height: rect.height,
         });
+        return;
       }
-    };
+    }
 
+    // High accuracy fallback coordinates if header is not yet rendered or measured
+    if (isMobile) {
+      const padLeft = vw < 640 ? 12 : 20;
+      const logoW = vw < 640 ? 36 : 44;
+      const navH = vw < 640 ? 56 : 64;
+      setTargetRect({
+        top: Math.max((navH - logoW) / 2, 8),
+        left: padLeft,
+        width: logoW,
+        height: logoW,
+      });
+    } else {
+      const navH = vw >= 1536 ? 72 : vw >= 1280 ? 66 : 58;
+      const logoW = vw >= 1536 ? 56 : vw >= 1280 ? 48 : 36;
+      const padLeft = vw >= 1536 ? 24 : vw >= 1280 ? 20 : 10;
+      setTargetRect({
+        top: Math.max((navH - logoW) / 2, 8),
+        left: padLeft,
+        width: logoW,
+        height: logoW,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    // 1. Lock scroll on html and body while splash screen is active
+    const originalBodyOverflow = document.body.style.overflow;
+    const originalHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
+    // Measure immediately and on subsequent frames
     measure();
+    const frameId = requestAnimationFrame(measure);
 
-    // ── Timeline (Fast & Smooth 3.8s Total, Loading until 3s) ──────────────
-    // 0s – 0.6s: White screen & logo fade in smoothly
+    // ── Timeline (3.8s total duration) ──────────────
+    // 0s – 0.55s: Smooth entrance
     const tFadeIn = setTimeout(() => {
       setPhase("loading");
-    }, 600);
+    }, 550);
 
-    // 0.6s – 3.0s: Continuous smooth circular loading line animation
-    // 3.0s: Start shrinking, morphing and flying logo to navbar + reveal website
+    // 0.55s – 3.0s: Circular loading ring animation
+    // 3.0s: Precision morph & travel to navbar logo position + reveal site
     const tTransition = setTimeout(() => {
       measure();
       setPhase("transition");
     }, 3000);
 
-    // 3.8s: Finish splash completely, hand off to navbar logo
+    // 3.8s: Complete splash screen and cleanly hand off
     const tDone = setTimeout(() => {
       setPhase("done");
-      document.body.style.overflow = originalOverflow;
+      document.body.style.overflow = originalBodyOverflow;
+      document.documentElement.style.overflow = originalHtmlOverflow;
       onComplete();
     }, 3800);
 
-    window.addEventListener("resize", measure);
+    window.addEventListener("resize", measure, { passive: true });
+    window.addEventListener("orientationchange", measure, { passive: true });
 
     return () => {
+      cancelAnimationFrame(frameId);
       clearTimeout(tFadeIn);
       clearTimeout(tTransition);
       clearTimeout(tDone);
       window.removeEventListener("resize", measure);
-      document.body.style.overflow = originalOverflow;
+      window.removeEventListener("orientationchange", measure);
+      document.body.style.overflow = originalBodyOverflow;
+      document.documentElement.style.overflow = originalHtmlOverflow;
     };
-  }, [onComplete]);
+  }, [measure, onComplete]);
 
   if (phase === "done") return null;
 
   // Geometry for Circular Outer Loading Progress Ring
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
-  const ringRadius = isMobile ? 74 : 92;
-  const strokeWidth = 3.5;
-  const svgSize = (ringRadius + strokeWidth + 4) * 2;
+  // Dynamically scales with centerLogoSize with proportional padding
+  const strokeWidth = centerLogoSize < 130 ? 3 : 3.5;
+  const gap = centerLogoSize < 130 ? 10 : 13;
+  const ringRadius = centerLogoSize / 2 + gap;
+  const svgBoxSize = (ringRadius + strokeWidth + 6) * 2;
   const circumference = 2 * Math.PI * ringRadius;
-
-  // Calculate center coordinates
-  const windowWidth = typeof window !== "undefined" ? window.innerWidth : 1000;
-  const windowHeight = typeof window !== "undefined" ? window.innerHeight : 800;
-
-  const startTop = windowHeight / 2 - centerSize / 2;
-  const startLeft = windowWidth / 2 - centerSize / 2;
 
   const isTransitioning = phase === "transition";
 
+  // Center coordinates in viewport
+  const centerTop = windowDimensions.height / 2 - centerLogoSize / 2;
+  const centerLeft = windowDimensions.width / 2 - centerLogoSize / 2;
+
   return (
-    <div className="fixed inset-0 z-[99999] pointer-events-none select-none">
-      {/* ── White Screen Backdrop (Fades out 3s -> 3.8s) ── */}
+    <div
+      className="fixed inset-0 z-[99999] pointer-events-none select-none overflow-hidden"
+      style={{
+        width: "100vw",
+        height: "100vh",
+        maxWidth: "100%",
+        maxHeight: "100%",
+      }}
+    >
+      {/* ── Solid White Screen Backdrop (fades smoothly 3s -> 3.8s) ── */}
       <motion.div
         initial={{ opacity: 1 }}
         animate={{ opacity: isTransitioning ? 0 : 1 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute inset-0 bg-white"
+        transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+        className="absolute inset-0 bg-white will-change-opacity"
       />
 
-      {/* ── Loading Ring Wrapper (Centered, fades out at 3s) ── */}
+      {/* ── Circular Loading Ring (Fades smoothly before transition) ── */}
       <AnimatePresence>
         {phase !== "transition" && (
           <motion.div
-            key="loading-ring-wrapper"
+            key="loading-ring-container"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{
-              opacity: phase === "loading" ? 1 : 0.4,
+              opacity: phase === "loading" ? 1 : 0.35,
               scale: 1,
             }}
             exit={{
               opacity: 0,
-              scale: 0.9,
+              scale: 0.88,
               transition: { duration: 0.3, ease: "easeOut" },
             }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+            className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none will-change-transform"
             style={{
-              top: windowHeight / 2,
-              left: windowWidth / 2,
-              width: svgSize,
-              height: svgSize,
+              top: windowDimensions.height / 2,
+              left: windowDimensions.width / 2,
+              width: svgBoxSize,
+              height: svgBoxSize,
             }}
           >
-            {/* SVG Outer Loading Ring */}
             <svg
-              className="w-full h-full transform-gpu -rotate-90"
-              viewBox={`0 0 ${svgSize} ${svgSize}`}
+              className="w-full h-full transform-gpu -rotate-90 block"
+              viewBox={`0 0 ${svgBoxSize} ${svgBoxSize}`}
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
             >
               <defs>
                 <linearGradient id="splashLoadingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -145,27 +214,27 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
                   <stop offset="100%" stopColor="#DE356A" />
                 </linearGradient>
                 <filter id="splashGlow" x="-20%" y="-20%" width="140%" height="140%">
-                  <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#FF87B3" floodOpacity="0.6" />
+                  <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#FF87B3" floodOpacity="0.5" />
                 </filter>
               </defs>
 
               {/* Background Track Circle */}
               <circle
-                cx={svgSize / 2}
-                cy={svgSize / 2}
+                cx={svgBoxSize / 2}
+                cy={svgBoxSize / 2}
                 r={ringRadius}
                 stroke="#FFE5EE"
                 strokeWidth={strokeWidth}
                 fill="none"
               />
 
-              {/* Smooth Animated Loading Progress Stroke (0.6s to 3.0s = 2.4s duration) */}
+              {/* Smooth Animated Loading Progress Stroke (0.55s to 3.0s = 2.45s) */}
               <motion.circle
-                cx={svgSize / 2}
-                cy={svgSize / 2}
+                cx={svgBoxSize / 2}
+                cy={svgBoxSize / 2}
                 r={ringRadius}
                 stroke="url(#splashLoadingGrad)"
-                strokeWidth={strokeWidth + 0.5}
+                strokeWidth={strokeWidth + 0.6}
                 strokeLinecap="round"
                 fill="none"
                 filter="url(#splashGlow)"
@@ -181,29 +250,30 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
                       }
                 }
                 transition={{
-                  duration: 2.4,
+                  duration: 2.45,
                   ease: "easeInOut",
                 }}
               />
             </svg>
 
-            {/* Subtle Rotating Pulse Accents */}
+            {/* Concentric subtle decorative orbit ring */}
             <motion.div
               animate={{ rotate: 360 }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-0 rounded-full border border-dashed border-[#FFCCD9]/50 pointer-events-none"
+              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+              className="absolute inset-0 rounded-full border border-dashed border-[#FFCCD9]/60 pointer-events-none"
             />
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* ── Single Smooth Logo Entity (Transitions from Center -> Navbar at 3s) ── */}
+      {/* ── Single Smooth Responsive Logo Entity ── */}
+      {/* Centered with exact coordinate math, flying straight to the navbar logo on all devices */}
       <motion.div
         initial={{
-          top: startTop,
-          left: startLeft,
-          width: centerSize,
-          height: centerSize,
+          top: centerTop,
+          left: centerLeft,
+          width: centerLogoSize,
+          height: centerLogoSize,
           opacity: 0,
           scale: 0.92,
         }}
@@ -218,10 +288,10 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
                 scale: 1,
               }
             : {
-                top: startTop,
-                left: startLeft,
-                width: centerSize,
-                height: centerSize,
+                top: centerTop,
+                left: centerLeft,
+                width: centerLogoSize,
+                height: centerLogoSize,
                 opacity: 1,
                 scale: 1,
               }
@@ -230,18 +300,18 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
           isTransitioning
             ? {
                 duration: 0.8,
-                ease: [0.16, 1, 0.3, 1], // Smooth luxury ease-out
+                ease: [0.16, 1, 0.3, 1], // Smooth organic deceleration
               }
             : {
                 opacity: { duration: 0.5, ease: "easeOut" },
                 scale: { duration: 0.5, ease: "easeOut" },
               }
         }
-        className="fixed z-[100000] rounded-full overflow-hidden flex items-center justify-center pointer-events-none"
+        className="fixed z-[100000] rounded-full overflow-hidden flex items-center justify-center pointer-events-none will-change-transform"
         style={{
           boxShadow: isTransitioning
-            ? "0 4px 12px rgba(255,135,179,0.15)"
-            : "0 14px 45px rgba(255,135,179,0.30)",
+            ? "0 2px 8px rgba(255,135,179,0.12)"
+            : "0 14px 40px rgba(255,135,179,0.28)",
           backgroundColor: "#ffffff",
           border: isTransitioning ? "1px solid #FFCCD9" : "2px solid #FFCCD9",
         }}
@@ -249,7 +319,7 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
         <img
           src={logoAsset}
           alt="SreeDevi Hospital Logo"
-          className="w-full h-full object-contain rounded-full transform-gpu"
+          className="w-full h-full object-contain rounded-full transform-gpu select-none"
           loading="eager"
           fetchPriority="high"
         />

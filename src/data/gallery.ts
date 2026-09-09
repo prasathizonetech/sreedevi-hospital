@@ -1,9 +1,9 @@
-import exterior from "@/assets/hospital-exterior.jpg";
+import exterior from "@/assets/hospital-exterior.webp";
 import reception from "@/assets/reception.jpg";
 import delivery from "@/assets/delivery-room.jpg";
 import lab from "@/assets/lab.jpg";
 import fertility from "@/assets/fertility-lab.jpg";
-import family from "@/assets/family-care.jpg";
+import family from "@/assets/family-care.webp";
 import hero from "@/assets/hero-maternity.jpg";
 
 export interface GalleryItem {

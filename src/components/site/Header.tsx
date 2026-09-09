@@ -1,7 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { Menu, X, Phone } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import logoAsset from "@/assets/sd-hospital-logo.png";
 import { hospital } from "@/data/hospital";
 
@@ -34,15 +34,35 @@ export function Header() {
   const currentPath = routerState.location.pathname;
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 12);
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 12;
+      setScrolled((prev) => (prev !== isScrolled ? isScrolled : prev));
+    };
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false);
   }, [currentPath]);
+
+  // Close mobile menu on Escape key press or window resize to desktop
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileOpen(false);
+    };
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) setMobileOpen(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <header
@@ -52,13 +72,13 @@ export function Header() {
           : "bg-white/90 backdrop-blur-md border-b border-pink-100/60"
       }`}
     >
-      {/* ── Desktop navbar ─── */}
-      <div className="hidden lg:flex items-stretch w-full">
+      {/* ── Desktop navbar (1024px and up: neatly aligned in 1 single row) ─── */}
+      <div className="hidden lg:flex items-stretch w-full h-[58px] xl:h-[66px] 2xl:h-[72px]">
         {/* LEFT: White brand panel */}
         <Link
           to="/"
           preload="intent"
-          className="flex items-center gap-2 xl:gap-3 bg-white pl-3 pr-2 xl:pl-6 xl:pr-5 py-2 xl:py-2.5 shrink-0 group cursor-pointer select-none"
+          className="flex items-center gap-2 xl:gap-3 bg-white pl-2.5 pr-2 xl:pl-5 xl:pr-4 2xl:pl-6 2xl:pr-5 shrink-0 group cursor-pointer select-none"
         >
           <motion.div
             id="nav-logo-desktop"
@@ -69,22 +89,22 @@ export function Header() {
             <img
               src={logoAsset}
               alt="SreeDevi Hospital logo"
-              className="h-11 w-11 xl:h-15 xl:w-15 object-contain rounded-full"
+              className="h-9 w-9 xl:h-12 xl:w-12 2xl:h-14 2xl:w-14 object-contain rounded-full"
             />
           </motion.div>
           <div className="leading-tight pointer-events-none">
-            <div className="font-display text-[13.5px] xl:text-[16.5px] font-bold text-[#14213D] tracking-tight transition-colors group-hover:text-[#D94D78]">
+            <div className="font-display text-[12px] xl:text-[15px] 2xl:text-[16.5px] font-bold text-[#14213D] tracking-tight transition-colors group-hover:text-[#D94D78] whitespace-nowrap">
               SreeDevi Hospital
             </div>
-            <div className="text-[10px] xl:text-[11.5px] font-medium text-slate-500 mt-0.5">
+            <div className="text-[9px] xl:text-[10.5px] 2xl:text-[11px] font-medium text-slate-500 mt-0.5 whitespace-nowrap">
               &amp; <span className="font-bold text-[#D94D78]">Fertility Centre</span> · Srirangam
             </div>
           </div>
         </Link>
 
-        {/* CURVE: sigmoid S-curve per graph */}
+        {/* CURVE: sigmoid S-curve per design */}
         <div
-          className="relative shrink-0 self-stretch pointer-events-none w-8 xl:w-16"
+          className="relative shrink-0 self-stretch pointer-events-none w-5 xl:w-10 2xl:w-14"
           style={{ backgroundColor: NAV_PINK }}
         >
           <svg
@@ -96,12 +116,12 @@ export function Header() {
           </svg>
         </div>
 
-        {/* RIGHT: Pink nav panel with #FF87B3 */}
+        {/* RIGHT: Pink nav panel with all 9 items in a single horizontal row */}
         <nav
-          className="flex flex-1 items-center justify-end xl:justify-start pl-1 xl:pl-2 pr-2 xl:pr-6 overflow-visible"
+          className="flex flex-1 items-center justify-end xl:justify-start pl-1 xl:pl-2.5 pr-2 xl:pr-4 2xl:pr-6 overflow-hidden"
           style={{ backgroundColor: NAV_PINK }}
         >
-          <div className="flex items-center gap-0.5 xl:gap-1 flex-nowrap">
+          <div className="flex items-center gap-0.5 xl:gap-1 2xl:gap-1.5 flex-nowrap shrink-0">
             {navItems.map((item) => {
               const isActive =
                 item.to === "/"
@@ -113,13 +133,13 @@ export function Header() {
                   key={item.to}
                   to={item.to}
                   preload="intent"
-                  className="relative px-2 xl:px-3 py-1.5 rounded-full text-[11.5px] xl:text-[13px] font-semibold whitespace-nowrap transition-colors duration-200 group/nav shrink-0 cursor-pointer select-none"
+                  className="relative px-1.5 xl:px-2.5 2xl:px-3.5 py-1 xl:py-1.5 rounded-full text-[11px] xl:text-[12.5px] 2xl:text-[13px] font-semibold whitespace-nowrap transition-colors duration-200 group/nav shrink-0 cursor-pointer select-none"
                 >
                   {/* Smooth active background pill with layoutId */}
                   {isActive && (
                     <motion.div
                       layoutId="navActiveBackground"
-                      className="absolute inset-0 bg-white rounded-full shadow-md shadow-pink-950/15 pointer-events-none"
+                      className="absolute inset-0 bg-white rounded-full pointer-events-none"
                       transition={{ type: "spring", stiffness: 350, damping: 28 }}
                     />
                   )}
@@ -128,7 +148,7 @@ export function Header() {
                   {isActive && (
                     <motion.div
                       layoutId="navActiveUnderline"
-                      className="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-5 h-[3px] rounded-full bg-[#D94D78] shadow-xs pointer-events-none"
+                      className="absolute bottom-[-4px] xl:bottom-[-5px] left-1/2 -translate-x-1/2 w-3.5 xl:w-5 h-[2.5px] xl:h-[3px] rounded-full bg-[#D94D78] pointer-events-none"
                       transition={{ type: "spring", stiffness: 350, damping: 28 }}
                     />
                   )}
@@ -154,22 +174,27 @@ export function Header() {
         </nav>
       </div>
 
-      {/* ── Mobile navbar ─── */}
+      {/* ── Mobile / Tablet navbar (< 1024px) ─── */}
       <div className="lg:hidden w-full">
-        <div className="flex items-center justify-between w-full overflow-hidden px-4 py-2.5">
-          <Link to="/" preload="intent" className="flex items-center gap-2.5 bg-white shrink-0 cursor-pointer">
-            <div id="nav-logo-mobile" className="h-11 w-11 shrink-0 rounded-full overflow-hidden">
+        <div className="flex items-center justify-between w-full h-14 sm:h-16 px-3 sm:px-5 bg-white">
+          <Link
+            to="/"
+            preload="intent"
+            className="flex items-center gap-2 sm:gap-2.5 bg-white shrink-0 cursor-pointer min-w-0"
+            onClick={() => setMobileOpen(false)}
+          >
+            <div id="nav-logo-mobile" className="h-9 w-9 sm:h-11 sm:w-11 shrink-0 rounded-full overflow-hidden">
               <img
                 src={logoAsset}
                 alt="SreeDevi Hospital logo"
-                className="h-11 w-11 object-contain rounded-full"
+                className="h-full w-full object-contain rounded-full"
               />
             </div>
-            <div className="leading-tight">
-              <div className="font-display text-[14px] font-bold text-[#14213D]">
+            <div className="leading-tight min-w-0">
+              <div className="font-display text-[13px] sm:text-[15px] font-bold text-[#14213D] truncate">
                 SreeDevi Hospital
               </div>
-              <div className="text-[10px] text-slate-500">
+              <div className="text-[9.5px] sm:text-[11px] text-slate-500 truncate">
                 &amp; <span className="font-bold text-[#D94D78]">Fertility Centre</span>
               </div>
             </div>
@@ -178,74 +203,95 @@ export function Header() {
           <motion.button
             whileHover={shouldReduceMotion ? undefined : { scale: 1.08 }}
             whileTap={{ scale: 0.92 }}
-            className="flex items-center justify-center h-10 w-10 rounded-full text-[#14213D] shadow-sm cursor-pointer border border-[#f06a99]"
+            className="flex items-center justify-center h-9 w-9 sm:h-10 sm:w-10 rounded-full text-[#14213D] shadow-xs cursor-pointer border border-[#f06a99] shrink-0 ml-2"
             style={{ backgroundColor: NAV_PINK }}
             onClick={() => setMobileOpen((v) => !v)}
-            aria-label="Toggle menu"
+            aria-expanded={mobileOpen}
+            aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
           >
-            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {mobileOpen ? <X className="h-4.5 w-4.5 sm:h-5 sm:w-5" /> : <Menu className="h-4.5 w-4.5 sm:h-5 sm:w-5" />}
           </motion.button>
         </div>
       </div>
 
-      {/* ── Mobile Drawer ─── */}
-      {mobileOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.2 }}
-          className="lg:hidden bg-white shadow-2xl border-t border-slate-100 origin-top max-h-[80vh] overflow-y-auto"
-        >
-          <div className="flex flex-col gap-1 p-4">
-            {navItems.map((item) => {
-              const isActive =
-                item.to === "/"
-                  ? currentPath === "/"
-                  : currentPath === item.to || currentPath.startsWith(`${item.to}/`);
+      {/* ── Backdrop Overlay for Mobile Drawer ─── */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 top-14 sm:top-16 bg-slate-900/40 backdrop-blur-xs z-40 lg:hidden"
+            onClick={() => setMobileOpen(false)}
+            aria-hidden="true"
+          />
+        )}
+      </AnimatePresence>
 
-              return (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  preload="intent"
-                  onClick={() => setMobileOpen(false)}
-                  className={`rounded-xl px-4 py-3 text-[14px] font-bold transition-all cursor-pointer ${
-                    isActive
-                      ? "bg-[#FF87B3]/30 text-[#D94D78] shadow-xs border border-[#FF87B3]"
-                      : "text-[#14213D] hover:bg-slate-50"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
+      {/* ── Mobile / Tablet Drawer ─── */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="absolute top-full left-0 right-0 z-50 lg:hidden bg-white shadow-2xl border-t border-pink-100 max-h-[calc(100dvh-56px)] sm:max-h-[calc(100dvh-64px)] overflow-y-auto overscroll-contain"
+          >
+            <div className="flex flex-col gap-1 p-3 sm:p-5">
+              {navItems.map((item) => {
+                const isActive =
+                  item.to === "/"
+                    ? currentPath === "/"
+                    : currentPath === item.to || currentPath.startsWith(`${item.to}/`);
 
-            <div className="mt-3 rounded-2xl bg-[#FFF5F8] border border-[#FF87B3] p-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#FF87B3] flex items-center justify-center text-[#14213D] shadow-2xs">
-                  <Phone className="w-4.5 h-4.5" />
-                </div>
-                <div>
-                  <div className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest">
-                    24/7 Helpline
+                return (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    preload="intent"
+                    onClick={() => setMobileOpen(false)}
+                    className={`flex items-center justify-between rounded-xl px-4 py-2.5 sm:py-3 text-[13.5px] sm:text-[14.5px] font-bold transition-all cursor-pointer ${
+                      isActive
+                        ? "bg-[#FF87B3]/25 text-[#D94D78] shadow-xs border border-[#FF87B3]"
+                        : "text-[#14213D] hover:bg-pink-50/50 active:bg-pink-100/40"
+                    }`}
+                  >
+                    <span>{item.label}</span>
+                    {isActive && (
+                      <span className="w-2 h-2 rounded-full bg-[#D94D78] shadow-xs" />
+                    )}
+                  </Link>
+                );
+              })}
+
+              <div className="mt-2 rounded-2xl bg-gradient-to-br from-[#FFF5F8] to-[#ffecf2] border border-[#FF87B3]/60 p-3.5 sm:p-4 flex items-center justify-between shadow-xs">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-[#FF87B3] flex items-center justify-center text-[#14213D] shadow-xs shrink-0">
+                    <Phone className="w-4.5 h-4.5" />
                   </div>
-                  <div className="text-sm font-bold text-[#14213D]">{hospital.mobile}</div>
+                  <div>
+                    <div className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">
+                      24/7 Helpline
+                    </div>
+                    <div className="text-xs sm:text-sm font-bold text-[#14213D]">{hospital.mobile}</div>
+                  </div>
                 </div>
+                <motion.a
+                  whileHover={shouldReduceMotion ? undefined : { scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  href={`tel:${hospital.mobile}`}
+                  className="px-4 py-2 rounded-xl text-[#14213D] text-xs font-extrabold shadow-xs hover:shadow-md transition-shadow border border-[#f06a99] cursor-pointer shrink-0"
+                  style={{ backgroundColor: NAV_PINK }}
+                >
+                  Call
+                </motion.a>
               </div>
-              <motion.a
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                href={`tel:${hospital.mobile}`}
-                className="px-4 py-2 rounded-xl text-[#14213D] text-xs font-extrabold shadow-xs hover:shadow-md transition-shadow border border-[#f06a99] cursor-pointer"
-                style={{ backgroundColor: NAV_PINK }}
-              >
-                Call
-              </motion.a>
             </div>
-          </div>
-        </motion.div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

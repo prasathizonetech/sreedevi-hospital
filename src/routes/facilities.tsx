@@ -14,9 +14,9 @@ import {
   Users,
   Baby,
 } from "lucide-react";
-import reception from "@/assets/reception.jpg";
+import reception from "@/assets/gallery/gallery-reception.jpg";
 import delivery from "@/assets/delivery-room.jpg";
-import lab from "@/assets/lab.jpg";
+import lab from "@/assets/gallery/gallery-diagnostics.jpg";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { FacilitiesHero } from "@/components/site/hero/FacilitiesHero";
 import { EmergencySection } from "@/components/site/EmergencySection";
@@ -80,10 +80,10 @@ function FacilitiesPage() {
             <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4 shadow-2xs">
               Our Facilities
             </span>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-3">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-3">
               Thoughtful spaces for every stage of care.
             </h2>
-            <p className="text-slate-600 text-sm md:text-base leading-relaxed max-w-2xl mx-auto font-medium">
+            <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed max-w-2xl mx-auto font-medium">
               Designed to provide comfort, convenience and compassionate care for you and your loved
               ones.
             </p>
@@ -98,7 +98,7 @@ function FacilitiesPage() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-60px" }}
-            className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+            className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3"
           >
             {[
               {
@@ -145,22 +145,22 @@ function FacilitiesPage() {
                       }
                 }
                 transition={{ type: "spring", stiffness: 280, damping: 20 }}
-                className="flex flex-col justify-between rounded-3xl border border-[#FF87B3] bg-white p-7 md:p-8 shadow-xs hover:border-[#D94D78] transition-all duration-300 min-h-[220px] group cursor-default"
+                className="flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-[#FF87B3] bg-white p-5 sm:p-7 md:p-8 shadow-xs hover:border-[#D94D78] transition-all duration-300 min-h-[200px] sm:min-h-[220px] group cursor-default"
               >
                 <div>
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3.5 sm:gap-4">
                     <motion.div
                       whileHover={shouldReduceMotion ? undefined : { scale: 1.15, rotate: 6 }}
                       transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                      className="w-12 h-12 rounded-full border border-[#FF87B3] bg-[#FFF5F8] flex items-center justify-center text-[#D94D78] shrink-0 group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300 shadow-2xs"
+                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[#FF87B3] bg-[#FFF5F8] flex items-center justify-center text-[#D94D78] shrink-0 group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300 shadow-2xs"
                     >
-                      <f.icon className="w-5 h-5" />
+                      <f.icon className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
                     </motion.div>
                     <h3 className="font-display text-base md:text-lg font-extrabold text-[#14213D] leading-tight group-hover:text-[#D94D78] transition-colors">
                       {f.t}
                     </h3>
                   </div>
-                  <p className="mt-4 text-xs md:text-sm text-slate-600 leading-relaxed font-medium">
+                  <p className="mt-3 sm:mt-4 text-xs md:text-sm text-slate-600 leading-relaxed font-medium">
                     {f.d}
                   </p>
                 </div>
@@ -193,10 +193,10 @@ function FacilitiesPage() {
             <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-4 shadow-2xs">
               Inside SreeDevi
             </span>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-3">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-3">
               See the spaces behind the care.
             </h2>
-            <p className="text-slate-600 text-sm md:text-base leading-relaxed max-w-2xl mx-auto font-medium">
+            <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed max-w-2xl mx-auto font-medium">
               Modern facilities, designed for comfort, safety, and compassion — so you feel
               supported at every step.
             </p>
@@ -211,7 +211,7 @@ function FacilitiesPage() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-60px" }}
-            className="grid gap-7 md:grid-cols-3"
+            className="grid gap-5 sm:gap-7 md:grid-cols-3"
           >
             {[
               {
@@ -220,6 +220,7 @@ function FacilitiesPage() {
                 title: "Welcoming OPD & Reception",
                 desc: "A calm start to every visit.",
                 icon: Users,
+                objectPosition: "object-[center_35%]",
               },
               {
                 img: delivery,
@@ -227,6 +228,7 @@ function FacilitiesPage() {
                 title: "Labour & Delivery Suite",
                 desc: "Safe, private, and designed for new beginnings.",
                 icon: Baby,
+                objectPosition: "object-center",
               },
               {
                 img: lab,
@@ -234,6 +236,7 @@ function FacilitiesPage() {
                 title: "In-house Diagnostic Lab",
                 desc: "Accurate results, faster decisions.",
                 icon: FlaskConical,
+                objectPosition: "object-[center_35%]",
               },
             ].map((c, i) => (
               <motion.div
@@ -249,7 +252,7 @@ function FacilitiesPage() {
                       }
                 }
                 transition={{ type: "spring", stiffness: 280, damping: 20 }}
-                className="overflow-hidden rounded-3xl border border-[#FF87B3] bg-white shadow-xs hover:border-[#D94D78] transition-all duration-300 flex flex-col justify-between group cursor-default"
+                className="overflow-hidden rounded-2xl sm:rounded-3xl border border-[#FF87B3] bg-white shadow-xs hover:border-[#D94D78] transition-all duration-300 flex flex-col justify-between group cursor-default"
               >
                 <div className="aspect-[4/3] w-full overflow-hidden bg-slate-100">
                   <motion.img
@@ -258,19 +261,19 @@ function FacilitiesPage() {
                     loading="lazy"
                     whileHover={shouldReduceMotion ? undefined : { scale: 1.06 }}
                     transition={{ duration: 0.65, ease: "easeOut" }}
-                    className="w-full h-full object-cover transform-gpu"
+                    className={`w-full h-full object-cover transform-gpu ${c.objectPosition || "object-center"}`}
                   />
                 </div>
-                <div className="p-6">
-                  <div className="flex gap-4 items-start">
-                    <div className="w-11 h-11 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] shrink-0 group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300 shadow-2xs">
-                      <c.icon className="w-5 h-5" />
+                <div className="p-5 sm:p-6">
+                  <div className="flex gap-3.5 sm:gap-4 items-start">
+                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#FFF5F8] border border-[#FF87B3] flex items-center justify-center text-[#D94D78] shrink-0 group-hover:bg-[#FF87B3] group-hover:text-[#14213D] transition-colors duration-300 shadow-2xs">
+                      <c.icon className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
                     </div>
                     <div>
                       <span className="text-[#D94D78] text-[10px] font-extrabold tracking-widest uppercase block mb-1">
                         {c.category}
                       </span>
-                      <h3 className="font-display text-[16px] font-extrabold text-[#14213D] leading-snug group-hover:text-[#D94D78] transition-colors">
+                      <h3 className="font-display text-[15px] sm:text-[16px] font-extrabold text-[#14213D] leading-snug group-hover:text-[#D94D78] transition-colors">
                         {c.title}
                       </h3>
                       <p className="mt-1.5 text-xs text-slate-500 leading-relaxed font-medium">

@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { hospital } from "@/data/hospital";
 import { AboutHero } from "@/components/site/hero/AboutHero";
-import ourStoryDoctors from "@/assets/our-story-doctors.png";
+import ourStoryDoctors from "@/assets/our-story-doctors.webp";
 import {
   motion,
   useScroll,
@@ -277,20 +277,20 @@ function About() {
                     : { y: -8, scale: 1.015, boxShadow: "0 25px 50px -12px rgba(255,135,179,0.35)" }
                 }
                 transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                className="group relative overflow-hidden rounded-[28px] border border-[#FF87B3] bg-white p-6 md:p-8 shadow-[0_8px_30px_rgba(255,135,179,0.15)] flex flex-col md:flex-row gap-5 items-start transition-all duration-300 cursor-default"
+                className="group relative overflow-hidden rounded-2xl sm:rounded-[28px] border border-[#FF87B3] bg-white p-5 sm:p-6 md:p-8 shadow-[0_8px_30px_rgba(255,135,179,0.15)] flex flex-col md:flex-row gap-4 sm:gap-5 items-start transition-all duration-300 cursor-default"
               >
-                <div className="w-14 h-14 bg-[#FFF5F8] border border-[#FF87B3] rounded-full flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:bg-[#FF87B3] transition-all duration-300 shadow-xs">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#FFF5F8] border border-[#FF87B3] rounded-full flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:bg-[#FF87B3] transition-all duration-300 shadow-xs">
                   <Target
-                    className="w-7 h-7 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300"
+                    className="w-6 h-6 sm:w-7 sm:h-7 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300"
                     strokeWidth={1.8}
                   />
                 </div>
                 <div className="flex-1 relative z-10">
-                  <h3 className="font-display text-xl md:text-2xl font-extrabold text-[#14213D] group-hover:text-[#D94D78] transition-colors">
+                  <h3 className="font-display text-lg sm:text-xl md:text-2xl font-extrabold text-[#14213D] group-hover:text-[#D94D78] transition-colors">
                     Our Mission
                   </h3>
-                  <div className="w-12 h-1 bg-[#FF87B3] rounded-full mt-2 mb-3" />
-                  <p className="text-slate-600 text-sm md:text-base leading-relaxed max-w-sm font-medium">
+                  <div className="w-12 h-1 bg-[#FF87B3] rounded-full mt-2 mb-2.5 sm:mb-3" />
+                  <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed max-w-sm font-medium">
                     {hospital.mission}
                   </p>
                 </div>
@@ -306,20 +306,20 @@ function About() {
                     : { y: -8, scale: 1.015, boxShadow: "0 25px 50px -12px rgba(255,135,179,0.35)" }
                 }
                 transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                className="group relative overflow-hidden rounded-[28px] border border-[#FF87B3] bg-white p-6 md:p-8 shadow-[0_8px_30px_rgba(255,135,179,0.15)] flex flex-col md:flex-row gap-5 items-start transition-all duration-300 cursor-default"
+                className="group relative overflow-hidden rounded-2xl sm:rounded-[28px] border border-[#FF87B3] bg-white p-5 sm:p-6 md:p-8 shadow-[0_8px_30px_rgba(255,135,179,0.15)] flex flex-col md:flex-row gap-4 sm:gap-5 items-start transition-all duration-300 cursor-default"
               >
-                <div className="w-14 h-14 bg-[#FFF5F8] border border-[#FF87B3] rounded-full flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:bg-[#FF87B3] transition-all duration-300 shadow-xs">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#FFF5F8] border border-[#FF87B3] rounded-full flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:bg-[#FF87B3] transition-all duration-300 shadow-xs">
                   <Eye
-                    className="w-7 h-7 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300"
+                    className="w-6 h-6 sm:w-7 sm:h-7 text-[#D94D78] group-hover:text-[#14213D] transition-colors duration-300"
                     strokeWidth={1.8}
                   />
                 </div>
                 <div className="flex-1 relative z-10">
-                  <h3 className="font-display text-xl md:text-2xl font-extrabold text-[#14213D] group-hover:text-[#D94D78] transition-colors">
+                  <h3 className="font-display text-lg sm:text-xl md:text-2xl font-extrabold text-[#14213D] group-hover:text-[#D94D78] transition-colors">
                     Our Vision
                   </h3>
-                  <div className="w-12 h-1 bg-[#FF87B3] rounded-full mt-2 mb-3" />
-                  <p className="text-slate-600 text-sm md:text-base leading-relaxed max-w-sm font-medium">
+                  <div className="w-12 h-1 bg-[#FF87B3] rounded-full mt-2 mb-2.5 sm:mb-3" />
+                  <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed max-w-sm font-medium">
                     {hospital.vision}
                   </p>
                 </div>
@@ -343,7 +343,7 @@ function About() {
             <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-3">
               Our Values
             </span>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-2">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight mb-2">
               What guides us, every day.
             </h2>
             <div className="flex items-center justify-center gap-1.5 mt-2">
@@ -357,16 +357,16 @@ function About() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-60px" }}
-            className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+            className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3"
           >
             {hospital.values.map((v, i) => {
               const icons = [
-                <Heart key="1" className="w-6 h-6" />,
-                <Award key="2" className="w-6 h-6" />,
-                <ShieldCheck key="3" className="w-6 h-6" />,
-                <Users key="4" className="w-6 h-6" />,
-                <Lightbulb key="5" className="w-6 h-6" />,
-                <HeartHandshake key="6" className="w-6 h-6" />,
+                <Heart key="1" className="w-5 h-5 sm:w-6 sm:h-6" />,
+                <Award key="2" className="w-5 h-5 sm:w-6 sm:h-6" />,
+                <ShieldCheck key="3" className="w-5 h-5 sm:w-6 sm:h-6" />,
+                <Users key="4" className="w-5 h-5 sm:w-6 sm:h-6" />,
+                <Lightbulb key="5" className="w-5 h-5 sm:w-6 sm:h-6" />,
+                <HeartHandshake key="6" className="w-5 h-5 sm:w-6 sm:h-6" />,
               ];
 
               const numStr = String(i + 1).padStart(2, "0");
@@ -385,20 +385,20 @@ function About() {
                         }
                   }
                   transition={{ type: "spring", stiffness: 280, damping: 20 }}
-                  className="group relative rounded-3xl border border-[#FF87B3] bg-[#FFF5F8]/40 p-6 sm:p-7 shadow-xs hover:bg-white transition-all duration-300 cursor-default"
+                  className="group relative rounded-2xl sm:rounded-3xl border border-[#FF87B3] bg-[#FFF5F8]/40 p-5 sm:p-7 shadow-xs hover:bg-white transition-all duration-300 cursor-default"
                 >
-                  <span className="absolute top-6 right-6 text-xs font-extrabold text-[#14213D] bg-[#FF87B3] group-hover:bg-[#f06a99] px-2.5 py-0.5 rounded-md transition-colors duration-300">
+                  <span className="absolute top-5 right-5 sm:top-6 sm:right-6 text-xs font-extrabold text-[#14213D] bg-[#FF87B3] group-hover:bg-[#f06a99] px-2.5 py-0.5 rounded-md transition-colors duration-300">
                     {numStr}
                   </span>
 
-                  <div className="w-13 h-13 rounded-full border border-[#FF87B3] bg-[#FFF5F8] flex items-center justify-center text-[#D94D78] mb-4 mt-1 group-hover:bg-[#FF87B3] group-hover:text-[#14213D] group-hover:scale-110 transition-all duration-300 shadow-xs">
+                  <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-full border border-[#FF87B3] bg-[#FFF5F8] flex items-center justify-center text-[#D94D78] mb-3.5 sm:mb-4 mt-1 group-hover:bg-[#FF87B3] group-hover:text-[#14213D] group-hover:scale-110 transition-all duration-300 shadow-xs">
                     {icons[i]}
                   </div>
 
-                  <h3 className="font-display text-lg font-bold text-[#14213D] mb-1 group-hover:text-[#D94D78] transition-colors">
+                  <h3 className="font-display text-base sm:text-lg font-bold text-[#14213D] mb-1 group-hover:text-[#D94D78] transition-colors">
                     {v.title}
                   </h3>
-                  <div className="w-8 h-0.5 bg-[#FF87B3] mb-2.5 group-hover:w-12 transition-all duration-300" />
+                  <div className="w-8 h-0.5 bg-[#FF87B3] mb-2 sm:mb-2.5 group-hover:w-12 transition-all duration-300" />
                   <p className="text-slate-600 text-xs md:text-sm leading-relaxed font-medium">
                     {v.desc}
                   </p>
@@ -412,7 +412,7 @@ function About() {
       {/* 4. Chairman's Message Section */}
       <section className="bg-gradient-to-tr from-[#FFF5F8] via-[#fffcfd] to-white pt-6 pb-8 md:pt-8 md:pb-10 border-b border-slate-100 overflow-hidden relative">
         <div className="container-page relative z-10">
-          <div className="grid md:grid-cols-[1.1fr_1.3fr] gap-8 md:gap-12 items-center">
+          <div className="grid md:grid-cols-[1.1fr_1.3fr] gap-6 md:gap-12 items-center">
             {/* Left Column: Monogram & Header */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -420,18 +420,18 @@ function About() {
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, type: "spring", stiffness: 60 }}
             >
-              <div className="flex items-center gap-2 mb-3">
+              <div className="flex items-center gap-2 mb-2 sm:mb-3">
                 <div className="w-6 h-0.5 bg-[#FF87B3]" />
                 <span className="text-xs font-bold uppercase tracking-widest text-[#D94D78]">
                   Chairman's Message
                 </span>
               </div>
 
-              <h2 className="font-display text-3xl md:text-5xl font-extrabold text-[#14213D] leading-tight mb-3">
+              <h2 className="font-display text-2xl sm:text-3xl md:text-5xl font-extrabold text-[#14213D] leading-tight mb-2 sm:mb-3">
                 A note from our leadership.
               </h2>
 
-              <div className="w-12 h-1 bg-[#FF87B3] rounded-full mb-4" />
+              <div className="w-12 h-1 bg-[#FF87B3] rounded-full mb-3 sm:mb-4" />
 
               <p className="text-slate-600 text-sm md:text-base leading-relaxed max-w-sm font-medium">
                 At SreeDevi Hospital &amp; Fertility Centre, we believe that true clinical
@@ -453,17 +453,17 @@ function About() {
                     : { y: -6, boxShadow: "0 25px 50px rgba(255,135,179,0.30)" }
                 }
                 transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                className="relative rounded-[32px] bg-white border border-[#FF87B3] p-6 md:p-8 shadow-[0_15px_45px_rgba(255,135,179,0.15)] transition-all duration-300"
+                className="relative rounded-2xl sm:rounded-[32px] bg-white border border-[#FF87B3] p-5 sm:p-6 md:p-8 shadow-[0_15px_45px_rgba(255,135,179,0.15)] transition-all duration-300"
               >
-                <p className="text-[#14213D] text-base md:text-lg font-semibold leading-relaxed italic relative z-10">
-                  <span className="text-[#D94D78] text-xl md:text-2xl font-serif font-bold mr-1 leading-none select-none">“</span>
+                <p className="text-[#14213D] text-sm sm:text-base md:text-lg font-semibold leading-relaxed italic relative z-10">
+                  <span className="text-[#D94D78] text-lg sm:text-xl md:text-2xl font-serif font-bold mr-1 leading-none select-none">“</span>
                   Medicine is not just about diagnosis and treatment. It is about listening to a
                   young woman anxious about her first pregnancy, to a couple longing for a child, to
                   a father worried about his diabetes. Every day at SreeDevi, we try to earn that
                   trust, again and again.
-                  <span className="text-[#D94D78] text-xl md:text-2xl font-serif font-bold ml-1 leading-none select-none">”</span>
+                  <span className="text-[#D94D78] text-lg sm:text-xl md:text-2xl font-serif font-bold ml-1 leading-none select-none">”</span>
                 </p>
-                <footer className="mt-4 text-xs md:text-sm text-slate-500 font-semibold">
+                <footer className="mt-3.5 sm:mt-4 text-xs md:text-sm text-slate-500 font-semibold">
                   Chairman, SreeDevi Hospital &amp; Fertility Centre
                 </footer>
               </motion.div>
@@ -488,7 +488,7 @@ function About() {
             <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-3">
               Certifications
             </span>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-[#14213D] leading-tight font-display tracking-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#14213D] leading-tight font-display tracking-tight">
               Recognitions we are proud of.
             </h2>
             <div className="flex items-center justify-center gap-1.5 mt-2">
@@ -508,17 +508,17 @@ function About() {
                 : { y: -6, scale: 1.015, boxShadow: "0 22px 45px rgba(255,135,179,0.35)" }
             }
             transition={{ type: "spring", stiffness: 260, damping: 20 }}
-            className="max-w-2xl mx-auto rounded-[32px] border border-[#FF87B3] bg-white p-8 md:p-10 shadow-[0_8px_30px_rgba(255,135,179,0.15)] flex flex-col md:flex-row gap-8 items-center justify-center transition-all duration-300 cursor-default"
+            className="max-w-2xl mx-auto rounded-2xl sm:rounded-[32px] border border-[#FF87B3] bg-white p-6 sm:p-8 md:p-10 shadow-[0_8px_30px_rgba(255,135,179,0.15)] flex flex-col md:flex-row gap-6 sm:gap-8 items-center justify-center transition-all duration-300 cursor-default"
           >
             {/* Scalloped pink seal */}
             <motion.div
               animate={shouldReduceMotion ? undefined : { rotate: [0, 4, -4, 0] }}
               transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-              className="relative w-24 h-24 flex items-center justify-center shrink-0"
+              className="relative w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center shrink-0"
             >
               <div className="absolute inset-0 rounded-full border border-dashed border-[#FF87B3]" />
               <svg
-                className="w-20 h-20 text-[#FF87B3] drop-shadow-md"
+                className="w-16 h-16 sm:w-20 sm:h-20 text-[#FF87B3] drop-shadow-md"
                 viewBox="0 0 100 100"
                 fill="currentColor"
               >
@@ -533,7 +533,7 @@ function About() {
                   strokeDasharray="4 3"
                 />
               </svg>
-              <ShieldCheck className="absolute w-8 h-8 text-[#14213D]" strokeWidth={2.2} />
+              <ShieldCheck className="absolute w-7 h-7 sm:w-8 sm:h-8 text-[#14213D]" strokeWidth={2.2} />
             </motion.div>
 
             {/* Middle separator line */}
@@ -541,10 +541,10 @@ function About() {
 
             {/* Certification copy details */}
             <div className="flex-1 text-center md:text-left">
-              <h3 className="font-display text-2xl font-extrabold text-[#14213D] mb-1.5">
+              <h3 className="font-display text-xl sm:text-2xl font-extrabold text-[#14213D] mb-1 sm:mb-1.5">
                 Manyata Certified
               </h3>
-              <p className="text-slate-600 text-sm leading-relaxed mb-4 font-medium">
+              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4 font-medium">
                 Recognised maternity care facility for safe childbirth practices.
               </p>
               <div className="inline-flex items-center gap-1.5 bg-[#FFF5F8] border border-[#FF87B3] px-3.5 py-1.5 rounded-full text-xs font-bold text-[#D94D78] shadow-xs">
@@ -574,16 +574,16 @@ const MilestoneCard = ({
   const shouldReduceMotion = useReducedMotion();
 
   const icons = [
-    <Sparkles key="1" className="w-5 h-5 text-[#14213D]" />,
-    <HeartPulse key="2" className="w-5 h-5 text-[#14213D]" />,
-    <Users key="3" className="w-5 h-5 text-[#14213D]" />,
-    <ShieldCheck key="4" className="w-5 h-5 text-[#14213D]" />,
-    <Headphones key="5" className="w-5 h-5 text-[#14213D]" />,
+    <Sparkles key="1" className="w-4 h-4 sm:w-5 sm:h-5 text-[#14213D]" />,
+    <HeartPulse key="2" className="w-4 h-4 sm:w-5 sm:h-5 text-[#14213D]" />,
+    <Users key="3" className="w-4 h-4 sm:w-5 sm:h-5 text-[#14213D]" />,
+    <ShieldCheck key="4" className="w-4 h-4 sm:w-5 sm:h-5 text-[#14213D]" />,
+    <Headphones key="5" className="w-4 h-4 sm:w-5 sm:h-5 text-[#14213D]" />,
   ];
 
   return (
     <motion.div
-      className={`bg-white rounded-3xl p-6 border-2 transition-all duration-500 shadow-sm max-w-md w-full text-left group cursor-default ${
+      className={`bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border-2 transition-all duration-500 shadow-sm max-w-md w-full text-left group cursor-default ${
         isActive
           ? "border-[#FF87B3] shadow-[0_12px_36px_rgba(255,135,179,0.4)] scale-[1.02]"
           : "border-slate-100 hover:border-[#FF87B3] hover:shadow-md"
@@ -594,10 +594,10 @@ const MilestoneCard = ({
       whileHover={shouldReduceMotion ? undefined : { y: -4, scale: 1.02 }}
       transition={{ type: "spring", stiffness: 60, damping: 16 }}
     >
-      <div className="flex gap-4 items-start">
+      <div className="flex gap-3 sm:gap-4 items-start">
         {/* Left Side: Icon Container */}
         <div
-          className={`w-12 h-12 rounded-2xl bg-gradient-to-br from-[#FF87B3] to-[#f06a99] border border-[#f06a99] flex items-center justify-center shrink-0 shadow-sm transition-all duration-500 ${
+          className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#FF87B3] to-[#f06a99] border border-[#f06a99] flex items-center justify-center shrink-0 shadow-sm transition-all duration-500 ${
             isActive ? "scale-110 shadow-pink-300/50" : "group-hover:scale-105"
           }`}
         >
@@ -605,18 +605,18 @@ const MilestoneCard = ({
         </div>
 
         {/* Right Side: Text details */}
-        <div>
+        <div className="min-w-0 flex-1">
           <div
-            className={`text-sm font-extrabold transition-colors duration-500 ${
+            className={`text-xs sm:text-sm font-extrabold transition-colors duration-500 ${
               isActive ? "text-[#D94D78]" : "text-slate-400 group-hover:text-[#D94D78]"
             }`}
           >
             {milestone.year}
           </div>
-          <h4 className="text-[17px] font-extrabold text-[#14213D] leading-tight mb-2 group-hover:text-[#D94D78] transition-colors">
+          <h4 className="text-sm sm:text-[17px] font-extrabold text-[#14213D] leading-tight mb-1 sm:mb-2 group-hover:text-[#D94D78] transition-colors">
             {milestone.title}
           </h4>
-          <p className="text-slate-600 text-xs md:text-sm leading-relaxed font-medium">
+          <p className="text-slate-600 text-[11.5px] sm:text-xs md:text-sm leading-relaxed font-medium">
             {milestone.desc}
           </p>
         </div>
@@ -688,7 +688,7 @@ function MilestoneTimeline() {
           <span className="inline-flex items-center rounded-full bg-[#FF87B3]/25 border border-[#FF87B3] px-3.5 py-1 text-xs font-bold tracking-widest text-[#D94D78] uppercase mb-3">
             Milestones
           </span>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-[#14213D] font-display tracking-tight leading-tight">
             A quiet, steady journey.
           </h2>
           <div className="flex items-center justify-center gap-1.5 mt-2">
@@ -701,7 +701,7 @@ function MilestoneTimeline() {
           {/* Vertical Timeline Line Container */}
           <div
             ref={lineRef}
-            className="absolute left-5 md:left-1/2 top-10 bottom-10 w-[3px] -translate-x-1/2 pointer-events-none z-10"
+            className="absolute left-3.5 sm:left-5 md:left-1/2 top-10 bottom-10 w-[3px] -translate-x-1/2 pointer-events-none z-10"
           >
             {/* Gray Background Line */}
             <div className="w-full h-full bg-slate-100 rounded-full" />
@@ -714,16 +714,16 @@ function MilestoneTimeline() {
 
             {/* Glowing Blinking Dot tracking line end */}
             <motion.div
-              className="absolute left-1/2 w-5 h-5 rounded-full bg-white border-4 border-[#FF87B3] shadow-[0_0_14px_#FF87B3] z-20 flex items-center justify-center animate-pulse"
+              className="absolute left-1/2 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white border-3 sm:border-4 border-[#FF87B3] shadow-[0_0_14px_#FF87B3] z-20 flex items-center justify-center animate-pulse"
               style={{ top: heightPercent, transform: "translate(-50%, -50%)" }}
             >
-              <span className="absolute w-2.5 h-2.5 bg-[#D94D78] rounded-full animate-ping opacity-75" />
-              <span className="absolute w-2 h-2 bg-[#D94D78] rounded-full" />
+              <span className="absolute w-2 h-2 sm:w-2.5 sm:h-2.5 bg-[#D94D78] rounded-full animate-ping opacity-75" />
+              <span className="absolute w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#D94D78] rounded-full" />
             </motion.div>
           </div>
 
           {/* Cards List */}
-          <div className="space-y-6 md:space-y-8 relative">
+          <div className="space-y-5 sm:space-y-6 md:space-y-8 relative">
             {milestones.map((m, idx) => {
               const threshold = cardThresholds[idx] || 0;
               const isActive = scrollProgress >= threshold - 0.02;
@@ -734,7 +734,7 @@ function MilestoneTimeline() {
                   ref={(el) => {
                     cardRefs.current[idx] = el;
                   }}
-                  className="relative grid grid-cols-[40px_1fr] md:grid-cols-[1fr_80px_1fr] items-center gap-4 md:gap-0"
+                  className="relative grid grid-cols-[28px_1fr] sm:grid-cols-[40px_1fr] md:grid-cols-[1fr_80px_1fr] items-center gap-2.5 sm:gap-4 md:gap-0"
                 >
                   {/* Left Column (Desktop Only: Even Card) */}
                   <div
@@ -752,14 +752,14 @@ function MilestoneTimeline() {
                   {/* Center Column: Milestone Dot/Marker */}
                   <div className="flex justify-center z-20">
                     <div
-                      className={`w-6 h-6 md:w-8 md:h-8 rounded-full border-4 flex items-center justify-center transition-all duration-500 bg-white ${
+                      className={`w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 rounded-full border-3 sm:border-4 flex items-center justify-center transition-all duration-500 bg-white ${
                         isActive
                           ? "border-[#FF87B3] bg-[#FF87B3] shadow-[0_0_14px_#FF87B3]"
                           : "border-slate-200"
                       }`}
                     >
                       <div
-                        className={`w-2 h-2 md:w-2.5 md:h-2.5 rounded-full transition-all duration-500 ${
+                        className={`w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-2.5 md:h-2.5 rounded-full transition-all duration-500 ${
                           isActive ? "bg-[#14213D]" : "bg-slate-300"
                         }`}
                       />
@@ -767,7 +767,7 @@ function MilestoneTimeline() {
                   </div>
 
                   {/* Right Column: Desktop Odd Card / Mobile All Cards */}
-                  <div className="pl-4 md:pl-10">
+                  <div className="pl-2 sm:pl-4 md:pl-10">
                     <div className="md:hidden">
                       <MilestoneCard milestone={m} isActive={isActive} index={idx} align="left" />
                     </div>
