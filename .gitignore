@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Build files
+dist/
+
+# Vercel
+.vercel/
+
+# Environment files
+.env
+.env.*
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor files
+.vscode/
+.idea/
+.DS_Store
